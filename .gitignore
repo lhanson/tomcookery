@@ -1,2 +1,3 @@
 *.pyc
 tomcookery-db
+local_settings.py
