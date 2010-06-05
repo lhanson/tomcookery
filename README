@@ -10,7 +10,7 @@ As a baseline, here are the prerequisites to running tomcookery (installation
 will vary by platform and won't be elaborated upon here):
 
     * Python (2.5 or later, for its included SQLite)
-    * Django (1.1.1 is current as of the start of tomcookery development)
+    * Django (1.2 is current as of the start of tomcookery development)
     * PostgreSQL (for deployed sites - not required for local development)
 
 To get tomcookery up and running from scratch (assuming you've got the
