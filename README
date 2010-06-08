@@ -17,3 +17,14 @@ To get tomcookery up and running from scratch (assuming you've got the
 dependencies mentioned above installed), here are the steps you need to follow:
 
     * Grab the source from http://github.com/lhanson/tomcookery
+    * Navigate into the tomcookery directory:
+      $ cd tomcookery
+    * Set up the local database:
+      $ python manage.py syncdb
+    * Create a superuser account (the above step will prompt for one, but
+      here's how to create another:
+      $ python manage.py createsuperuser --username=joe --email=joe@example.com
+    * Start the development server:
+      $ python manage.py runserver
+    * See the site at http://localhost:8000
+    * Log into the admin portlet at http://localhost:8000/admin
