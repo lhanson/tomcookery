@@ -16,3 +16,5 @@ class Recipe(models.Model):
 #        value/type
     tag = models.CharField(max_length=15)# optional, 1 or more
 
+    def __unicode__(self):
+        return self.name
