@@ -5,13 +5,10 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Example:
-    # (r'^tomcookery/', include('tomcookery.foo.urls')),
+    (r'^$', 'tomcookery.app.views.index'),
+    (r'^recipes/$', 'tomcookery.app.views.recipes'),
+    (r'^recipe/(?P<recipe_id>\d+)/$', 'tomcookery.app.views.recipe'),
 
-    # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
-    # to INSTALLED_APPS to enable admin documentation:
     (r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
     (r'^admin/', include(admin.site.urls)),
 )
