@@ -4,11 +4,11 @@ from django.conf.urls.defaults import *
 from django.contrib import admin
 admin.autodiscover()
 
-urlpatterns = patterns('',
-    (r'^$', 'tomcookery.app.views.index'),
-    (r'^recipes/$', 'tomcookery.app.views.recipes'),
-    (r'^recipe/(?P<recipe_id>\d+)/$', 'tomcookery.app.views.recipe'),
-    (r'^submit/$', 'tomcookery.app.views.submit'),
+urlpatterns = patterns('tomcookery.app.views',
+    (r'^$', 'index'),
+    (r'^recipes/$', 'recipes'),
+    (r'^recipe/(?P<recipe_id>\d+)/$', 'recipe'),
+    (r'^submit/$', 'submit'),
 
     (r'^admin/doc/', include('django.contrib.admindocs.urls')),
     (r'^admin/', include(admin.site.urls)),
