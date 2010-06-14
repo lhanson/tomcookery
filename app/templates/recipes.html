@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}{{ block.super }} - Recipes{% endblock %}
+{% block article %}
+<article class="recipe_list">
+    {% if recipes|length > 0 %}
+        <h1>Recipes:</h1>
+        <ul>
+            {% for recipe in recipes %}
+                <li class="recipe">{{ recipe.name }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        No recipes found.
+    {% endif %}
+</article>
+{% endblock article %}
