@@ -1,6 +1,6 @@
 from django.db import models
 
-class Recipe(models.Model):
+class HRecipe(models.Model):
     """ Representation of an hrecipe-based recipe (see http://microformats.org/wiki/hrecipe) """
     name = models.CharField(max_length=40) # hrecipe field name is "fn"
 #    ingredient (1 or more)
@@ -18,3 +18,10 @@ class Recipe(models.Model):
 
     def __unicode__(self):
         return self.name
+
+class Recipe(HRecipe):
+    """ A recipe object """
+    submitter = models.CharField(max_length=20)
+    def __unicode__(self):
+        return self.name + ", submitted by " + self.submitter
+
