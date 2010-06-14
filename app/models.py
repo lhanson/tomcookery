@@ -3,19 +3,16 @@ from django.db import models
 class HRecipe(models.Model):
     """ Representation of an hrecipe-based recipe (see http://microformats.org/wiki/hrecipe) """
     name = models.CharField(max_length=40) # hrecipe field name is "fn"
-#    ingredient (1 or more)
-#        value/type
-    yields = models.CharField(max_length=40) # optional
+    ingredients = models.ManyToManyField('Ingredient')
+    yields = models.CharField(max_length=40, blank=True)
     instructions = models.TextField()
-    duration = models.CharField(max_length=40) # 1 or more, optional
-#    photo
-    summary = models.CharField(max_length=80) # optional
-    author = models.CharField(max_length=30) # 1 or more, optional
-    published = models.DateField() # optional
-#    nutrition (1 or more)
-#        value/type
-    tag = models.CharField(max_length=15)# optional, 1 or more
-
+    durations = models.ManyToManyField('Duration', blank=True)
+    photos = models.ManyToManyField('Photo', blank=True)
+    summary = models.CharField(max_length=80, blank=True)
+    authors = models.ManyToManyField('Author', blank=True)
+    published = models.DateField(blank=True)
+    nutrition = models.ManyToManyField('Nutrition', blank=True)
+    tags = models.ManyToManyField('Tag', blank=True)
     def __unicode__(self):
         return self.name
 
@@ -25,3 +22,41 @@ class Recipe(HRecipe):
     def __unicode__(self):
         return self.name + ", submitted by " + self.submitter
 
+class Ingredient(models.Model):
+    """ A single ingredient """
+    name = models.CharField(max_length=20)
+    value = models.CharField(max_length=20, blank=True)
+    type = models.CharField(max_length=20, blank=True)
+    def __unicode__(self):
+        return self.name
+
+class Duration(models.Model):
+    """ The time it takes to prepare a recipe or a subset of a recipe """
+    duration = models.CharField(max_length=40)
+    def __unicode__(self):
+        return self.duration
+
+class Photo(models.Model):
+    """ A photograph of delicious food """
+    photo = models.ImageField(
+            upload_to=(lambda instance, filename: os.path.join('photos', filename)),
+            blank=True)
+
+class Author(models.Model):
+    """ The author of a recipe """
+    name = models.CharField(max_length=40)
+    # Note: hRecipe allows this element to be a full hCard, but for our purposes
+    # a name string seems sufficient.
+    def __unicode__(self):
+        return self.name
+
+class Nutrition(models.Model):
+    """ Represents an element of nutritional information """
+    value = models.CharField(max_length=40, blank=True)
+    type = models.CharField(max_length=40, blank=True)
+
+class Tag(models.Model):
+    """ A tag applied to a recipe for categorization and search """
+    name = models.CharField(max_length=15)
+    def __unicode__(self):
+        return self.name

@@ -11,6 +11,7 @@ will vary by platform and won't be elaborated upon here):
 
     * Python (2.5 or later, for its included SQLite)
     * Django (1.2 is current as of the start of tomcookery development)
+    * Python Imaging Library (1.1.7 is current as of development)
     * PostgreSQL (for deployed sites - not required for local development)
 
 To get tomcookery up and running from scratch (assuming you've got the
@@ -28,3 +29,7 @@ dependencies mentioned above installed), here are the steps you need to follow:
       $ python manage.py runserver
     * See the site at http://localhost:8000
     * Log into the admin portlet at http://localhost:8000/admin
+
+To populate the database with some test data, use the fixtures located in
+tomcookery/app/fixtures. They can be loaded as follows:
+    * $ python manage.py loaddata FIXTURE_NAME
