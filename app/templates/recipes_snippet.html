@@ -1,0 +1,13 @@
+{# Renders a list of recipes available #}
+<article class="recipe_list">
+    {% if recipes|length > 0 %}
+        <h1>Recipes:</h1>
+        <ul>
+            {% for recipe in recipes %}
+                <li class="recipe">{{ recipe.name }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        No recipes found.
+    {% endif %}
+</article>
