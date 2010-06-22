@@ -2,7 +2,7 @@
 {% extends "base.html" %}
 {% block title %}{{ block.super }} - {{ name }}{% endblock %}
 {% block article %}
-<article class="hrecipe">
+<article class="hrecipe" class="content">
     <h1 class="fn">{{ recipe.name }}</h1>
     {% if recipe.yield %}<h3 class="yield">{{ recipe.yield }}</h3>{% endif %}
     {% if recipe.author %}<p class="author">{{ recipe.author }}</p>{% endif %}
