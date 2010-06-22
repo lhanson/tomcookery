@@ -1,26 +1,21 @@
-from django.template import Context, loader
+from django.shortcuts import render_to_response
 from tomcookery.app.models import Recipe
-from django.http import HttpResponse
 
 response_data = { 'app_name': 'Tomcookery' }
 
 def index(request):
-    template = loader.get_template('index.html')
-    return HttpResponse(template.render(Context(response_data)))
+    return render_to_response('index.html', getLatestRecipes(response_data, 10))
 
 def recipe(request, recipe_id):
-    template = loader.get_template('recipe.html')
-    recipe = Recipe(name='Hardcoded recipe name', submitter='Lyle')
-    response_data.update({'recipe': recipe})
-    return HttpResponse(template.render(Context(response_data)))
+    return render_to_response('recipe.html', response_data)
 
 def recipes(request):
-    template = loader.get_template('recipes.html')
-    recipe1 = Recipe(name='Grilled cheese with beets', submitter='Lyle')
-    recipe2 = Recipe(name='Limburger sandwich', submitter='Kelly')
-    response_data.update({'recipes': [recipe1, recipe2]})
-    return HttpResponse(template.render(Context(response_data)))
+    return render_to_response('recipes.html', getLatestRecipes(response_data, 10))
 
 def submit(request):
-    template = loader.get_template('submit.html')
-    return HttpResponse(template.render(Context(response_data)))
+    return render_to_response('submit.html', response_data)
+
+def getLatestRecipes(dict, count):
+    """ Add the latest 'count' recipes published to the given dictionary """
+    dict.update({'recipes': Recipe.objects.all().order_by('published')[:count] })
+    return dict
