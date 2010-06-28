@@ -1,4 +1,6 @@
 from django.conf.urls.defaults import *
+from django.conf import settings
+import os
 
 urlpatterns = patterns('tomcookery.app.views',
     (r'^$', 'index'),
@@ -6,3 +8,10 @@ urlpatterns = patterns('tomcookery.app.views',
     (r'^recipe/(?P<recipe_id>\d+)/$', 'recipe'),
     (r'^submit/$', 'submit'),
 )
+
+if settings.DEBUG:
+    APP_ROOT = os.path.dirname(os.path.realpath(__file__))
+    urlpatterns += patterns('',
+        (r'^css/(?P<path>.*)$', 'django.views.static.serve',
+            {'document_root': APP_ROOT + '/CSS'}),
+    )
