@@ -87,7 +87,8 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
-    'tomcookery.app'
+    'tomcookery.app',
+    'south'
 )
 
 # Now load sensitive settings from a local file, if present

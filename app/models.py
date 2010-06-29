@@ -41,6 +41,7 @@ class Duration(models.Model):
 
 class Photo(models.Model):
     """ A photograph of delicious food """
+    alt_text = models.CharField(max_length=40, default='')
     photo = models.ImageField(
             upload_to=(lambda instance, filename: os.path.join('photos', filename)),
             blank=True)

@@ -54,3 +54,27 @@ To get a server environment up and running here is the general outline:
       ADMIN email addresses, and set DEBUG = TEMPLATE_DEBUG = False
     * From the tomcookery directory, initialize the tomcookery database:
       $ python manage.py syncdb
+
+DATA MIGRATIONS
+===============
+Inevitably, we'll want to change the models (and therefore the underlying
+database schema) after we've already got the app set up. Our goal here is
+to make migrations as seamless and automated as possible, both in development
+and in the deployed app.
+
+To that end, I'm using South (http://south.aeracode.org/docs/index.html)
+to handle migrations.
+
+Basic steps to work with migrations:
+    * Install South. See the documentation.
+    * Create the South migration-tracking tables:
+      $ python manage.py syncdb
+    * Create the baseline migration:
+      $ python manage.py schemamigration app --initial
+    * Continue development, change the models
+    * Create the migration to update the schema:
+      $ python manage.py schemamigration app --auto [CHANGE_NAME]
+    * Run the migration to update the schema:
+      $ python manage.py migrate app [CHANGE_NAME]
+    * To get help, see the docs or run:
+      $ python manage.py migrate --help
