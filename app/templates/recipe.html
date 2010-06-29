@@ -6,27 +6,31 @@
     <h1 class="fn">{{ recipe.name }}</h1>
     {% if recipe.yield %}<h3 class="yield">{{ recipe.yield }}</h3>{% endif %}
     {% if recipe.author %}<p class="author">{{ recipe.author }}</p>{% endif %}
-    {% if recipe.duration %}<p class="duration"><span class="value-title" title="PT1H30M"> </span>{{ recipe.duration }}</p>{% endif %}
+    {% if recipe.duration %}
+        <p class="duration"><span class="value-title" title="PT1H30M"> </span>{{ recipe.duration }}</p>
+    {% endif %}
     <section id="ingredients">
         <h1>Ingredients</h1>
         <ul>
-            <li class="inredient"><span class="value">12</span><span class="type">tsp</span> Pepper</li>
-            <li class="inredient"><span class="value">12</span><span class="type">tsp</span> Pepper</li>
-            <li class="inredient"><span class="value">12</span><span class="type">tsp</span> Pepper</li>
-            <li class="inredient"><span class="value">12</span><span class="type">tsp</span> Pepper</li>
+            {% for ingredient in recipe.ingredients.all %}
+                <li class="inrgedient">
+                    <span class="value">{{ ingredient.value }}</span>
+                    <span class="type">{{ ingredient.type }}</span>
+                    {{ ingredient.name }}
+                </li>
+            {% endfor %}
         </ul>
     </section>
     <section id="directions">
         <h1>Directions</h1>
         <ol class="instructions">
-            <li>Open box</li>
-            <li>Add water</li>
-            <li>Cook</li>
-            <li>Pray it turns out!</li>
+            {{ recipe.instructions }}
         </ol>
     </section>
     <section id="media">
-        <img src="" alt="" height="" width="" class="photo"/>
+        {% for photo in recipe.photos.all %}
+            <img src="{{ photo.photo.url }}" alt="" height="{{ photo.image.height }}" width="{{ photo.image.width }}" class="photo"/>
+        {% endfor %}
         <p></p>
         <ul id="gallery">
             <li><img src="" alt="" height="" width="" /></li>

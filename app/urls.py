@@ -14,4 +14,6 @@ if settings.DEBUG:
     urlpatterns += patterns('',
         (r'^css/(?P<path>.*)$', 'django.views.static.serve',
             {'document_root': APP_ROOT + '/CSS'}),
+        (r'^photos/(?P<path>.*)$', 'django.views.static.serve',
+            {'document_root': os.path.join(settings.MEDIA_ROOT, 'photos')}),
     )

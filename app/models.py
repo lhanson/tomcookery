@@ -1,4 +1,8 @@
 from django.db import models
+import os
+import logging
+LOG_FILENAME="models.log"
+logging.basicConfig(filename=LOG_FILENAME, level=logging.DEBUG)
 
 class HRecipe(models.Model):
     """ Representation of an hrecipe-based recipe (see http://microformats.org/wiki/hrecipe) """
@@ -42,9 +46,17 @@ class Duration(models.Model):
 class Photo(models.Model):
     """ A photograph of delicious food """
     alt_text = models.CharField(max_length=40, default='')
+    def get_image_path(instance, filename):
+        print "Getting image path for filename " + filename
+        path = os.path.join('photos', filename)
+        logging.debug("Getting image path for filename " + filename + ", returning " + path)
+        return path
+
     photo = models.ImageField(
-            upload_to=(lambda instance, filename: os.path.join('photos', filename)),
+            upload_to=get_image_path,
             blank=True)
+    def __unicode__(self):
+        return self.photo.name
 
 class Author(models.Model):
     """ The author of a recipe """
