@@ -1,7 +1,8 @@
 {# The recipe submission page #}
-<body id="upload page">
-<!--Head and nav templates-->
-<!--Start Upload Page-->
+{# A single recipe page #}
+{% extends "base.html" %}
+{% block title %}{{ block.super }} - {{ name }}{% endblock %}
+{% block article %}
 	<section id="upload-form" class="content">
 		<p id="instructions">Hello %Username welcome to the upload page, what kind of recipe do you have today?</p>
 		<div id="input_selection">
@@ -51,8 +52,8 @@
 			<input type="submit" value="Submit your recipe">
 		</form>
 	</section>
- <!--End upload page-->
- <!--Right Column Article Template-->
+{% endblock article %}
+{% block rightColumn %}
     	<aside>
     		<section id="login">
     		<a href="/profiles/register">Register</a>
@@ -96,21 +97,11 @@
 
     		
     	</aside>
-<!--End Right Column Article Template-->
-<!--Start Footer Template-->
-    	<footer>
-	    	<nav>
-	    	  <ul>
-			    <li><a href="/">Home</a></li>
-			    <li><a href="/recipes">Recipes</a></li>
-			    <li><a href="/submit">Submit Recipe</a></li>
-			  </ul>
-	    	</nav>
-    	</footer>
-    </div>
-<!--End Footer Template-->
-<!--Bottom Template--->
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
+{% endblock rightColumn %}
+ <!--Right Column Article Template-->
+
+
+{% block javaScript %}
 <script type="text/javascript">
 $("#add-another").click(function(){
 	$("fieldset .ingredient:first, fieldset .measurement:first, fieldset .what:first, fieldset .how-much:first ").clone().appendTo('#ingredients-list');
@@ -128,6 +119,4 @@ $("#media .picture").change(function() {
     $(this).clone().appendTo("#media");
 });
 </script>
-  </body>
-</html>
-<!--End Bottom Template-->
+{% endblock javaScript %}

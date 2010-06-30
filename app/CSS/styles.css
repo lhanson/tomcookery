@@ -72,6 +72,11 @@ float: left;
 width: 320px;
 padding: 0 0 0 40px;
 }
+
+footer {
+clear: both;
+display: block;
+}
 /* Typography
 -----------------------------------------------*/
 h1 { font-size: 24px }
@@ -96,3 +101,5 @@ display: block;
 float: left;
 margin-right: 20px;
 }
+
+
