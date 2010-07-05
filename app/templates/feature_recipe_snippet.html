@@ -1,0 +1,10 @@
+{# Renders a list of recipes available #}
+<article class="recipe_list">
+    {% if recipes|length > 0 %}
+            {% for recipe in recipes %}
+            <h1>Today's Top Recipe</h1> <span class="submitted-by">Submitted by:{{recipe.submitor.name}}<img src="/img/{{recipe.submitor.avatar}}" alt="{{recipe.submitor.name}}" /></span>
+<img src={{recipe.image[1]}} alt={{recipe.name}} />{{ recipe.name }}<p class="summary">{{recipe.summary}}</p><span class="comments-count">{{recipe.commentsCount}}</span><span class="like-count">{{recipe.likes.count}}</span><a href="#" title="like this recipe" class="Yum">Yummy!</a>
+    {% else %}
+        <h3 class="empty-search">No recipes found.</h3>
+    {% endif %}
+</article>
