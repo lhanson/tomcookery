@@ -4,10 +4,10 @@
         <h1>Recipes:</h1>
         <ul>
             {% for recipe in recipes %}
-                <li class="recipe"><a href="/recipe/{{ recipe.id }}">{{ recipe.name }}</a></li>
+                <li class="recipe"><img src={{recipe.image[1]}} alt={{recipe.name}} />{{ recipe.name }}<a href="#" title="like this recipe" class="Yum">Yummy!</a><p class="summary">{{recipe.summary}}</p><span class="comments-count">{{recipe.commentsCount}}</span></li>
             {% endfor %}
         </ul>
     {% else %}
-        No recipes found.
+        <h3 class="empty-search">No recipes found.</h3>
     {% endif %}
 </article>
