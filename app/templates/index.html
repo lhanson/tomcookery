@@ -16,7 +16,7 @@
 				<ol class="recent-activity">
 					<h5>Recent Activity</h5>
 					{% for activity in friend.activity %}
-						<li>{{activity[]}}</li>
+                        <li>{#{{activity[]}}#}</li>
 					{% endfor %}
 				</ol>
 		{% endfor %}
@@ -36,9 +36,6 @@
 	</ul>
 </a>
 </div>
-<!-- Need a way to specify what recipes_snippet pulls and what elements it displays -->
-{% include "recipes_snippet.html" %}
-{% include "recipes_snippet.html" %}
 {% include "recipes_snippet.html" %}
 </section>
 <section id="Recommended">

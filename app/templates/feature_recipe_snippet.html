@@ -1,10 +1,24 @@
 {# Renders a list of recipes available #}
+TODO: featured recipe
+{% comment %}
+Commenting out for now since we don't want all recipes showing up here again.
+Need to define a way of choosing the day's featured recipe.
+
 <article class="recipe_list">
     {% if recipes|length > 0 %}
-            {% for recipe in recipes %}
-            <h1>Today's Top Recipe</h1> <span class="submitted-by">Submitted by:{{recipe.submitor.name}}<img src="/img/{{recipe.submitor.avatar}}" alt="{{recipe.submitor.name}}" /></span>
-<img src={{recipe.image[1]}} alt={{recipe.name}} />{{ recipe.name }}<p class="summary">{{recipe.summary}}</p><span class="comments-count">{{recipe.commentsCount}}</span><span class="like-count">{{recipe.likes.count}}</span><a href="#" title="like this recipe" class="Yum">Yummy!</a>
+        {% for recipe in recipes %}
+            <h1>Today's Top Recipe</h1>
+            <span class="submitted-by">Submitted by:{{recipe.submitor.name}}<img src="/img/{{recipe.submitor.avatar}}" alt="{{recipe.submitor.name}}" /></span>
+            {% for photo in recipe.photos.all %}
+                <img src="{{ photo.photo.url }}" alt="{{ recipe.name }}" height="{{ photo.image.height }}" width="{{ photo.image.width }}" class="photo"/>{{ recipe.name }}
+            {% endfor %}
+            <p class="summary">{{recipe.summary}}</p>
+            <span class="comments-count">{{recipe.commentsCount}}</span>
+            <span class="like-count">{{recipe.likes.count}}</span>
+            <a href="#" title="like this recipe" class="Yum">Yummy!</a>
+        {% endfor %}
     {% else %}
         <h3 class="empty-search">No recipes found.</h3>
     {% endif %}
 </article>
+{% endcomment %}
