@@ -1,8 +1,11 @@
+from django.contrib.auth.models import User
 from django.db import models
+from django import forms
 import os
-import logging
-LOG_FILENAME="models.log"
-logging.basicConfig(filename=LOG_FILENAME, level=logging.DEBUG)
+
+#######################################
+##### hRecipe models ##################
+#######################################
 
 class HRecipe(models.Model):
     """ Representation of an hrecipe-based recipe (see http://microformats.org/wiki/hrecipe) """
@@ -76,3 +79,16 @@ class Tag(models.Model):
     name = models.CharField(max_length=15)
     def __unicode__(self):
         return self.name
+
+#######################################
+##### login/authentication models #####
+#######################################
+
+class LoginForm(forms.Form):
+    """ A form used to supply login credentials """
+    username = forms.CharField(max_length=20)
+    password = forms.CharField(max_length=100)
+
+class RPXForm(forms.Form):
+    """ A form used by RPX as a login callback """
+    token = forms.CharField(max_length=100)
