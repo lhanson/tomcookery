@@ -2,15 +2,19 @@
 <html>
   <head>
       <title>{% block title %}{{ app_name }}{% endblock %}</title>
+     	<!--[if lt IE 9]>
+		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
       <link rel="stylesheet" href="{% block site_url %}{{ site_url }}{% endblock %}/css/styles.css" type="text/css" />
   </head>
   <body>
       <div id="wrapper">
     	<header>
             <h1>{{ app_name }}</h1>
+            <h5>Making sense of your recipe searches</h5>
 	    	<form>
-			  <input name="search" type="search" placeholder="Search For Tasty Recipes">
-			  <input type="submit" value="Search">
+			  <input name="search" type="search" placeholder="Find Recipes, Tutorials, and Friends">
+			  <button type="submit" value="Search">
 			</form>
     	</header>
 <!--End Header template-->
@@ -21,6 +25,8 @@
 		    <li><a href="/" title="Home">Home</a></li>
 		    <li><a href="/recipes" title="Recipes" id="current">Recipes</a></li>
 		    <li><a href="/submit" title="submit recipes">Submit Recipe</a></li>
+		    <li><a href="/submit" title="submit recipes">Shopping List</a></li>
+			<li><a href="/submit" title="submit recipes">Profile</a></li>
 		  </ul>
     	</nav>
 <!--End Nav template-->
