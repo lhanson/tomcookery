@@ -7,6 +7,7 @@ urlpatterns = patterns('tomcookery.app.views',
     (r'^recipes/$', 'recipes'),
     (r'^recipe/(?P<recipe_id>\d+)/$', 'recipe'),
     (r'^submit/$', 'submit'),
+    (r'^profile/(\w+)/$, profile_page),
 )
 
 if settings.DEBUG:

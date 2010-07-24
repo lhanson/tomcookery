@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block article %}
 {% include "feature_recipe_snippet.html" %}
-<h2 id="recipe-submit">Submit a Recipe</h2>
+<h2 id="recipe-submit"><a href="/submit>Submit a Recipe</a></h2>
 <section id="profile" class="logged-in">
 	<img src="{{user.avatar}}" alt="your avatar" />
 	<a href="/profile/{{user.name}}" title="link to profile page" class="userName">{{user.name}}</a>

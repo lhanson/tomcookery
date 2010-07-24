@@ -86,6 +86,10 @@ display: block;
 clear: both;
 }
 
+section {
+margin-bottom: 16px;
+}
+
 .more {
 float: right;
 }
@@ -147,28 +151,36 @@ height: 20px;
 -----------------------------------------------*/
 nav ul {
 float: left;
-background: #c4c4c4;
+background: #fff;
 width: 100%;
-border-top: 1px solid #d3d3d3;
-border-left: 1px solid #d3d3d3;
-border-right: 1px solid #d3d3d3;
--moz-box-shadow: 3px 3px 4px #ccc;
--webkit-box-shadow: 3px 3px 4px #ccc;
-box-shadow: 3px 3px 4px #ccc;
+border-top: 1px solid #aaa;
+border-left: 1px solid #aaa;
+border-right: 1px solid #aaa;
 margin-bottom: 8px;
+-moz-border-radius-topleft: 2px;
+-moz-border-radius-topright: 2px;
+-webkit-border-top-left-radius: 2px;
+-webkit-border-top-right-radius: 5px;
+border-radius-topleft: 5px;
+border-radius-topright: 5px;
+padding: 2px;
 }
 
 nav ul li {
 display: block;
 float: left;
 margin-right: 2px;
-margin-top: 2px;
+margin-top: 0;
 line-height: 40px;
 text-align: center;
 width: 170px;
-border-top: 1px solid #fff;
-border-left: 1px solid #fff;
-border-right: 1px solid #fff;
+background: #a1a1a1;
+-moz-border-radius-topleft: 2px;
+-moz-border-radius-topright: 2px;
+-webkit-border-top-left-radius: 2px;
+-webkit-border-top-right-radius: 5px;
+border-radius-topleft: 5px;
+border-radius-topright: 5px;
 }
 
 nav ul li.current {
@@ -177,7 +189,8 @@ background: #fff;
 
 nav ul li a {
 font-weight: bold;
-text-shadow: 2px 2px 2px #e4e4e4;
+text-shadow: 2px 2px 2px #b1b1b1;
+font-size: 18px;
 }
 
 /*Login
@@ -256,3 +269,57 @@ list-style-type: square;
 
 /*Most Popular
 ---------------------------------------*/
+
+
+/*Home page
+----------------------------------------*/
+#main-content {
+width: 100%;
+}
+
+#recipe-submit {
+float: right;
+width: 320px;
+height: 40px;
+line-height: 40px;
+text-align: center;
+display: block;
+padding: 0 0 0 0;
+margin: 0 0 16px 0;
+border: 1px solid;
+-moz-border-radius: 5px; 
+-webkit-border-radius: 5px;
+border-radius: 5px;
+-moz-box-shadow: 3px 3px 4px #ccc;
+-webkit-box-shadow: 3px 3px 4px #ccc;
+box-shadow: 3px 3px 4px #ccc;
+}
+
+#profile {
+float: right;
+width: 320px;
+}
+
+
+#top-recipes-sorter {
+margin-top: 8px;
+clear: both;
+}
+
+#top-recipes-sorter h2{
+display: inline;
+margin-right: 422px;
+}
+
+#top-recipes-sorter a {
+padding: 0 8px;
+display: inline-block;
+border: 1px solid#b4b4b4;
+background: #e3e3e3;
+-moz-border-radius: 5px; 
+-webkit-border-radius: 5px;
+border-radius: 5px;
+-moz-box-shadow: 3px 3px 4px #ccc;
+-webkit-box-shadow: 3px 3px 4px #ccc;
+box-shadow: 3px 3px 4px #ccc;
+}
