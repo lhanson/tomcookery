@@ -1,8 +1,5 @@
 from django.db import models
 import os
-import logging
-LOG_FILENAME="models.log"
-logging.basicConfig(filename=LOG_FILENAME, level=logging.DEBUG)
 
 class HRecipe(models.Model):
     """ Representation of an hrecipe-based recipe (see http://microformats.org/wiki/hrecipe) """
@@ -49,7 +46,6 @@ class Photo(models.Model):
     def get_image_path(instance, filename):
         print "Getting image path for filename " + filename
         path = os.path.join('photos', filename)
-        logging.debug("Getting image path for filename " + filename + ", returning " + path)
         return path
 
     photo = models.ImageField(

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block bodyid %}register{% endblock %}
+{% block title %}First time user - Example App{% endblock %}
+
+{% block article %}
+
+{# Currently, the messages here do nothing #}
+{% if messages %}
+<div id="messages">
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+<p class="helper">
+    This is the first time you have logged into our site with this account.
+    Please choose a username that you'd like to use and provide your email
+    address.
+</p>
+
+<form action="" method="post" name="profile_form" id="profile_form">
+    {{ form.as_p }}
+    <div class="actions">
+        <button type="submit" name="submit" value="Save">Save &raquo;</button>
+    </div>
+</form>
+
+<div id="associate_helper">
+    Or, <a href="{% url auth_associate %}">associate this account with an existing username</a>.
+    <small>(Note: You must sign in with your existing account first.)</small>
+</div>
+
+{% endblock %}

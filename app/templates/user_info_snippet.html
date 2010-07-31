@@ -1,0 +1,35 @@
+﻿<section id="profile" class="logged-in">
+    {% if user.is_authenticated %}
+        <img src="{{user.avatar}}" alt="your avatar" />
+        <a href="/profile/{{user.username}}" title="link to profile page" class="userName">{{user.username}}</a>
+        <a href="{% url auth_logout %}" id="log-off" title="log off user">Log Off</a>
+        <a href="/profile/{{user.username}}" title="link to profile page" class="profile-tools">Profile</a>
+        <a href="/profile/{{user.username}}/shopping-list" title="link to shopping list" class="profile-tools">Shopping List</a>
+        <a href="/profile/{{user.username}}/messages" title="link to messages" class="profile-tools">{{user.messageCount}} Messages</a>
+        <h4>Friends</h4>
+        <ul id="friends">
+            {% for friend in friends %}
+            <li class="friend"><a href="/profile/{{friend.name}}" title="link to {{friend.name}}'s profile"><img src="/img/{{friend.avatar}}" alt="{{friend.name}}" /></a>
+                <ol class="recent-activity">
+                    <h5>Recent Activity</h5>
+                    {% for activity in friend.activity %}
+                        <li>{#{{activity[]}}#}</li>
+                    {% endfor %}
+                </ol>
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        {% comment %}
+        <section id="login">
+            <a href="/profiles/register">Sign Up</a>
+            <form action="/profiles/login/" method="post">
+                {{ form.as_p }}
+                <input type="submit" value="Login">
+            </form>
+        </section>
+        <a class="rpxnow" onclick="return false;" href="https://tomcookery.rpxnow.com/openid/v2/signin?token_url=http%3A%2F%2Flocalhost%3A8000%2Frpx%2F"> Sign In </a>
+        {% endcomment %}
+        <a href="{% url auth_login %}">Log in</a>
+    {% endif %}
+</section>

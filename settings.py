@@ -65,6 +65,14 @@ TEMPLATE_LOADERS = (
 #     'django.template.loaders.eggs.load_template_source',
 )
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.core.context_processors.auth', #for user template var
+    #'django.core.context_processors.debug',
+    #'django.core.context_processors.i18n',
+    'django.core.context_processors.media', #for MEDIA_URL template var
+    'django.core.context_processors.request', #includes request in RequestContext
+)
+
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -80,6 +88,14 @@ TEMPLATE_DIRS = (
     os.path.join(SITE_ROOT, 'templates')
 )
 
+# Auth backend config tuple does not appear in settings file by default. So we
+# specify both the RpxBackend and the default ModelBackend:
+AUTHENTICATION_BACKENDS = (
+    'django_rpx_plus.backends.RpxBackend', 
+    'django.contrib.auth.backends.ModelBackend', #default django auth
+)
+
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.admin',
@@ -88,8 +104,41 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'tomcookery.app',
-    'south'
+    'south',
+    'django_rpx_plus'
 )
+
+############################
+#django_rpx_plus settings: #
+############################
+
+# Stored in local settings, outside of version control
+#RPXNOW_API_KEY = ''
+
+# The realm is the subdomain of rpxnow.com that you signed up under. It handles 
+# your HTTP callback. (eg. http://mysite.rpxnow.com implies that RPXNOW_REALM  is
+# 'mysite'.
+RPXNOW_REALM = 'tomcookery'
+
+# (Optional)
+#RPX_TRUSTED_PROVIDERS = ''
+
+# (Optional)
+# Sets the language of the sign-in interface for *ONLY* the popup and the embedded
+# widget. For the valid language options, see the 'Sign-In Interface Localization'
+# section of https://rpxnow.com/docs. If not specified, defaults to
+# settings.LANGUAGE_CODE (which is usually 'en-us').
+# NOTE: This setting will be overridden if request.LANGUAGE_CODE (set by django's
+#       LocaleMiddleware) is set. django-rpx-plus does a best attempt at mapping
+#       django's LANGUAGE_CODE to RPX's language_preference (using
+#       helpers.django_lang_code_to_rpx_lang_preference).
+#RPX_LANGUAGE_PREFERENCE = 'en'
+
+# If it is the first time a user logs into your site through RPX, we will send 
+# them to a page so that they can register on your site. The purpose is to 
+# let the user choose a username (the one that RPX returns isn't always suitable)
+# and confirm their email address (RPX doesn't always return the user's email).
+REGISTER_URL = '/accounts/register/'
 
 # Now load sensitive settings from a local file, if present
 try:

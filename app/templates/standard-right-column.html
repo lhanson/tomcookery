@@ -1,18 +1,8 @@
     	<aside>
     		<h2 id="recipe-submit"><a href="/submit">Submit a Recipe</a></h2>
-    		<section id="login">
-    		<div id="register">
-    		<a href="/profiles/register">Register</a>
-    		</div>
-    		<form>
-    			<input name="username" autofocus placeholder="User Name">
-    			<input name="password" type="password">
-    			<input type="submit" value="Login">
-    		</form>
-    		</section>
     		<section id="profile">
     			<img src="" id="avatar" />
-    			<h3>Hello, User Name</h3>
+                <h3>Hello, {{ user.username }}</h3>
     			<a href="/profile/username" title="profile">Profile</a>
     			<a href="/profile/shopping-list" title="shopping list">Shopping List</a>
     			<a href="/profile/saved-recipes" title="your favorite recipes">Your Favorite Recipes</a>

@@ -14,6 +14,7 @@ will vary by platform and won't be elaborated upon here):
     * Python (2.5 or later, for its included SQLite)
     * Django (1.2 or later)
     * Python Imaging Library (1.1.7 is current as of development)
+    * django-rpx-plus (1.1.0)
 
 To get tomcookery up and running from scratch (assuming you've got the
 dependencies mentioned above installed), here are the steps you need to follow:
