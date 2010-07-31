@@ -1,10 +1,32 @@
 {% extends "base.html" %}
+{%block pageId%}home{%endblock pageId%}
 {% block article %}
 {% include "feature_recipe_snippet.html" %}
-<h2 id="recipe-submit">Submit a Recipe</h2>
+<h2 id="recipe-submit"><a href="/submit">Submit a Recipe</a></h2>
+<section id="profile" class="logged-in">
+	<img src="{{user.avatar}}" alt="your avatar" />
+	<a href="/profile/{{user.name}}" title="link to profile page" class="userName">{{user.name}}</a>
+	<a href="#" id="log-off" title="log off user">Log Off</a>
+	<a href="/profile/{{user.name}}" title="link to profile page" class="profile-tools">Profile</a>
+	<a href="/profile/{{user.name}}/shopping-list" title="link to shopping list" class="profile-tools">Shopping List</a>
+	<a href="/profile/{{user.name}}/messages" title="link to messages" class="profile-tools">{{user.messageCount}} Messages</a>
+	<h4>Friends</h4>
+	<ul id="friends">
+		{% for friend in friends %}
+			<li class="friend"><a href="/profile/{{friend.name}}" title="link to {{friend.name}}'s profile"><img src="/img/{{friend.avatar}}" alt="{{friend.name}}" /></a>
+				<ol class="recent-activity">
+					<h5>Recent Activity</h5>
+					{% for activity in friend.activity %}
+                        <li>{#{{activity[]}}#}</li>
+					{% endfor %}
+				</ol>
+		{% endfor %}
+	</ul>					
+</section>
 <section id="top-recipes">
 <div id="top-recipes-sorter">
 <h2>Top Recipes</h2>
+<span class="sort-options"
 <a href="/recipes/top-recipes" title="Top recipes as voted" class="current">Top Recipes</a>
 <a href="/recipes/top-in-24-hours" title="Top recipes in the last 24 hours as voted">Top in 24 Hours</a>
 <a href="/recipes/top-in-7-days" title="Top recipes in the last 7 days as voted">Top This Week</a>
@@ -15,6 +37,7 @@
 		{% endfor %}
 	</ul>
 </a>
+</span>
 </div>
 {% include "recipes_snippet.html" %}
 </section>
@@ -24,29 +47,29 @@
 </section>
 <section id="Your Activity">
 <h2>Your Activity</h2>
-<section id="most-discussed-recipe">
+<section id="most-discussed-recipe" class="activity-module">
 <h3>Your Most Discussed Recipes</h3>
 <ol>
 	{% for recipe in user.mostDiscussed.recipes %}
 	<li><a href="{{recipe.url}}" title="{{recipe.title}}">{{recipe.title}}</li>
 	{% endfor%}
-<ol>
+</ol>
 </section>
-<section id="message-board">
+<section id="message-board" class="activity-module">
 <h3>Your Message Board</h3>
 <ol>
 	{% for message in user.messages %}
 	<li><a href="{{message.url}}" title="{{message.title}}"><img src=src="/img/{{message.friend.avatar}}" alt="{{message.friend}}" /><h5>{{message.title}}</h5><p>{{message.body}}</p></li>
 	{% endfor%}
-<ol>
+</ol>
 </section>
-<section id="most-discussed-recipe">
+<section id="most-discussed-recipe" class="activity-module">
 <h3>Your Top Rated Recipes</h3>
 <ol>
 	{% for recipe in user.topRated.recipes %}
 	<li><a href="{{recipe.url}}" title="{{recipe.title}}">{{recipe.title}}</a></li>
 	{% endfor%}
-<ol>
+</ol>
 </section>
 </section>
 <section id="Friends Activity">

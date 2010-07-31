@@ -2,15 +2,24 @@
 <html>
   <head>
       <title>{% block title %}{{ app_name }}{% endblock %}</title>
+     	<!--[if lt IE 9]>
+		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
       <link rel="stylesheet" href="{% block site_url %}{{ site_url }}{% endblock %}/css/styles.css" type="text/css" />
   </head>
-  <body>
+  <body id="{%block pageId%}{%endblock%}">
       <div id="wrapper">
     	<header>
+    		<span id="logo">
             <h1>{{ app_name }}</h1>
-	    	<form>
-			  <input name="search" type="search" placeholder="Search For Tasty Recipes">
-			  <input type="submit" value="Search">
+            <h5>Making sense of your recipe searches</h5>
+            </span>
+	    	<form id="search">
+			  <input name="search" type="search" placeholder="Find Recipes, Tutorials, and Friends">
+			  <div class="split-button">
+			  	<a href="#" class="submit">Search</a>
+			  	<a href="#" class="dropdown">Arrow</a>
+			  </div>
 			</form>
     	</header>
 <!--End Header template-->
@@ -21,6 +30,8 @@
 		    <li><a href="/" title="Home">Home</a></li>
 		    <li><a href="/recipes" title="Recipes" id="current">Recipes</a></li>
 		    <li><a href="/submit" title="submit recipes">Submit Recipe</a></li>
+		    <li><a href="/submit" title="submit recipes">Shopping List</a></li>
+			<li><a href="/submit" title="submit recipes">Profile</a></li>
 		  </ul>
     	</nav>
 <!--End Nav template-->
@@ -39,6 +50,8 @@
 			    <li><a href="/">Home</a></li>
 			    <li><a href="/recipes">Recipes</a></li>
 			    <li><a href="/submit">Submit Recipe</a></li>
+			    <li><a href="/submit" title="submit recipes">Shopping List</a></li>
+				<li><a href="/submit" title="submit recipes">Profile</a></li>
 			  </ul>
 	    	</nav>
     	</footer>

@@ -4,7 +4,7 @@
 {% block title %}{{ block.super }} - {{ name }}{% endblock %}
 {% block article %}
 	<section id="upload-form" class="content">
-		<p id="instructions">Hello %Username welcome to the upload page, what kind of recipe do you have today?</p>
+		<h1 id="instructions">Hello %Username welcome to the upload page, what kind of recipe do you have today?</h1>
 		<div id="input_selection">
 			<h3><a href="#" title="recipe from another site" id="external">A recipe from another site (URL)</a></h3>
 			<h3><a href="#" title="recipe from another site" id="home-cookin">My own cookin' (Manual Entry)</a></h3>
@@ -55,32 +55,14 @@
 {% endblock article %}
 {% block rightColumn %}
     	<aside>
-    		<section id="login">
-    		<a href="/profiles/register">Register</a>
-    		<form>
-    			<input name="username" autofocus placeholder="User Name">
-    			<input name="password" type="password">
-    			<input type="submit" value="Login">
-    		</form>
-    		</section>
     		<section id="profile">
     			<img src="" id="avatar" />
-    			<h1>Hello, User Name</h1>
+    			<h3>Hello, User Name</h3>
     			<a href="/profile/username" title="profile">Profile</a>
     			<a href="/profile/shopping-list" title="shopping list">Shopping List</a>
     			<a href="/profile/saved-recipes" title="your favorite recipes">Your Favorite Recipes</a>
-    		<section id="your-recipes" class="list-mod">
-    			<h1><a href="/profile/recipes">Your Submited Recipes</a></h1>
-    			<ol>
-    				<li><a href="/recipe/section/recipe-name" title="Recipe Name">This is making me hungry</a></li>
-    				<li><a href="/recipe/section/recipe-name" title="Recipe Name">Salsa</a></li>
-    				<li><a href="/recipe/section/recipe-name" title="Recipe Name">Burritos</a></li>
-    				<li><a href="/recipe/section/recipe-name" title="Recipe Name">Enchilada</a></li>
-    			</ol>
-    			<a href="/recipes/most-popular">More Recipes</a>
-    		</section>
     			<section id="friends">
-    				<h1>Your Favorite Chefs</h1>
+    				<h4>Your Favorite Chefs</h4>
     				<ul>
     					<li><a href="/profile/username/wall" title="user name"><img src="" alt="user name" /></a></li>
     					<li><a href="/profile/username/wall" title="user name"><img src="" alt="user name" /></a></li>
@@ -94,7 +76,16 @@
     				<a href="/profile/username/friends" title="all friends">See all</a>
     			</section>
     		</section>
-
+			<section id="your-recipes" class="list-mod">
+    			<h2><a href="/profile/recipes">Your Submited Recipes</a></h2>
+    			<ol>
+    				<li><a href="/recipe/section/recipe-name" title="Recipe Name">This is making me hungry</a></li>
+    				<li><a href="/recipe/section/recipe-name" title="Recipe Name">Salsa</a></li>
+    				<li><a href="/recipe/section/recipe-name" title="Recipe Name">Burritos</a></li>
+    				<li><a href="/recipe/section/recipe-name" title="Recipe Name">Enchilada</a></li>
+    			</ol>
+    			<a href="/recipes/most-popular">More Recipes</a>
+    		</section>
     		
     	</aside>
 {% endblock rightColumn %}
