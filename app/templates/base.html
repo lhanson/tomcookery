@@ -7,14 +7,19 @@
 		<![endif]-->
       <link rel="stylesheet" href="{% block site_url %}{{ site_url }}{% endblock %}/css/styles.css" type="text/css" />
   </head>
-  <body>
+  <body id="{%block pageId%}{%endblock%}">
       <div id="wrapper">
     	<header>
+    		<span id="logo">
             <h1>{{ app_name }}</h1>
             <h5>Making sense of your recipe searches</h5>
-	    	<form>
+            </span>
+	    	<form id="search">
 			  <input name="search" type="search" placeholder="Find Recipes, Tutorials, and Friends">
-			  <button type="submit" value="Search">
+			  <div class="split-button">
+			  	<a href="#" class="submit">Search</a>
+			  	<a href="#" class="dropdown">Arrow</a>
+			  </div>
 			</form>
     	</header>
 <!--End Header template-->
@@ -44,6 +49,8 @@
 			    <li><a href="/">Home</a></li>
 			    <li><a href="/recipes">Recipes</a></li>
 			    <li><a href="/submit">Submit Recipe</a></li>
+			    <li><a href="/submit" title="submit recipes">Shopping List</a></li>
+				<li><a href="/submit" title="submit recipes">Profile</a></li>
 			  </ul>
 	    	</nav>
     	</footer>
