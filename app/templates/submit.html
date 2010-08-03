@@ -1,5 +1,6 @@
 {# The recipe submission page #}
 {# A single recipe page #}
+
 {% extends "base.html" %}
 {% block title %}{{ block.super }} - {{ name }}{% endblock %}
 {% block article %}
@@ -9,7 +10,11 @@
 			<h3><a href="#" title="recipe from another site" id="external">A recipe from another site (URL)</a></h3>
 			<h3><a href="#" title="recipe from another site" id="home-cookin">My own cookin' (Manual Entry)</a></h3>
 		</div>
-		<form name="external-recipe" class="hide">
+		<form name="external-recipe" action=".">
+			{{ form.as_p}}
+			<input type="submit" value="save" />
+		</form>
+		<!--<form name="external-recipe" class="hide">
 			<input type="text" placeholder="URL to recipe" id="recipe-url"/>
 			<label for="recipe-url">URL to recipe</label>
 			<input type="text" id="tags-external" placeholder="e.x. Curry, 20 minute recipe" />
@@ -50,7 +55,7 @@
 				<label for="tags-external">How would you describe this dish? (spicy, indian, quick)</label>
 			</fieldset>
 			<input type="submit" value="Submit your recipe">
-		</form>
+		</form>-->
 	</section>
 {% endblock article %}
 {% block rightColumn %}
