@@ -2,24 +2,42 @@
 {%block pageId%}home{%endblock pageId%}
 {% block article %}
 {% include "feature_recipe_snippet.html" %}
-<section id="top-recipes">
-<div id="top-recipes-sorter">
-<h2>Top Recipes</h2>
-<span class="sort-options"
-<a href="/recipes/top-recipes" title="Top recipes as voted" class="current">Top Recipes</a>
-<a href="/recipes/top-in-24-hours" title="Top recipes in the last 24 hours as voted">Top in 24 Hours</a>
-<a href="/recipes/top-in-7-days" title="Top recipes in the last 7 days as voted">Top This Week</a>
-<a href="/profile/favorite-categories" title="Your Favorite Categories Top">My Fav Categories 
-	<ul id="favorite-cats">
-		{% for category in favoriteCats %}
-			<li><a href="recipes/{{category.url}}" title="{{category.name}}">{{category.name}}</a></li>
-		{% endfor %}
-	</ul>
-</a>
-</span>
-</div>
-{% include "recipes_snippet.html" %}
+<h2 id="recipe-submit"><a href={% if user.is_authenticated %}"/submit"{% else %} "/accounts/login/"{% endif%}>Submit a Recipe</a></h2>
+<section id="user-info" class="content">
+{% if user.is_authenticated %}
+    {% include "user_info_snippet.html" %}
+{% endif%}
 </section>
+
+<section id="top-recipes-sorter">
+	<h2>Top Recipes</h2>
+	<ul class="sort-options">
+	<li><a href="#top-recipes-1" title="Top recipes as voted" class="current">Top Recipes Today</a></li>
+	<li><a href="#top-recipes-2" title="Top recipes in the last 7 days as voted">Top This Week</a></li>
+	<li><a href="#top-recipes-3" title="Top recipes in this Month">Top Recipes This Month</a></li>
+	<li><a href="#favorite-categories" title="Your Favorite Categories Top">My Fav Categories 
+		<ul id="favorite-cats">
+			{% for category in favoriteCats %}
+				<li><a href="recipes/{{category.url}}" title="{{category.name}}">{{category.name}}</a></li>
+			{% endfor %}
+		</ul>
+	</a></li>
+	</ul>
+	
+	<section id="top-recipes-1">
+	<h3>Top Recipes Today</h3>
+	{% include "recipes_snippet.html" %}
+	</section>
+	<section id="top-recipes-2">
+	<h3>Top Recipes This week</h3>
+	{% include "recipes_snippet.html" %}
+	</section>
+	<section id="top-recipes-3">
+	<h3>Top Recipes This Month</h3>
+	{% include "recipes_snippet.html" %}
+	</section>
+</section>
+
 <section id="Recommended">
 	<h2>Recommended For You</h2>
 	{% include "recipes_snippet.html" %}
@@ -67,3 +85,6 @@
 {% endfor %}
 </section>
 {% endblock article %}
+{% block javaScript %}
+$("#top-recipes-sorter").tabs({ selected: 1 });
+{% endblock %}

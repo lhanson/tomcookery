@@ -27,19 +27,7 @@
 <!--End Header template-->
 
 <!--Start Nav template-->
-  		<nav>
-    	  <ul>
-		    <li><a href="/" title="Home">Home</a></li>
-		    <li><a href="/recipes" title="Recipes" id="current">Recipes</a></li>
-		    <li><a href="/submit" title="submit recipes">Submit Recipe</a></li>
-		    <li><a href="/submit" title="submit recipes">Shopping List</a></li>
-			<li><a href="/submit" title="submit recipes">Profile</a></li>
-		  </ul>
-    	</nav>
-        <h2 id="recipe-submit"><a href="/submit">Submit a Recipe</a></h2>
-        <section id="user-info" class="content">
-            {% include "user_info_snippet.html" %}
-        </section>
+  		{% include "nav.html" %}
 <!--End Nav template-->
 		<section id="main-content" class="content">
 	        <!--Start Article-->
@@ -50,27 +38,17 @@
     	{% block rightColumn %}{% endblock %}<!--End Right Column Article Template-->
 <!--Start Footer Template-->
     	<footer>
-	    	<nav>
-	    	  <ul>
-			    <li><a href="/">Home</a></li>
-			    <li><a href="/recipes">Recipes</a></li>
-			    <li><a href="/submit">Submit Recipe</a></li>
-			    <li><a href="/submit" title="submit recipes">Shopping List</a></li>
-				<li><a href="/submit" title="submit recipes">Profile</a></li>
-			  </ul>
-	    	</nav>
+	    	{% include "nav.html" %}
     	</footer>
     </div>
 <!--End Footer Template-->
 <!--Bottom Template--->
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
-	{% block javaScript %}{% endblock %}
-    <script type="text/javascript">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js"></script>
+    <script>
+		{% block javaScript %}{% endblock %}
         var rpxJsHost = (("https:" == document.location.protocol) ? "https://" : "http://static.");
-        document.write(unescape("%3Cscript src='" + rpxJsHost +
-                    "rpxnow.com/js/lib/rpx.js' type='text/javascript'%3E%3C/script%3E"));
-    </script>
-    <script type="text/javascript">
+        document.write(unescape("%3Cscript src='" + rpxJsHost + "rpxnow.com/js/lib/rpx.js' type='text/javascript'%3E%3C/script%3E"));
         RPXNOW.overlay = true;
         RPXNOW.language_preference = 'en';
     </script>

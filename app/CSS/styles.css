@@ -465,6 +465,12 @@ border: none;
 float: right;
 }
 
+#home #top-recipes-sorter li {
+display: block;
+float: left;
+margin-right: 6px;
+}
+
 #home #top-recipes-sorter a {
 padding: 0 8px;
 display: inline-block;
@@ -488,6 +494,8 @@ border-radius: 5px;
 -webkit-box-shadow: 2px 2px 2px #eee;
 box-shadow: 2px 2px 2px #eee;
 }
+
+.ui-tabs-hide {display: none;}
 
 .activity-module {
 float: left;

@@ -1,5 +1,5 @@
     	<aside>
-    		<h2 id="recipe-submit"><a href="/submit">Submit a Recipe</a></h2>
+    		<h2 id="recipe-submit"><a href="{% if user.is_authenticated %}/submit{% else %}/account/login{% endif %}">Submit a Recipe</a></h2>
     		<section id="profile">
     			<img src="" id="avatar" />
                 <h3>Hello, {{ user.username }}</h3>
