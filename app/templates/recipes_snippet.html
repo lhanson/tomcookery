@@ -4,9 +4,7 @@
         <h1>Recipes:</h1>
         <ul>
             {% for recipe in recipes %}
-                {% for photo in recipe.photos.all %}
-                    <li class="recipe"><img src="{{ photo.photo.url }}" alt="{{ recipe.name }}" />{{ recipe.name }}<a href="#" title="like this recipe" class="Yum">Yummy!</a><p class="summary">{{recipe.summary}}</p><span class="comments-count">{{recipe.commentsCount}}</span></li>
-                {% endfor %}
+                    <li class="recipe">{{ recipe.name }}<a href="#" title="like this recipe" class="Yum">Yummy!</a><p class="summary">{{recipe.summary}}</p><span class="comments-count">{{recipe.commentsCount}}</span></li>
             {% endfor %}
         </ul>
     {% else %}

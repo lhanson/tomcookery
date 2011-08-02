@@ -1,90 +1,12 @@
 {% extends "base.html" %}
 {%block pageId%}home{%endblock pageId%}
 {% block article %}
-{% include "feature_recipe_snippet.html" %}
+{% include "feature_recipe_snippet.html" with recipes=toprecipe %}
+{% include "recipes_snippet.html" with recipes=moretoprecipes %}
+{% endblock article %}
+{% block rightColumn %}
 <h2 id="recipe-submit"><a href={% if user.is_authenticated %}"/submit"{% else %} "/accounts/login/"{% endif%}>Submit a Recipe</a></h2>
-<section id="user-info" class="content">
 {% if user.is_authenticated %}
     {% include "user_info_snippet.html" %}
 {% endif%}
-</section>
-
-<section id="top-recipes-sorter">
-	<h2>Top Recipes</h2>
-	<ul class="sort-options">
-	<li><a href="#top-recipes-1" title="Top recipes as voted" class="current">Top Recipes Today</a></li>
-	<li><a href="#top-recipes-2" title="Top recipes in the last 7 days as voted">Top This Week</a></li>
-	<li><a href="#top-recipes-3" title="Top recipes in this Month">Top Recipes This Month</a></li>
-	<li><a href="#favorite-categories" title="Your Favorite Categories Top">My Fav Categories 
-		<ul id="favorite-cats">
-			{% for category in favoriteCats %}
-				<li><a href="recipes/{{category.url}}" title="{{category.name}}">{{category.name}}</a></li>
-			{% endfor %}
-		</ul>
-	</a></li>
-	</ul>
-	
-	<section id="top-recipes-1">
-	<h3>Top Recipes Today</h3>
-	{% include "recipes_snippet.html" %}
-	</section>
-	<section id="top-recipes-2">
-	<h3>Top Recipes This week</h3>
-	{% include "recipes_snippet.html" %}
-	</section>
-	<section id="top-recipes-3">
-	<h3>Top Recipes This Month</h3>
-	{% include "recipes_snippet.html" %}
-	</section>
-</section>
-
-<section id="Recommended">
-	<h2>Recommended For You</h2>
-	{% include "recipes_snippet.html" %}
-</section>
-<section id="Your Activity">
-<h2>Your Activity</h2>
-<section id="most-discussed-recipe" class="activity-module">
-<h3>Your Most Discussed Recipes</h3>
-<ol>
-	{% for recipe in user.mostDiscussed.recipes %}
-	<li><a href="{{recipe.url}}" title="{{recipe.title}}">{{recipe.title}}</li>
-	{% endfor%}
-</ol>
-</section>
-<section id="message-board" class="activity-module">
-<h3>Your Message Board</h3>
-<ol>
-	{% for message in user.messages %}
-	<li><a href="{{message.url}}" title="{{message.title}}"><img src=src="/img/{{message.friend.avatar}}" alt="{{message.friend}}" /><h5>{{message.title}}</h5><p>{{message.body}}</p></li>
-	{% endfor%}
-</ol>
-</section>
-<section id="most-discussed-recipe" class="activity-module">
-<h3>Your Top Rated Recipes</h3>
-<ol>
-	{% for recipe in user.topRated.recipes %}
-	<li><a href="{{recipe.url}}" title="{{recipe.title}}">{{recipe.title}}</a></li>
-	{% endfor%}
-</ol>
-</section>
-</section>
-<section id="Friends Activity">
-<h2>What Your Friends Are Eating</h2>
-{% for friend in friends %}
-	<ul id="friends">
-			<li class="friend-activity"><a href="/profile/{{friend.name}}" title="link to {{friend.name}}'s profile"><img src="/img/{{friend.avatar}}" alt="{{friend.name}}" /></a><a href="/profile/{{friend.name}}" title="link to {{friend.name}}'s profile">{{friend.name}}</a>
-			<h5>Recent Recipes</h5>
-				<ol class="recent-activity">
-					<h5>Recent Activity</h5>
-					{% for recipe in friend.activity.eating %}
-						<li><a href="{{recipe.url}}" title="{{recipe.title}}">{{recipe.title}}</a></li>
-					{% endfor %}
-				</ol>
-	</ul>	
-{% endfor %}
-</section>
-{% endblock article %}
-{% block javaScript %}
-$("#top-recipes-sorter").tabs({ selected: 1 });
 {% endblock %}

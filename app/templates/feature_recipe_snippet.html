@@ -1,8 +1,3 @@
-{# Renders a list of recipes available #}
-TODO: featured recipe
-{% comment %}
-Commenting out for now since we don't want all recipes showing up here again.
-Need to define a way of choosing the day's featured recipe.
 
 <article class="recipe_list">
     {% if recipes|length > 0 %}
@@ -12,6 +7,7 @@ Need to define a way of choosing the day's featured recipe.
             {% for photo in recipe.photos.all %}
                 <img src="{{ photo.photo.url }}" alt="{{ recipe.name }}" height="{{ photo.image.height }}" width="{{ photo.image.width }}" class="photo"/>{{ recipe.name }}
             {% endfor %}
+            <h2 class="recipeName">{{ recipe.name }}</h2>
             <p class="summary">{{recipe.summary}}</p>
             <span class="comments-count">{{recipe.commentsCount}}</span>
             <span class="like-count">{{recipe.likes.count}}</span>
@@ -21,4 +17,4 @@ Need to define a way of choosing the day's featured recipe.
         <h3 class="empty-search">No recipes found.</h3>
     {% endif %}
 </article>
-{% endcomment %}
+

@@ -1,16 +1,22 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from tomcookery.app.models import Recipe
-from tomcookery.app.models import HRecipe
+from django.http import HttpResponseRedirect
+from tomcookery.app.models import *
 from tomcookery.app.forms import *
 from .forms import ProfileForm
+import datetime
+from django.core.files.base import ContentFile
+import sys
+sys.path.append("/Users/corygwin/djangoenv/lib/python2.6/site-packages/PIL-1.1.7-py2.6-macosx-10.3-fat.egg")
 
 response_data = { 'app_name': 'Tomcookery' }
 
 def index(request):
-    return render_to_response('index.html',
-                              get_latest_recipes(response_data, 10),
+	response_data.update({'moretoprecipes': Recipe.objects.all().order_by('published')[1:10] })
+	response_data.update({'toprecipe': Recipe.objects.all().order_by('published')[0:1] })
+	return render_to_response('index.html',
+                              response_data,
                               context_instance = RequestContext(request))
 
 def recipe(request, recipe_id):
@@ -56,28 +62,52 @@ def profile(request):
     return render_to_response('profile.html',
                               response_data,
                               context_instance = RequestContext(request))
-
+                              
+def _ingredientsProcess(ingString, recipe):
+	for set in ingString.split(","):
+		size, ing = set.split(";")
+		ingObject, dummy = Ingredient.objects.get_or_create(
+			name= ing
+		)
+		ingObject.hrecipe_set.add(recipe)
+		ingObject.save()
+	return recipe
+			
+@login_required
 def submit(request):
     if request.method == 'POST':
-        form = recipeNewSaveForm(request.POST)
+        form = recipeNewSaveForm(request.POST,request.FILES)
+        print(form.is_valid())
         if form.is_valid():
-            recipe.name = form.cleaned_data['name']
-            recipe.yeilds = form.cleaned_data['yields']
-            recipe.instructions = form.cleaned_data['instructions']
-            recipe.durations = form.cleaned_data['durations']
-            recipe.photos = form.cleaned_data['photos']
-            recipe.name = form.cleaned_data['name']
-            recipe.author = request.user
-            tagNames = form.cleaned_data['tags'].split()
-            for tagName in tagNames:
-                tag, dummy = recipe.objects.get_or_create(name=tag_name)
-                Tag.tag_set.add(tag)
-            ingredients = form.cleaned_data['ingredient'].split()
-            for ingredient in ingredients:
-                ingredientholder, dummy = recipe.objects.get_or_create(ingredients=ingredient)
-                Ingredient.tag_set.add(ingredientholder)
-            recipe.save()
-            return HTTPResponseRedirect ('/')
+			recipe = Recipe()
+			recipe.name = form.cleaned_data['name']
+			recipe.published = datetime.datetime.now()
+			recipe.yields = form.cleaned_data['yields']
+			recipe.instructions = form.cleaned_data['instructions']
+			#recipe.photos = form.cleaned_data['photos']
+			#file_content = ContentFile(request.FILES['photos'].read())
+			##recipe.photo.save(request.FILES['photos'].name,file_content)
+			recipe.user = request.user
+			#save the recipe because it needs a key before it can have many to many rels.
+			recipe.save()
+			for tagName in form.cleaned_data['tags'].split(","):
+				if tagName != None:
+					tag, dummy = Tag.objects.get_or_create(name=tagName.strip())
+					tag.hrecipe_set.add(recipe)
+					tag.save()
+            
+			durObject, dummy = Duration.objects.get_or_create(
+				duration= form.cleaned_data['durations']
+			)
+			durObject.hrecipe_set.add(recipe)
+			durObject.save()
+			recipe = _ingredientsProcess(form.cleaned_data['ingredients'].rstrip('\n'), recipe)
+            #ingredients = form.cleaned_data['ingredient'].split()
+            #for ingredient in ingredients:
+                #ingredientholder, dummy = recipe.objects.get_or_create(ingredients=ingredient)
+                #Ingredient.tag_set.add(ingredientholder)
+			recipe.save()
+			return HttpResponseRedirect('/')
     else:
         form = recipeNewSaveForm()
     variables = RequestContext(request, {
@@ -93,6 +123,6 @@ def get_latest_recipes(dict, count):
 def get_recipe(dict, recipe_id):
     """ Adds the recipe corresponding to recipe_id to the given dictionary """
     print "Getting recipe " + recipe_id
-    dict.update({'recipe': Recipe.objects.get(id=recipe_id)})
+    dict.update({'recipes': Recipe.objects.get(id=recipe_id)})
     print "Dictonary: " + repr(dict)
     return dict

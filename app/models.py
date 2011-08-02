@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 import os
 
 class HRecipe(models.Model):
@@ -20,6 +21,9 @@ class HRecipe(models.Model):
 class Recipe(HRecipe):
     """ A recipe object """
     submitter = models.CharField(max_length=20)
+    #replace submitter with a relationship to the user. below is what needs to happen, but south is not migrating.
+    #not sure why but I suspect it has to do with the fixtures. Lyle can you look at this thanks :)
+    #user = models.ForeignKey(User)
     def __unicode__(self):
         return self.name + ", submitted by " + self.submitter
 
@@ -43,14 +47,14 @@ class Duration(models.Model):
 class Photo(models.Model):
     """ A photograph of delicious food """
     alt_text = models.CharField(max_length=40, default='')
-    def get_image_path(instance, filename):
-        print "Getting image path for filename " + filename
-        path = os.path.join('photos', filename)
-        return path
+    #def get_image_path(instance, filename):
+        #print "Getting image path for filename " + filename
+        #path = os.path.join('photos', filename)
+        #return path
 
-    photo = models.ImageField(
-            upload_to=get_image_path,
-            blank=True)
+    #photo = models.ImageField(
+            #upload_to='recipe_images/%Y/%m/%d',
+            #blank=True)
     def __unicode__(self):
         return self.photo.name
 
