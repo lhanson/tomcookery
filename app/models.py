@@ -52,9 +52,9 @@ class Photo(models.Model):
         #path = os.path.join('photos', filename)
         #return path
 
-    #photo = models.ImageField(
-            #upload_to='recipe_images/%Y/%m/%d',
-            #blank=True)
+    photo = models.ImageField(
+            upload_to='recipe_images/%Y/%m/%d',
+            blank=True)
     def __unicode__(self):
         return self.photo.name
 

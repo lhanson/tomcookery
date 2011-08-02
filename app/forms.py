@@ -13,7 +13,7 @@ class recipeNewSaveForm(forms.Form):
 	widget=forms.Textarea()
 	)
 	
-	#photo=forms.ImageField()
+	photo=forms.ImageField()
 	
 	yields = forms.CharField(
 	label=u'Number of servings?',

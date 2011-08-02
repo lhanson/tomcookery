@@ -85,11 +85,14 @@ def submit(request):
 			recipe.yields = form.cleaned_data['yields']
 			recipe.instructions = form.cleaned_data['instructions']
 			#recipe.photos = form.cleaned_data['photos']
-			#file_content = ContentFile(request.FILES['photos'].read())
-			##recipe.photo.save(request.FILES['photos'].name,file_content)
 			recipe.user = request.user
 			#save the recipe because it needs a key before it can have many to many rels.
 			recipe.save()
+			#file_content = ContentFile(request.FILES['photo'].read())
+			file = request.FILES['photo']
+			photo = Photo.objects.create()
+			photo.photo.save(file.name,file)
+			photo.hrecipe_set.add(recipe)
 			for tagName in form.cleaned_data['tags'].split(","):
 				if tagName != None:
 					tag, dummy = Tag.objects.get_or_create(name=tagName.strip())
