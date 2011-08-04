@@ -126,7 +126,9 @@ def submit(request):
     variables = RequestContext(request, {
         'form': form
     })
-    return render_to_response('submit.html', variables)
+    
+    return render_to_response('submit.html', response_data,
+                              context_instance = variables)
 
 def get_latest_recipes(dict, count):
     """ Add the latest 'count' recipes published to the given dictionary """

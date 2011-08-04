@@ -26,7 +26,7 @@ class recipeNewSaveForm(forms.Form):
 	
 	tags = forms.CharField(
 	label=u'Tags',
-	widget=forms.TextInput(attrs={'size': 64})
+	widget=forms.TextInput(attrs={'size': 64, "placeholder":"e.g. thai, curry, easy"})
 	)
 
 class ProfileForm(forms.Form):

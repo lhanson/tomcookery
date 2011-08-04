@@ -25,9 +25,9 @@
 					<div id="ingredientWrap">
 						<div class="ingredientEntry">
 							<label for="measurement" class="how-much">Ingredient Amount:</label>
-							<input type="text" class="measurement" placeholder="1 tbsp" />
+							<input type="text" class="measurement" placeholder="e.g. 1 tbsp" />
 							<label for="ingredient" class="what">Ingredient:</label>
-							<input type="text" class="ingredient" placeholder="salt" />
+							<input type="text" class="ingredient" placeholder="e.g. salt" />
 						</div>
 					</div>
 					<button id="add-another">+ Add another ingredient</button>
@@ -81,6 +81,7 @@
 
 $("#add-another").click(function(){
 	var ingrhtml = $("#ingredientWrap .ingredientEntry:first").clone();
+	ingrhtml.find(".measurement,.ingredient").val("")
 	$("#ingredientWrap").append(ingrhtml);
 	return false;
 });
