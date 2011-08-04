@@ -5,12 +5,14 @@ from django.http import HttpResponseRedirect
 from tomcookery.app.models import *
 from tomcookery.app.forms import *
 from .forms import ProfileForm
+from django.conf import settings
+import Image
 import datetime
 from django.core.files.base import ContentFile
 import sys
 sys.path.append("/Users/corygwin/djangoenv/lib/python2.6/site-packages/PIL-1.1.7-py2.6-macosx-10.3-fat.egg")
 
-response_data = { 'app_name': 'Tomcookery' }
+response_data = { 'app_name': 'Recipe Wars' }
 
 def index(request):
 	response_data.update({'moretoprecipes': Recipe.objects.all().order_by('published')[1:10] })
@@ -62,7 +64,14 @@ def profile(request):
     return render_to_response('profile.html',
                               response_data,
                               context_instance = RequestContext(request))
-                              
+
+def _handleImageResize(image):
+	path = settings.MEDIA_ROOT+"/"+str(image)
+	print path
+	im = Image.open(path)
+	im.thumbnail((512,512), Image.ANTIALIAS)
+	im.save(path)
+                             
 def _ingredientsProcess(ingString, recipe):
 	for set in ingString.split(","):
 		size, ing = set.split(";")
@@ -77,7 +86,6 @@ def _ingredientsProcess(ingString, recipe):
 def submit(request):
     if request.method == 'POST':
         form = recipeNewSaveForm(request.POST,request.FILES)
-        print(form.is_valid())
         if form.is_valid():
 			recipe = Recipe()
 			recipe.name = form.cleaned_data['name']
@@ -93,6 +101,8 @@ def submit(request):
 			photo = Photo.objects.create()
 			photo.photo.save(file.name,file)
 			photo.hrecipe_set.add(recipe)
+			#now that we have the image lets resize it to a decent size
+			_handleImageResize(photo.photo)
 			for tagName in form.cleaned_data['tags'].split(","):
 				if tagName != None:
 					tag, dummy = Tag.objects.get_or_create(name=tagName.strip())

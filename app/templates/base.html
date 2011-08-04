@@ -14,7 +14,7 @@
     	<header>
     		<span id="logo">
             <h1>{{ app_name }}</h1>
-            <h5>Making sense of your recipe searches</h5>
+            <h5>Are you up to the challenge?</h5>
             </span>
 	    	<form id="search">
 			  <input name="search" type="search" placeholder="Find Recipes, Tutorials, and Friends">
@@ -45,6 +45,7 @@
 <!--Bottom Template--->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js"></script>
+    {% block jsincludes %}{% endblock %}
     <script>
 		{% block javaScript %}{% endblock %}
         var rpxJsHost = (("https:" == document.location.protocol) ? "https://" : "http://static.");
