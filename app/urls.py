@@ -7,7 +7,9 @@ urlpatterns = patterns('tomcookery.app.views',
     (r'^$', 'index'),
     (r'^recipes/$', 'recipes'),
     (r'^recipe/(?P<recipe_id>\d+)/$', 'recipe'),
-    (r'^submit/$', 'submit')
+    (r'^submit/$', 'submit'),
+    #ajax calls
+    (r'^ajax/tag/autocomplete/$', 'ajax_tag_autocompletion'),
 )
 
 urlpatterns += patterns('',
@@ -25,6 +27,8 @@ urlpatterns += patterns('',
                       name='auth_logout'),
     # For django_rpx_plus
     (r'^accounts/', include('django_rpx_plus.urls')),
+    (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT,'show_indexes': True}),
+    
 )
 
 if settings.DEBUG:
@@ -32,6 +36,6 @@ if settings.DEBUG:
     urlpatterns += patterns('',
         (r'^css/(?P<path>.*)$', 'django.views.static.serve',
             {'document_root': APP_ROOT + '/CSS'}),
-        (r'^photos/(?P<path>.*)$', 'django.views.static.serve',
+        (r'^admin-media/(?P<path>.*)$', 'django.views.static.serve',
             {'document_root': os.path.join(settings.MEDIA_ROOT, 'photos')}),
     )

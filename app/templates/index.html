@@ -5,8 +5,10 @@
 {% include "recipes_snippet.html" with recipes=moretoprecipes %}
 {% endblock article %}
 {% block rightColumn %}
+<section class="sidebar">
 <h2 id="recipe-submit"><a href={% if user.is_authenticated %}"/submit"{% else %} "/accounts/login/"{% endif%}>Submit a Recipe</a></h2>
 {% if user.is_authenticated %}
     {% include "user_info_snippet.html" %}
 {% endif%}
+</section>
 {% endblock %}

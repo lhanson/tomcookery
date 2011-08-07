@@ -12,11 +12,11 @@ from django.core.files.base import ContentFile
 import sys
 sys.path.append("/Users/corygwin/djangoenv/lib/python2.6/site-packages/PIL-1.1.7-py2.6-macosx-10.3-fat.egg")
 
-response_data = { 'app_name': 'Recipe Wars' }
+response_data = { 'app_name': 'Recipe Wars', 'MEDIA_URL': settings.MEDIA_URL, }
 
 def index(request):
-	response_data.update({'moretoprecipes': Recipe.objects.all().order_by('published')[1:10] })
-	response_data.update({'toprecipe': Recipe.objects.all().order_by('published')[0:1] })
+	response_data.update({'moretoprecipes': Recipe.objects.all().order_by('-published')[2:12] })
+	response_data.update({'toprecipe': Recipe.objects.all().order_by('-published')[0:1] })
 	return render_to_response('index.html',
                               response_data,
                               context_instance = RequestContext(request))
@@ -87,22 +87,33 @@ def submit(request):
     if request.method == 'POST':
         form = recipeNewSaveForm(request.POST,request.FILES)
         if form.is_valid():
+			from django.template.defaultfilters import slugify
 			recipe = Recipe()
 			recipe.name = form.cleaned_data['name']
 			recipe.published = datetime.datetime.now()
 			recipe.yields = form.cleaned_data['yields']
+			recipe.summary = form.cleaned_data['summary']
 			recipe.instructions = form.cleaned_data['instructions']
 			#recipe.photos = form.cleaned_data['photos']
-			recipe.user = request.user
+			recipe.submitor = request.user
 			#save the recipe because it needs a key before it can have many to many rels.
 			recipe.save()
+			# create a url, we will make sure it is unique by adding the id number to the end.
+			url = form.cleaned_data['name'] + "-" + str(recipe.id)
+			recipe.url = slugify(url)
+			recipe.users_voted.add(request.user)
 			#file_content = ContentFile(request.FILES['photo'].read())
-			file = request.FILES['photo']
-			photo = Photo.objects.create()
-			photo.photo.save(file.name,file)
-			photo.hrecipe_set.add(recipe)
-			#now that we have the image lets resize it to a decent size
-			_handleImageResize(photo.photo)
+			try:
+				if request.FILES['photo']:
+					file = request.FILES['photo']
+					photo = Photo.objects.create()
+					photo.photo.save(file.name,file)
+					photo.hrecipe_set.add(recipe)
+					#now that we have the image lets resize it to a decent size
+					_handleImageResize(photo.photo)
+			except:
+				pass
+			
 			for tagName in form.cleaned_data['tags'].split(","):
 				if tagName != None:
 					tag, dummy = Tag.objects.get_or_create(name=tagName.strip())
@@ -141,3 +152,12 @@ def get_recipe(dict, recipe_id):
     dict.update({'recipes': Recipe.objects.get(id=recipe_id)})
     print "Dictonary: " + repr(dict)
     return dict
+
+def ajax_tag_autocompletion(request):
+	"tag parameter q and returns 10 tags that start with the query"
+	if 'q' in request.GET:
+		tags = Tag.objects.filter(
+			name__istartswith = request.GET['q']
+		)[:10]
+		return HTTPResonse(u'\n'.join(tag.name for tag in tags))
+	return HTTPResponse()

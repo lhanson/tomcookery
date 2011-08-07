@@ -19,13 +19,16 @@ class HRecipe(models.Model):
         return self.name
 
 class Recipe(HRecipe):
-    """ A recipe object """
-    submitter = models.CharField(max_length=20)
-    #replace submitter with a relationship to the user. below is what needs to happen, but south is not migrating.
-    #not sure why but I suspect it has to do with the fixtures. Lyle can you look at this thanks :)
-    #user = models.ForeignKey(User)
-    def __unicode__(self):
-        return self.name + ", submitted by " + self.submitter
+	#south is forcing a default. not sure why.
+	url = models.SlugField(default='error')
+	#submitter - this can go away with a clean install of site... We will need to create all new south code though.
+	submitter = models.CharField(max_length=20, default=' ')
+	votes = models.IntegerField(default=1)
+	users_voted = models.ManyToManyField(User, related_name='recipe_votes')
+
+	submitor = models.ForeignKey(User, related_name='recipes_submitted')
+	def __unicode__(self):
+	    return self.name + ", submitted by " + self.submitter +  ", summary " + self.summary
 
 class Ingredient(models.Model):
     """ A single ingredient """

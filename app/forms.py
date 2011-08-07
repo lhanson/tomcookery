@@ -6,21 +6,28 @@ class recipeNewSaveForm(forms.Form):
 	widget=forms.TextInput(attrs={'size': 64})
 	)
 	ingredients = forms.CharField(
+	required=True,
 	widget=forms.HiddenInput()
 	)
+	summary = forms.CharField(
+	widget=forms.Textarea()
+	)
+	
 	instructions = forms.CharField(
 	label=u'Instructions',
 	widget=forms.Textarea()
 	)
 	
-	photo=forms.ImageField()
+	photo=forms.ImageField(required=False)
 	
 	yields = forms.CharField(
 	label=u'Number of servings?',
+	required=False,
 	widget=forms.TextInput(attrs={'size': 4})
 	)
 	
 	durations = forms.CharField(
+	required=False,
 	widget=forms.TextInput(attrs={'size':4})
 	)
 	

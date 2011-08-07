@@ -57,28 +57,35 @@ font-size: 14px;
 line-height: 1.5em;
 margin: 0; 
 padding: 0; 
-color: #444;   
+color: #444;
+//background: #111;   
 }
 hr { display: none; }
 
 /* Structure
 ------------------------------------------------*/
 #wrapper {
+overflow: hidden;
+padding: 8px;
 width: 960px;
-margin: 0 auto;
+margin: 8px auto;
+background: #fff;
 }
 
 .content {
 width: 600px;
 float: left;
-clear: left;
+clear: none;
+//background: blue;
 }
 
+.sidebar,
 aside {
-float: left;
-width: 320px;
+float: right;
+width: 310px;
 display: block;
-padding: 0 0 0 40px;
+padding: 0 0 0 0px;
+//background: #000;
 }
 
 footer {
@@ -90,7 +97,6 @@ nav,
 header,
 section {
 display: block;
-clear: both;
 }
 
 section {
@@ -109,16 +115,12 @@ h1 {
 font-size: 24px; 
 line-height: 28px; 
 }
-h2, h2 a { 
+h2 { 
 font-size: 20px; 
 line-height: 24px;
-color: #FF964F;
+color: #585858;
 border-bottom: 1px solid #efefef;
 margin-bottom: 4px;
-}
-
-h2 a {
-border: none;
 }
 
 h3 { 
@@ -130,7 +132,7 @@ color: #FFCB7C;
 h4 { font-size: 16px; line-height: 20px;}
 h5 { font-size: 14px; line-height: 18px;}
 h6 { font-size: 12px; line-height: 16px;}
-a { color: #555;text-decoration: none; }
+a { color: #2398C9;text-decoration: none; }
 a:hover { text-decoration: underline; }
 p { margin: 1em 0; line-height: 1.7;}
 
@@ -147,12 +149,12 @@ color: #999;
 margin-top: 20px;
 font-weight: bold;
 letter-spacing: .02em;
-text-shadow:#eee 0px 1px 0, #000 0 -1px 0;
 }
 
 header h1 {
 font-size: 38px;
-line-height: 36px;
+line-height: 36px;	
+text-shadow: 0px -1px 0px #777;
 font-weight: bold;
 color: #990700;
 letter-spacing:.03em;
@@ -172,11 +174,11 @@ clear: both;
 header form {
 float: right;
 padding: 8px 0;
-width: 560px;
+width: 540px;
 }
 
 header #search input {
-width: 325px;
+width: 305px;
 height: 25px;
 line-height: 1;
 border-width: 1px; 
@@ -201,7 +203,7 @@ background: #fff;
 
 header #search {
 float: right;
-width: 450px;
+width: 430px;
 margin-top: 18px;
 }
 
@@ -211,6 +213,7 @@ float: left;
 margin: -1px 0 0 10px;
 text-shadow:#fff 0px 1px 0, #000 0 -1px 0;
 border: 1px solid#e4e4e4;
+color: #585858;
 background: rgb(238,238,238); /* Old browsers */
 background: -moz-linear-gradient(top, rgba(238,238,238,1) 0%, rgba(255,255,255,1) 100%); /* FF3.6+ */
 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(238,238,238,1)), color-stop(100%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
@@ -232,6 +235,9 @@ width:100px;
 
 
 header .split-button .submit {
+letter-spacing:.06em;
+color: #585858;
+text-shadow:#fff 0px 1px 0, #000 0 -1px 0;
 margin: 0 8px;
 border-right: 1px solid #ddd;
 padding-right: 8px;
@@ -248,7 +254,7 @@ text-indent: -9999px;
 nav ul {
 float: left;
 background: #fff;
-width: 100%;
+width: 950px;
 border-top: 1px solid #efefef;
 border-left: 1px solid #efefef;
 border-right: 1px solid #efefef;
@@ -299,12 +305,12 @@ background: #fff;
 nav ul li a {
 font-size: 15px;
 letter-spacing:.06em;
-text-shadow:#fff 0px 1px 0, #000 0 -1px 0;
+color: #585858;
+text-shadow: 0px 1px 0px #e5e5ee;
 }
 
 #recipe-submit {
-float: right;
-width: 320px;
+width: 307px;
 height: 40px;
 line-height: 40px;
 text-align: center;
@@ -315,7 +321,7 @@ color: #fff;
 font-weight: bold;
 letter-spacing:.03em;
 font-sze: 26px;
-text-shadow:#777 0px 1px 0, #000 0 -1px 0;
+text-shadow:#aaa 0px 1px 0, #000 0 -1px 0;
 background: rgb(255,175,75); /* Old browsers */
 background: -moz-linear-gradient(top, rgba(255,175,75,1) 0%, rgba(255,146,10,1) 100%); /* FF3.6+ */
 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,175,75,1)), color-stop(100%,rgba(255,146,10,1))); /* Chrome,Safari4+ */
@@ -430,10 +436,6 @@ list-style-type: square;
 
 /*Home page
 ----------------------------------------*/
-#home #profile {
-float: right;
-width: 300px;
-}
 
 
 /* -- !Fieldsets & Legends -- */
@@ -615,6 +617,79 @@ border-radius: 5px;
 box-shadow: 2px 2px 5px #eee;
 
 }
+
+/* -- !Validation -- */
+fieldset div,
+fieldset fieldset.group {
+position: relative;
+}
+
+/* List of Messages */
+#form-messages {
+font-size: 1.16em;
+margin: 2.5em auto;
+padding: 0 0 0 23px;
+width: 400px;
+}
+
+#form-messages h2 {
+color: #630000;
+font-weight: normal;
+font-size: 1em;
+border-bottom: 1px solid #ddd;
+margin: 0;
+}
+
+#form-messages ul {
+color: #633000;
+padding: 0 0 0 30px;
+list-style-type: disc;
+}
+
+#form-messages ul li {
+padding: 0 0 0 0px;
+}
+
+#form-messages a {
+color: #633000;
+text-decoration: underline;
+}
+
+#form-messages a:hover,
+#form-messages a:focus {
+text-decoration: none;
+}
+
+.valid #form-messages {
+background-image: url(images/bg-form-messages-success.gif);
+}
+
+.valid #form-messages h2 {
+color: inherit;
+}
+
+/* Error Message */
+fieldset strong.error {
+clear: left;
+color: #993333;
+display: block;
+margin: 0.5em 0 0.2em 5px;
+}
+
+/* Field */
+fieldset div input.error,
+fieldset div textarea.error,
+fieldset div select.error {
+border: 1px solid #993333;
+}
+
+/* Icon */
+fieldset img.icon {
+right: 60px;
+position: absolute;
+top: 10px;
+}
+
 
 /*--submit form--*/
 #submit #upload-form,#submit #main-content{
