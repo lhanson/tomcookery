@@ -1,6 +1,7 @@
 {% if user.is_authenticated %}
     {% load comments %}
     <form action="{ comment_form_target %}" method="POST">
+    	{% csrf_token %}
     	{% for field in form %}
     		{% if field.is_hidden %}
     			{{ field }}

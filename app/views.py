@@ -13,7 +13,7 @@ from django.core.files.base import ContentFile
 import sys
 sys.path.append("/Users/corygwin/djangoenv/lib/python2.6/site-packages/PIL-1.1.7-py2.6-macosx-10.3-fat.egg")
 
-response_data = { 'app_name': 'Recipe Wars', 'MEDIA_URL': settings.MEDIA_URL, }
+response_data = { 'app_name': 'Recipe Wars', 'MEDIA_URL': settings.MEDIA_URL }
 
 def index(request):
 	response_data.update({'moretoprecipes': Recipe.objects.all().order_by('-votes')[1:12] })
