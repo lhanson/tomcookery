@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
+from django.shortcuts import get_object_or_404
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
 from tomcookery.app.models import *
@@ -15,16 +16,43 @@ sys.path.append("/Users/corygwin/djangoenv/lib/python2.6/site-packages/PIL-1.1.7
 response_data = { 'app_name': 'Recipe Wars', 'MEDIA_URL': settings.MEDIA_URL, }
 
 def index(request):
-	response_data.update({'moretoprecipes': Recipe.objects.all().order_by('-published')[2:12] })
-	response_data.update({'toprecipe': Recipe.objects.all().order_by('-published')[0:1] })
+	response_data.update({'moretoprecipes': Recipe.objects.all().order_by('-votes')[1:12] })
+	response_data.update({'toprecipe': Recipe.objects.all().order_by('-votes')[0:1] })
 	return render_to_response('index.html',
                               response_data,
                               context_instance = RequestContext(request))
 
-def recipe(request, recipe_id):
-    return render_to_response('recipe.html',
-                              get_recipe(response_data, recipe_id),
+def recipe(request, recipe_url):
+	curRecipe = get_object_or_404(
+		Recipe,
+		url=recipe_url
+	)
+	response_data.update({'recipe':curRecipe})
+	return render_to_response('recipe.html',
+                              response_data,
                               context_instance = RequestContext(request))
+
+@login_required
+def recipe_vote(request):
+	'Recipe voting'
+	if 'id' in request.GET:
+		try:
+			recipe_id = request.GET['id']
+			recipe = Recipe.objects.get(id=recipe_id)
+			user_voted = recipe.users_voted.filter(
+				username = request.user.username
+			)
+			if not user_voted:
+				recipe.votes += 1
+				recipe.users_voted.add(request.user)
+				recipe.save()
+		except Recipe.DoesNotExist:
+			raise Http404('Recipe Not Found')
+	if 'HTTP_REFERER' in request.META:
+		return HttpResponseRedirect(request.META['HTTP_REFERER'])
+	return HttpResponseRedirect('/')
+			
+	
 
 def recipes(request):
     return render_to_response('recipes.html',
@@ -131,7 +159,8 @@ def submit(request):
                 #ingredientholder, dummy = recipe.objects.get_or_create(ingredients=ingredient)
                 #Ingredient.tag_set.add(ingredientholder)
 			recipe.save()
-			return HttpResponseRedirect('/')
+			redirectTo = "/recipes/recipe/%s" % recipe.url 
+			return HttpResponseRedirect(redirectTo)
     else:
         form = recipeNewSaveForm()
     variables = RequestContext(request, {

@@ -1,11 +1,18 @@
 {# A single recipe page #}
 {% extends "base.html" %}
-{% block title %}{{ block.super }} - {{ name }}{% endblock %}
+{% block title %}{{ recipe.name }}{% endblock %}
 {% block article %}
+{% load thumbnail %}
 <article class="hrecipe" class="content">
+	<section id="media">
+		{% for photo in recipe.photos.all %}
+			<img src="{{ photo.photo.url|thumbnail:"200x300" }}" alt="{{ recipe.name }}" class="photo"/>
+		{% endfor %}
+    </section>
+    <a href="/vote?id={{ recipe.id }}" title="like this recipe" class="Yum">{{ recipe.votes }}</a>
     <h1 class="fn">{{ recipe.name }}</h1>
-    {% if recipe.yield %}<h3 class="yield">{{ recipe.yield }}</h3>{% endif %}
-    {% if recipe.author %}<p class="author">{{ recipe.author }}</p>{% endif %}
+    <h3 class="yield">{{ recipe.yield }}</h3>
+	<p class="author">{{ recipe.submitor.username }}</p>
     {% if recipe.duration %}
         <p class="duration"><span class="value-title" title="PT1H30M"> </span>{{ recipe.duration }}</p>
     {% endif %}
@@ -27,24 +34,20 @@
             {{ recipe.instructions }}
         </ol>
     </section>
-    <section id="media">
-        {% for photo in recipe.photos.all %}
-            <img src="{{ photo.photo.url }}" alt="" height="{{ photo.image.height }}" width="{{ photo.image.width }}" class="photo"/>
-        {% endfor %}
-        <p></p>
-        <ul id="gallery">
-            <li><img src="" alt="" height="" width="" /></li>
-            <li><img src="" alt="" height="" width="" /></li>
-            <li><img src="" alt="" height="" width="" /></li>
-        </ul>
-    </section>
+    {% if user.is_authenticated %}
+    {% load comments %}
     <section id="comments">
+    	<h1>Comments</h1>
+    	{% render_comment_form for app.recipe recipe.id %}
+    	{% get_comment_list for app.recipe recipe.id as comment_list %}
+    	{% for comment in comment_list %}
         <article>
-            <h3 class="username"></h3>
-            <p></p>
-            <span class="posted"></span>
+            <p><h3 class="username">{{ comment.user.username }}</h3> said:</p>
+            <p>{{ comment.comment|escape|urlizetrunc:40|linebreaks }}</p>
         </article>
+        {% endfor %}
     </section>
+    {% endif %}
 </article>
 {% endblock article %}
 {% block rightColumn %}

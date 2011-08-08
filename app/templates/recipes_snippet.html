@@ -1,10 +1,24 @@
 {# Renders a list of recipes available #}
 <article class="recipe_list">
+	{% load thumbnail %}
     {% if recipes|length > 0 %}
         <h1>Recipes:</h1>
         <ul>
             {% for recipe in recipes %}
-                    <li class="recipe">{{ recipe.name }}<a href="#" title="like this recipe" class="Yum">Yummy!</a><p class="summary">{{recipe.summary}}</p><span class="comments-count">{{recipe.commentsCount}}</span></li>
+                    <li class="recipe">
+                    	<a href="/vote?id={{ recipe.id }}" title="like this recipe" class="Yum">{{ recipe.votes }}</a>
+            			<h2 class="recipeName"><a href="/recipes/recipe/{{ recipe.url }}" title="{{ recipe.name }}">{{ recipe.name }}</a></h2>
+            			<span class="submitted-by">Submitted by:{{ recipe.submitor.username }}</span>
+            			{% for photo in recipe.photos.all %}
+			                <img src="{{ photo.photo.url|thumbnail:"150x150" }}" alt="{{ recipe.name }}" class="photo"/>
+			            {% endfor %}
+            			<p class="summary">{{recipe.summary}}</p>
+            			<ul>
+            			{% for tag in recipe.tags.all %}
+			            	<li><a href="">{{ tag.name }}</a></li>
+			            {% endfor %}
+			            </ul>
+            		</li>
             {% endfor %}
         </ul>
     {% else %}

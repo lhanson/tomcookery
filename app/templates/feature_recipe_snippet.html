@@ -3,18 +3,21 @@
     	{% load thumbnail %}
         {% for recipe in recipes %}
             <h1>Today's Top Recipe</h1>
-            <span class="submitted-by">Submitted by:{{recipe.submitter}}<img src="/img/{{recipe.submitter}}" alt="{{recipe.submitter}}" /></span>
+            <a href="/vote?id={{ recipe.id }}" title="like this recipe" class="Yum">{{ recipe.votes }}</a>
+            <h2 class="recipeName"><a href="/recipes/recipe/{{ recipe.url }}" title="{{ recipe.name }}">{{ recipe.name }}</a></h2>
             {% for photo in recipe.photos.all %}
                 <img src="{{ photo.photo.url|thumbnail:"200x300" }}" alt="{{ recipe.name }}" class="photo"/>
             {% endfor %}
-            <h2 class="recipeName">{{ recipe.name }}</h2>
+            
             <p class="summary">{{ recipe.summary }}</p>
-            {% for tag in recipe.tags.all %}
-            	<a href="">{{ tag.name }}</a>
-            {% endfor %}
-            <span class="comments-count">{{recipe.commentsCount}}</span>
+            <ul>
+			{% for tag in recipe.tags.all %}
+				<li><a href="">{{ tag.name }}</a></li>
+			{% endfor %}
+			</ul>
             <span class="like-count">{{recipe.likes.count}}</span>
-            <a href="#" title="like this recipe" class="Yum">Yummy!</a>
+            
+            <span class="submitted-by">Submitted by:{{recipe.submitor.username}}</span>
         {% endfor %}
     {% else %}
         <h3 class="empty-search">No recipes found.</h3>

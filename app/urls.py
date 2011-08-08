@@ -6,7 +6,9 @@ import os
 urlpatterns = patterns('tomcookery.app.views',
     (r'^$', 'index'),
     (r'^recipes/$', 'recipes'),
-    (r'^recipe/(?P<recipe_id>\d+)/$', 'recipe'),
+    #recipe voting
+    (r'^vote/','recipe_vote'),
+    (r'^recipes/recipe/(?P<recipe_url>[a-zA-Z0-9_.-]+)/$', 'recipe'),
     (r'^submit/$', 'submit'),
     #ajax calls
     (r'^ajax/tag/autocomplete/$', 'ajax_tag_autocompletion'),
@@ -29,6 +31,8 @@ urlpatterns += patterns('',
     (r'^accounts/', include('django_rpx_plus.urls')),
     (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT,'show_indexes': True}),
     
+    #comments
+    (r'^comments/',include('django.contrib.comments.urls')),
 )
 
 if settings.DEBUG:
