@@ -1,0 +1,18 @@
+{% if user.is_authenticated %}
+    {% load comments %}
+    <form action="{ comment_form_target %}" method="POST">
+    	{% for field in form %}
+    		{% if field.is_hidden %}
+    			{{ field }}
+    		{% endif %}
+    	{% endfor %}
+    	<input type="hidden" name="name" value="{{ user.username }}" />
+    	<input type="text" name="honeypot" size="64" style="display:none;" />
+    	<label for="id_comment">Comment</label>
+    	<textarea id="id_comment" rows="10" cols="40" name="comment"></textarea>
+    	<input type="submit" name="submit" class="submit-post" value="Post Comment" />
+	</form>
+{% else %}
+	<p><a href="/login/">Please login to comment.</a></p>
+{% endif %}
+    	 
