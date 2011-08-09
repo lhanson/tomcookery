@@ -441,27 +441,50 @@ margin-bottom: 8px;
 
 
 .hfeed li.hentry {
+position: relative;
 border-bottom: 1px solid #ccc;
 float: left;
-padding: 12px 0 8px 0;
+padding: 18px 0 8px 36px;
 width: 100%;
 }
 
+.hfeed .author {
+margin: 2px 0;
+font-size: .75em;
+color: #999;
+}
+
+.hfeed .entry-summary {
+font-size: 1.2em;
+margin: 6px 0;
+line-height: 1em;
+}
+
+.hfeed .entry-title {
+font-size: 1.5em;
+line-height: 1em;
+}
+
+.featured {
+position: relative;
+}
+
 .featured .entry-title {
-font-size: 2.3em;
-line-height: 1.3em;
+font-size: 2.8em;
+line-height: 1.1em;
 }
 
 .vote {
 border: 1px solid #eee;
-font-size: 12px;
-line-height: 14px;
+font-size: .65em;
+line-height: 1em;
 color: #fff;
 padding: 4px 8px;
 letter-spacing:.01em;
-position: relative;
-top: -9px;
-margin-left: 4px;
+position: absolute;
+left: -6px;
+top: 3px;
+margin-left: 8px;
 text-shadow:#777 0px 1px 0, #000 0 -1px 0;
 background: rgb(255,175,75); /* Old browsers */
 background: -moz-linear-gradient(top, rgba(255,175,75,1) 0%, rgba(255,146,10,1) 100%); /* FF3.6+ */
@@ -480,7 +503,9 @@ box-shadow: 2px 2px 5px #eee;
 }
 
 .featured .vote{
-top: -16px;
+top: 30px;
+left: -7px;
+font-size: .5em;
 }
 
 .hfeed .fn{
@@ -496,6 +521,10 @@ border: 1px solid #333;
 margin: 0 8px 0 0;
 }
 
+.featured .photo {
+margin-left: 36px;
+}
+
 .hfeed .content {
 float: left;
 width: 470px;
@@ -503,7 +532,7 @@ clear: none;
 }
 
 .featured .content {
-width: 380px;
+width: 340px;
 }
 
 
@@ -518,6 +547,7 @@ position: relative;
 }
 
 .hfeed ul.tags {
+font-size: .85em;
 border: none;
 }
 
@@ -531,11 +561,21 @@ border-top:none;
 
 /*Recipe page
 ---------------------------------------*/
+.hrecipe {
+position: relative;
+}
+
 .hrecipe .fn {
 font-size: 3.6em;
 line-height: 1em;
 margin: 0 0 10px 0;
 border-bottom: 1px solid;
+}
+
+.hrecipe .vote{
+font-size: .5em;
+float: right;
+position: static;
 }
 
 .hrecipe .author{
