@@ -1,21 +1,19 @@
 {# A single recipe page #}
 {% extends "base.html" %}
-{% block title %}{{ recipe.name }}{% endblock %}
+{% block title %} {{ recipe.name }}{% endblock %}
 {% block article %}
 {% load thumbnail %}
 <article class="hrecipe" class="content">
+	<p class="author">Chef: {{ recipe.submitor.username }}'s</p>
+	<h1 class="fn">{{ recipe.name }} {% include "vote.html" %}</h1>
+	
 	<section id="media">
 		{% for photo in recipe.photos.all %}
-			<img src="{{ photo.photo.url|thumbnail:"200x300" }}" alt="{{ recipe.name }}" class="photo"/>
+			<img src="{{ photo.photo.url|thumbnail:"300x300" }}" alt="{{ recipe.name }}" class="photo"/>
 		{% endfor %}
     </section>
-    <a href="/vote?id={{ recipe.id }}" title="like this recipe" class="Yum">{{ recipe.votes }}</a>
-    <h1 class="fn">{{ recipe.name }}</h1>
     <h3 class="yield">{{ recipe.yield }}</h3>
-	<p class="author">{{ recipe.submitor.username }}</p>
-    {% if recipe.duration %}
-        <p class="duration"><span class="value-title" title="PT1H30M"> </span>{{ recipe.duration }}</p>
-    {% endif %}
+	<p class="duration"><span class="value-title" title="PT1H30M"> </span>{{ recipe.duration }}</p>
     <section id="ingredients">
         <h1>Ingredients</h1>
         <ul>
@@ -28,12 +26,19 @@
             {% endfor %}
         </ul>
     </section>
+
     <section id="directions">
         <h1>Directions</h1>
         <ol class="instructions">
             {{ recipe.instructions }}
         </ol>
     </section>
+	<ul class='tags'>
+		<li>Tags:</li>
+		{% for tag in recipe.tags.all %}
+			<li><a href="" rel="bookmark">{{ tag.name }}</a>,</li>
+		{% endfor %}
+	</ul>
     <section id="comments">
     {% if user.is_authenticated %}
     {% load comments %}
@@ -53,7 +58,7 @@
 	    	
 	    	<input type="hidden" name="name" value="{{ user.username }}" />
 	    	<input type="text" name="honeypot" size="64" style="display:none;" />
-	    	<label for="id_comment">Comment</label>
+	    	<label for="id_comment">Add your comment</label>
 	    	<textarea id="id_comment" rows="10" cols="40" name="comment"></textarea>
 	    	<input type="submit" name="submit" class="submit-post" value="Post Comment" />
 		</form>

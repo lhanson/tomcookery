@@ -6,8 +6,10 @@
           <!--[if lt IE 9]>
               <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
           <![endif]-->
-      {% endblock %} 
-      <link rel="stylesheet" href="{% block site_url %}{{ site_url }}{% endblock %}/css/styles.css" type="text/css" />
+      {% endblock %}
+      <script src="{{ site_url }}/js/modernizr.custom.16936.js"></script> 
+      <link rel="stylesheet" href="{{ site_url }}/css/styles.css" type="text/css" />
+      <link rel="stylesheet" href="{{ site_url }}/css/jquery-ui-1.8.15.custom.css" type="text/css" />
   </head>
   <body id="{%block pageId%}{%endblock%}">
       <div id="wrapper">
@@ -48,10 +50,10 @@
     {% block jsincludes %}{% endblock %}
     <script>
 		{% block javaScript %}{% endblock %}
-        var rpxJsHost = (("https:" == document.location.protocol) ? "https://" : "http://static.");
-        document.write(unescape("%3Cscript src='" + rpxJsHost + "rpxnow.com/js/lib/rpx.js' type='text/javascript'%3E%3C/script%3E"));
-        RPXNOW.overlay = true;
-        RPXNOW.language_preference = 'en';
+        //var rpxJsHost = (("https:" == document.location.protocol) ? "https://" : "http://static.");
+       // document.write(unescape("%3Cscript src='" + rpxJsHost + "rpxnow.com/js/lib/rpx.js' type='text/javascript'%3E%3C/script%3E"));
+        //RPXNOW.overlay = true;
+        //RPXNOW.language_preference = 'en';
     </script>
   </body>
 </html>

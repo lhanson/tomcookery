@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response
 from django.shortcuts import get_object_or_404
 from django.template import RequestContext
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from tomcookery.app.models import *
 from tomcookery.app.forms import *
 from .forms import ProfileForm
@@ -183,10 +183,27 @@ def get_recipe(dict, recipe_id):
     return dict
 
 def ajax_tag_autocompletion(request):
-	"tag parameter q and returns 10 tags that start with the query"
-	if 'q' in request.GET:
+	"tag parameter term and returns 10 tags that start with the query"
+	if 'term' in request.GET:
+		from django.utils import simplejson
 		tags = Tag.objects.filter(
-			name__istartswith = request.GET['q']
+			name__istartswith = request.GET['term']
 		)[:10]
-		return HTTPResonse(u'\n'.join(tag.name for tag in tags))
-	return HTTPResponse()
+		results = [ x.name for x in tags ]
+		#print(results)
+		resp = simplejson.dumps(results)
+		return HttpResponse(resp, mimetype='application/json')
+	return HttpResponse()
+	
+def ajax_ingredient_autocompletion(request):
+	"tag parameter term and returns 10 tags that start with the query"
+	if 'term' in request.GET:
+		from django.utils import simplejson
+		tags = Ingredient.objects.filter(
+			name__istartswith = request.GET['term']
+		)[:10]
+		results = [ x.name for x in tags ]
+		#print(results)
+		resp = simplejson.dumps(results)
+		return HttpResponse(resp, mimetype='application/json')
+	return HttpResponse()

@@ -85,7 +85,7 @@
 
 {% block jsincludes %}
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.8.1/jquery.validate.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.15/jquery-ui.min.js"></script>
+
 {% endblock %}
 {% block javaScript %}
 
@@ -113,9 +113,72 @@ $("#new-recipe").submit(function(){
 	$("#id_ingredients").val(ings);
 });
 
-$("#id_tags").autocomplete(
-    '/ajax/tag/autocomplete',
-    {multiple:true,multipleSeparator:','}
-);
+$(function() {
+		function split( val ) {
+			return val.split( /,\s*/ );
+		}
+		function extractLast( term ) {
+			return split( term ).pop();
+		}
+
+		$( "#id_tags" )
+			.bind( "keydown", function( event ) {
+				// don't navigate away from the field on tab when selecting an item
+				if ( event.keyCode === $.ui.keyCode.TAB &&
+						$( this ).data( "autocomplete" ).menu.active ) {
+					event.preventDefault();
+				}
+			})
+			.autocomplete({
+				source: function( request, response ) {
+					$.getJSON( "/ajax/tag/autocomplete", {
+						term: extractLast( request.term )
+					}, response );
+				},
+				search: function() {
+					// custom minLength
+					var term = extractLast( this.value );
+					if ( term.length < 2 ) {
+						return false;
+					}
+				},
+				focus: function() {
+					// prevent value inserted on focus
+					return false;
+				},
+				select: function( event, ui ) {
+					var terms = split( this.value );
+					// remove the current input
+					terms.pop();
+					// add the selected item
+					terms.push( ui.item.value );
+					// add placeholder to get the comma-and-space at the end
+					terms.push( "" );
+					this.value = terms.join( ", " );
+					return false;
+				}
+			});
+			
+			$( "#ingredientWrap .ingredient" ).live( "focus", function(){
+				$( this ).bind( "keydown", function( event ) {
+					// don't navigate away from the field on tab when selecting an item
+					if ( event.keyCode === $.ui.keyCode.TAB &&
+							$( this ).data( "autocomplete" ).menu.active ) {
+						event.preventDefault();
+					}
+				})
+				.autocomplete({
+					source: function( request, response ) {
+						$.getJSON( "/ajax/ingredient/autocomplete", {
+							term: extractLast( request.term )
+						}, response );
+					},
+					focus: function() {
+						// prevent value inserted on focus
+						return false;
+					}
+				});
+			})
+	});
 
 {% endblock javaScript %}
