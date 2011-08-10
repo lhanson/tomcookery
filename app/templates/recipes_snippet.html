@@ -15,7 +15,7 @@
             			<h2 class="entry-title"><a href="/recipes/recipe/{{ recipe.url }}" title="{{ recipe.name }}" class="bookmark" rel="bookmark">{{ recipe.name }}</a>{% include "vote.html" %}</h2>
             			
             			
-            			<p class="entry-summary">{{recipe.summary}}</p>
+            			<p class="entry-summary">{{recipe.summary|truncatewords:30}}</p>
             			<ul class='tags'>
             				<li>Tags:</li>
             			{% for tag in recipe.tags.all %}

@@ -1,26 +1,7 @@
     	<aside>
+    		{% include "user_info_snippet.html" %}
     		<h2 id="recipe-submit"><a href="{% if user.is_authenticated %}/submit{% else %}/account/login{% endif %}">Submit a Recipe</a></h2>
-    		<section id="profile">
-    			<img src="" id="avatar" />
-                <h3>Hello, {{ user.username }}</h3>
-    			<a href="/profile/username" title="profile">Profile</a>
-    			<a href="/profile/shopping-list" title="shopping list">Shopping List</a>
-    			<a href="/profile/saved-recipes" title="your favorite recipes">Your Favorite Recipes</a>
-    			<section id="friends">
-    				<h4>Your Favorite Chefs</h4>
-    				<ul>
-    					<li><a href="/profile/username/wall" title="user name"><img src="" alt="user name" /></a></li>
-    					<li><a href="/profile/username/wall" title="user name"><img src="" alt="user name" /></a></li>
-    					<li><a href="/profile/username/wall" title="user name"><img src="" alt="user name" /></a></li>
-    					<li><a href="/profile/username/wall" title="user name"><img src="" alt="user name" /></a></li>
-    					<li><a href="/profile/username/wall" title="user name"><img src="" alt="user name" /></a></li>
-    					<li><a href="/profile/username/wall" title="user name"><img src="" alt="user name" /></a></li>
-    					<li><a href="/profile/username/wall" title="user name"><img src="" alt="user name" /></a></li>
-    					<li><a href="/profile/username/wall" title="user name"><img src="" alt="user name" /></a></li>
-    				</ul>
-    				<a href="/profile/username/friends" title="all friends" class="more">See all</a>
-    			</section>
-    		</section>
+
     		<section id="most-pop" class="list-mod">
     			<h2><a href="/recipes/most-popular">Most Popular ##Section-Title Recipes</a></h2>
     			<ol>

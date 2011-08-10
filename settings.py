@@ -93,7 +93,7 @@ TEMPLATE_DIRS = (
 # Auth backend config tuple does not appear in settings file by default. So we
 # specify both the RpxBackend and the default ModelBackend:
 AUTHENTICATION_BACKENDS = (
-    'django_rpx_plus.backends.RpxBackend', 
+    #'django_rpx_plus.backends.RpxBackend', 
     'django.contrib.auth.backends.ModelBackend', #default django auth
 )
 
@@ -108,8 +108,9 @@ INSTALLED_APPS = (
     'django.contrib.comments',
     'tomcookery.app',
     'south',
-    'django_rpx_plus'
+    #'django_rpx_plus'
 )
+
 
 ############################
 #django_rpx_plus settings: #
@@ -121,7 +122,7 @@ INSTALLED_APPS = (
 # The realm is the subdomain of rpxnow.com that you signed up under. It handles 
 # your HTTP callback. (eg. http://mysite.rpxnow.com implies that RPXNOW_REALM  is
 # 'mysite'.
-RPXNOW_REALM = 'tomcookery'
+#RPXNOW_REALM = 'tomcookery'
 
 # (Optional)
 #RPX_TRUSTED_PROVIDERS = ''
@@ -141,7 +142,7 @@ RPXNOW_REALM = 'tomcookery'
 # them to a page so that they can register on your site. The purpose is to 
 # let the user choose a username (the one that RPX returns isn't always suitable)
 # and confirm their email address (RPX doesn't always return the user's email).
-REGISTER_URL = '/accounts/register/'
+REGISTER_URL = '/register/'
 
 # Now load sensitive settings from a local file, if present
 try:

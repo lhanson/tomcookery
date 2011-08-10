@@ -1,6 +1,7 @@
 from django.conf.urls.defaults import *
 from django.conf import settings
-from tomcookery.app import views
+from tomcookery.app.views import *
+from django.views.generic.simple import direct_to_template
 import os
 
 urlpatterns = patterns('tomcookery.app.views',
@@ -13,25 +14,32 @@ urlpatterns = patterns('tomcookery.app.views',
     #ajax calls
     (r'^ajax/tag/autocomplete/$', 'ajax_tag_autocompletion'),
     (r'^ajax/ingredient/autocomplete/$', 'ajax_ingredient_autocompletion'),
+    #registration
+    (r'^register/$', "register_page"),
+    (r'^register/success/$',direct_to_template,{'template':'registration/register_success.html'}),
 )
 
 urlpatterns += patterns('',
-    url(r'^$', 'django.views.generic.simple.redirect_to',
-            {'url': '/accounts/profile/', 'permanent': False},
-            name='home'),
+    #url(r'^$', 'django.views.generic.simple.redirect_to',
+            #{'url': '/accounts/profile/', 'permanent': False},
+            #name='home'),
     # Account/Auth URLs not implemented by django_rpx_plus:
-    url(r'^accounts/$', 'django.views.generic.simple.redirect_to', 
-                        {'url': '/accounts/profile/', 'permanent': False},
-                        name='auth_home'),
-    url(r'^accounts/profile/$', 'app.views.profile', name='auth_profile'),
+    #url(r'^accounts/$', 'django.views.generic.simple.redirect_to', 
+                       # {'url': '/accounts/profile/', 'permanent': False},
+                        #name='auth_home'),
+    #url(r'^accounts/profile/$', 'app.views.profile', name='auth_profile'),
     #We will use django's built in logout view.
-    url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', 
-                      {'template_name': 'django_rpx_plus/logged_out.html'}, 
-                      name='auth_logout'),
-    # For django_rpx_plus
-    (r'^accounts/', include('django_rpx_plus.urls')),
-    (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT,'show_indexes': True}),
+    #url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', 
+                      #{'template_name': 'django_rpx_plus/logged_out.html'}, 
+                      #name='auth_logout'),
     
+    # For django_rpx_plus
+    #(r'^accounts/', include('django_rpx_plus.urls')),
+    (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT,'show_indexes': True}),
+    #login
+    (r'^accounts/login/$', 'django.contrib.auth.views.login'),
+    #logout
+    (r'^logout/$', logout_page),
     #comments
     (r'^comments/',include('django.contrib.comments.urls')),
 )

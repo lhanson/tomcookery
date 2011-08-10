@@ -12,8 +12,10 @@
 			<img src="{{ photo.photo.url|thumbnail:"300x300" }}" alt="{{ recipe.name }}" class="photo"/>
 		{% endfor %}
     </section>
-    <h3 class="yield">{{ recipe.yield }}</h3>
-	<p class="duration"><span class="value-title" title="PT1H30M"> </span>{{ recipe.duration }}</p>
+    <h3 class="yield">Yields: {{ recipe.yields }}</h3>
+    {% for duration in recipe.durations.all %}
+	<p class="duration">Time to cook:<span class="value-title" title="PT1H30M"> </span>{{ duration.duration }}</p>
+	{% endfor %}
     <section id="ingredients">
         <h1>Ingredients</h1>
         <ul>
