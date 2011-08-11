@@ -28,7 +28,8 @@ def recipe(request, recipe_url):
 		Recipe,
 		url=recipe_url
 	)
-	response_data.update({'recipe':curRecipe})
+	ingredients = Ingredient_Measurement.objects.filter(hrecipe=curRecipe)
+	response_data.update({'recipe':curRecipe,"ingredients":ingredients})
 	return render_to_response('recipe.html',
                               response_data,
                               context_instance = RequestContext(request))
@@ -53,12 +54,7 @@ def recipe_vote(request):
 		return HttpResponseRedirect(request.META['HTTP_REFERER'])
 	return HttpResponseRedirect('/')
 			
-	
 
-def recipes(request):
-    return render_to_response('recipes.html',
-                              get_latest_recipes(response_data, 10),
-                              context_instance = RequestContext(request))
 
 def register_page(request):
 	if request.method == 'POST':
@@ -123,12 +119,12 @@ def _handleImageResize(image):
                              
 def _ingredientsProcess(ingString, recipe):
 	for set in ingString.split(","):
-		size, ing = set.split(";")
+		amount, ing = set.split(";")
 		ingObject, dummy = Ingredient.objects.get_or_create(
 			name= ing
 		)
-		ingObject.hrecipe_set.add(recipe)
-		ingObject.save()
+		group = Ingredient_Measurement(ingredient=ingObject,hrecipe=recipe,value=amount)
+		group.save()
 	return recipe
 			
 @login_required
@@ -191,17 +187,6 @@ def submit(request):
     return render_to_response('submit.html', response_data,
                               context_instance = variables)
 
-def get_latest_recipes(dict, count):
-    """ Add the latest 'count' recipes published to the given dictionary """
-    dict.update({'recipes': Recipe.objects.all().order_by('published')[:count] })
-    return dict
-
-def get_recipe(dict, recipe_id):
-    """ Adds the recipe corresponding to recipe_id to the given dictionary """
-    print "Getting recipe " + recipe_id
-    dict.update({'recipes': Recipe.objects.get(id=recipe_id)})
-    print "Dictonary: " + repr(dict)
-    return dict
 
 def ajax_tag_autocompletion(request):
 	"tag parameter term and returns 10 tags that start with the query"

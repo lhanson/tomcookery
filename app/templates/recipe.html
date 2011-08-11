@@ -19,11 +19,10 @@
     <section id="ingredients">
         <h1>Ingredients</h1>
         <ul>
-            {% for ingredient in recipe.ingredients.all %}
+            {% for ingredient in ingredients %}
                 <li class="inrgedient">
                     <span class="value">{{ ingredient.value }}</span>
-                    <span class="type">{{ ingredient.type }}</span>
-                    {{ ingredient.name }}
+                    <span class="type">{{ ingredient.ingredient.name }}</span>
                 </li>
             {% endfor %}
         </ul>

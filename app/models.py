@@ -2,44 +2,42 @@ from django.db import models
 from django.contrib.auth.models import User
 import os
 
+class Ingredient(models.Model):
+    """ A single ingredient """
+    name = models.CharField(max_length=20)
+    def __unicode__(self):
+    	return self.name
+
 class HRecipe(models.Model):
     """ Representation of an hrecipe-based recipe (see http://microformats.org/wiki/hrecipe) """
     name = models.CharField(max_length=40) # hrecipe field name is "fn"
-    ingredients = models.ManyToManyField('Ingredient')
+    ingredients = models.ManyToManyField('Ingredient',through='Ingredient_Measurement')
     yields = models.CharField(max_length=40, blank=True)
     instructions = models.TextField()
     durations = models.ManyToManyField('Duration', blank=True)
     photos = models.ManyToManyField('Photo', blank=True)
     summary = models.CharField(max_length=80, blank=True)
-    authors = models.ManyToManyField('Author', blank=True)
     published = models.DateField(blank=True)
-    nutrition = models.ManyToManyField('Nutrition', blank=True)
     tags = models.ManyToManyField('Tag', blank=True)
-    def __unicode__(self):
-        return self.name
+    
 
 class Recipe(HRecipe):
 	#south is forcing a default. not sure why.
 	url = models.SlugField(default='error')
-	#submitter - this can go away with a clean install of site... We will need to create all new south code though.
-	submitter = models.CharField(max_length=20, default=' ')
 	votes = models.IntegerField(default=1)
 	users_voted = models.ManyToManyField(User, related_name='recipe_votes')
-
 	submitor = models.ForeignKey(User, related_name='recipes_submitted')
+	
+	def get_fields(self):
+		return [(field.name, field.value_to_string(self)) for field in Recipe._meta.fields]
+	
 	def __unicode__(self):
-	    return self.name + ", submitted by " + self.submitter +  ", summary " + self.summary
+		return self.name
 
-class Ingredient(models.Model):
-    """ A single ingredient """
-    name = models.CharField(max_length=20)
-    value = models.CharField(max_length=20, blank=True)
-    type = models.CharField(max_length=20, blank=True)
-    def __unicode__(self):
-        if self.value and self.type:
-            return self.value + ' ' + self.type + ' ' + self.name
-        else:
-            return self.name
+class Ingredient_Measurement(models.Model):
+	ingredient = models.ForeignKey(Ingredient)
+	hrecipe = models.ForeignKey(HRecipe)
+	value = models.CharField(max_length=20, blank=True)
 
 class Duration(models.Model):
     """ The time it takes to prepare a recipe or a subset of a recipe """
@@ -50,29 +48,11 @@ class Duration(models.Model):
 class Photo(models.Model):
     """ A photograph of delicious food """
     alt_text = models.CharField(max_length=40, default='')
-    #def get_image_path(instance, filename):
-        #print "Getting image path for filename " + filename
-        #path = os.path.join('photos', filename)
-        #return path
-
     photo = models.ImageField(
             upload_to='recipe_images/%Y/%m/%d',
             blank=True)
     def __unicode__(self):
         return self.photo.name
-
-class Author(models.Model):
-    """ The author of a recipe """
-    name = models.CharField(max_length=40)
-    # Note: hRecipe allows this element to be a full hCard, but for our purposes
-    # a name string seems sufficient.
-    def __unicode__(self):
-        return self.name
-
-class Nutrition(models.Model):
-    """ Represents an element of nutritional information """
-    value = models.CharField(max_length=40, blank=True)
-    type = models.CharField(max_length=40, blank=True)
 
 class Tag(models.Model):
     """ A tag applied to a recipe for categorization and search """
