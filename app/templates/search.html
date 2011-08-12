@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block external %}
+<script>
+$(document).ready(function(){
+	var query = $("#id_query").val();
+	$("#search-results").load(
+		"/search/?ajax&query="+ encodeURIComponent(query)
+		);
+	return false;
+});
+</script>
+{% endblock %}
+{% block title %}Search Recipes{% endblock %}
+
+{% block article %}
+  <form id="search-form" method="get" action=".">
+  	{{ form.as_p }}
+  	<input type="submit" value="search" />
+  </form>
+  <div id="search-results">
+  	{% if show_results %}
+  		{% include "recipes_snippet.html" %}
+  	{% endif %}
+  </div>
+{% endblock %}

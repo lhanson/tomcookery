@@ -1,0 +1,5 @@
+*.pyc
+.DS_Store
+tomcookery-db
+local_settings.py
+media
