@@ -1,9 +1,0 @@
-<nav>
-	<ul>
-		<li><a href="/" title="Home">Top Recipes</a></li>
-		{% comment %}<li><a href="/recipes" title="Recipes" id="current">Recipes</a></li>{% endcomment %}
-		<li><a href="/submit" title="submit recipes">Submit Recipe</a></li>
-		{% comment %}<li><a href="/submit" title="submit recipes">Shopping List</a></li>{% endcomment %}
-		{% if user.is_authenticated %}<li><a href="/submit" title="submit recipes">Profile</a></li>{% endif%}
-	</ul>
-</nav>
