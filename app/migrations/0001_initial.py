@@ -15,49 +15,43 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('app', ['Ingredient'])
 
-        # Adding model 'HRecipe'
-        db.create_table('app_hrecipe', (
+        # Adding model 'Recipe'
+        db.create_table('app_recipe', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=40)),
             ('yields', self.gf('django.db.models.fields.CharField')(max_length=40, blank=True)),
             ('instructions', self.gf('django.db.models.fields.TextField')()),
             ('summary', self.gf('django.db.models.fields.CharField')(max_length=80, blank=True)),
             ('published', self.gf('django.db.models.fields.DateField')(blank=True)),
-        ))
-        db.send_create_signal('app', ['HRecipe'])
-
-        # Adding M2M table for field durations on 'HRecipe'
-        db.create_table('app_hrecipe_durations', (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('hrecipe', models.ForeignKey(orm['app.hrecipe'], null=False)),
-            ('duration', models.ForeignKey(orm['app.duration'], null=False))
-        ))
-        db.create_unique('app_hrecipe_durations', ['hrecipe_id', 'duration_id'])
-
-        # Adding M2M table for field photos on 'HRecipe'
-        db.create_table('app_hrecipe_photos', (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('hrecipe', models.ForeignKey(orm['app.hrecipe'], null=False)),
-            ('photo', models.ForeignKey(orm['app.photo'], null=False))
-        ))
-        db.create_unique('app_hrecipe_photos', ['hrecipe_id', 'photo_id'])
-
-        # Adding M2M table for field tags on 'HRecipe'
-        db.create_table('app_hrecipe_tags', (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('hrecipe', models.ForeignKey(orm['app.hrecipe'], null=False)),
-            ('tag', models.ForeignKey(orm['app.tag'], null=False))
-        ))
-        db.create_unique('app_hrecipe_tags', ['hrecipe_id', 'tag_id'])
-
-        # Adding model 'Recipe'
-        db.create_table('app_recipe', (
-            ('hrecipe_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['app.HRecipe'], unique=True, primary_key=True)),
             ('url', self.gf('django.db.models.fields.SlugField')(default='error', max_length=50, db_index=True)),
             ('votes', self.gf('django.db.models.fields.IntegerField')(default=1)),
             ('submitor', self.gf('django.db.models.fields.related.ForeignKey')(related_name='recipes_submitted', to=orm['auth.User'])),
         ))
         db.send_create_signal('app', ['Recipe'])
+
+        # Adding M2M table for field durations on 'Recipe'
+        db.create_table('app_recipe_durations', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('recipe', models.ForeignKey(orm['app.recipe'], null=False)),
+            ('duration', models.ForeignKey(orm['app.duration'], null=False))
+        ))
+        db.create_unique('app_recipe_durations', ['recipe_id', 'duration_id'])
+
+        # Adding M2M table for field photos on 'Recipe'
+        db.create_table('app_recipe_photos', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('recipe', models.ForeignKey(orm['app.recipe'], null=False)),
+            ('photo', models.ForeignKey(orm['app.photo'], null=False))
+        ))
+        db.create_unique('app_recipe_photos', ['recipe_id', 'photo_id'])
+
+        # Adding M2M table for field tags on 'Recipe'
+        db.create_table('app_recipe_tags', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('recipe', models.ForeignKey(orm['app.recipe'], null=False)),
+            ('tag', models.ForeignKey(orm['app.tag'], null=False))
+        ))
+        db.create_unique('app_recipe_tags', ['recipe_id', 'tag_id'])
 
         # Adding M2M table for field users_voted on 'Recipe'
         db.create_table('app_recipe_users_voted', (
@@ -71,7 +65,7 @@ class Migration(SchemaMigration):
         db.create_table('app_ingredient_measurement', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('ingredient', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['app.Ingredient'])),
-            ('hrecipe', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['app.HRecipe'])),
+            ('recipe', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['app.Recipe'])),
             ('value', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
         ))
         db.send_create_signal('app', ['Ingredient_Measurement'])
@@ -104,20 +98,17 @@ class Migration(SchemaMigration):
         # Deleting model 'Ingredient'
         db.delete_table('app_ingredient')
 
-        # Deleting model 'HRecipe'
-        db.delete_table('app_hrecipe')
-
-        # Removing M2M table for field durations on 'HRecipe'
-        db.delete_table('app_hrecipe_durations')
-
-        # Removing M2M table for field photos on 'HRecipe'
-        db.delete_table('app_hrecipe_photos')
-
-        # Removing M2M table for field tags on 'HRecipe'
-        db.delete_table('app_hrecipe_tags')
-
         # Deleting model 'Recipe'
         db.delete_table('app_recipe')
+
+        # Removing M2M table for field durations on 'Recipe'
+        db.delete_table('app_recipe_durations')
+
+        # Removing M2M table for field photos on 'Recipe'
+        db.delete_table('app_recipe_photos')
+
+        # Removing M2M table for field tags on 'Recipe'
+        db.delete_table('app_recipe_tags')
 
         # Removing M2M table for field users_voted on 'Recipe'
         db.delete_table('app_recipe_users_voted')
@@ -141,19 +132,6 @@ class Migration(SchemaMigration):
             'duration': ('django.db.models.fields.CharField', [], {'max_length': '40'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
         },
-        'app.hrecipe': {
-            'Meta': {'object_name': 'HRecipe'},
-            'durations': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['app.Duration']", 'symmetrical': 'False', 'blank': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'ingredients': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['app.Ingredient']", 'through': "orm['app.Ingredient_Measurement']", 'symmetrical': 'False'}),
-            'instructions': ('django.db.models.fields.TextField', [], {}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '40'}),
-            'photos': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['app.Photo']", 'symmetrical': 'False', 'blank': 'True'}),
-            'published': ('django.db.models.fields.DateField', [], {'blank': 'True'}),
-            'summary': ('django.db.models.fields.CharField', [], {'max_length': '80', 'blank': 'True'}),
-            'tags': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['app.Tag']", 'symmetrical': 'False', 'blank': 'True'}),
-            'yields': ('django.db.models.fields.CharField', [], {'max_length': '40', 'blank': 'True'})
-        },
         'app.ingredient': {
             'Meta': {'object_name': 'Ingredient'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -161,9 +139,9 @@ class Migration(SchemaMigration):
         },
         'app.ingredient_measurement': {
             'Meta': {'object_name': 'Ingredient_Measurement'},
-            'hrecipe': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['app.HRecipe']"}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'ingredient': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['app.Ingredient']"}),
+            'recipe': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['app.Recipe']"}),
             'value': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'})
         },
         'app.photo': {
@@ -173,12 +151,21 @@ class Migration(SchemaMigration):
             'photo': ('django.db.models.fields.files.ImageField', [], {'max_length': '100', 'blank': 'True'})
         },
         'app.recipe': {
-            'Meta': {'object_name': 'Recipe', '_ormbases': ['app.HRecipe']},
-            'hrecipe_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['app.HRecipe']", 'unique': 'True', 'primary_key': 'True'}),
+            'Meta': {'object_name': 'Recipe'},
+            'durations': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['app.Duration']", 'symmetrical': 'False', 'blank': 'True'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'ingredients': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['app.Ingredient']", 'through': "orm['app.Ingredient_Measurement']", 'symmetrical': 'False'}),
+            'instructions': ('django.db.models.fields.TextField', [], {}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '40'}),
+            'photos': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['app.Photo']", 'symmetrical': 'False', 'blank': 'True'}),
+            'published': ('django.db.models.fields.DateField', [], {'blank': 'True'}),
             'submitor': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'recipes_submitted'", 'to': "orm['auth.User']"}),
+            'summary': ('django.db.models.fields.CharField', [], {'max_length': '80', 'blank': 'True'}),
+            'tags': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['app.Tag']", 'symmetrical': 'False', 'blank': 'True'}),
             'url': ('django.db.models.fields.SlugField', [], {'default': "'error'", 'max_length': '50', 'db_index': 'True'}),
             'users_voted': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'recipe_votes'", 'symmetrical': 'False', 'to': "orm['auth.User']"}),
-            'votes': ('django.db.models.fields.IntegerField', [], {'default': '1'})
+            'votes': ('django.db.models.fields.IntegerField', [], {'default': '1'}),
+            'yields': ('django.db.models.fields.CharField', [], {'max_length': '40', 'blank': 'True'})
         },
         'app.tag': {
             'Meta': {'object_name': 'Tag'},

@@ -16,6 +16,8 @@ sys.path.append("/Users/corygwin/djangoenv/lib/python2.6/site-packages/PIL-1.1.7
 
 response_data = { 'app_name': 'Recipe Wars', 'MEDIA_URL': settings.MEDIA_URL }
 
+#views
+##Landing pages
 def index(request):
 	response_data.update({'moretoprecipes': Recipe.objects.all().order_by('-votes')[1:12] })
 	response_data.update({'toprecipe': Recipe.objects.all().order_by('-votes')[0:1] })
@@ -28,12 +30,52 @@ def recipe(request, recipe_url):
 		Recipe,
 		url=recipe_url
 	)
-	ingredients = Ingredient_Measurement.objects.filter(hrecipe=curRecipe)
+	ingredients = Ingredient_Measurement.objects.filter(recipe=curRecipe)
 	response_data.update({'recipe':curRecipe,"ingredients":ingredients})
 	return render_to_response('recipe.html',
                               response_data,
                               context_instance = RequestContext(request))
 
+##Tag based views
+def tag_page(request, tag_name, model="Tag",urlParent=""):
+	tag = get_object_or_404(model,id=tag_name)
+	recipes=tag.recipe_set.all()
+	variables = RequestContext(request,{
+		'recipes': recipes,
+		'tag_name':tag_name,
+		'urlParent':urlParent
+	})
+	return render_to_response('tag_page.html',variables)
+
+def tag_cloud_page(request, model="Tag",urlParent=""):
+	MAX_WEIGHT = 5
+	tags=model.objects.order_by("name")
+	#calculate tag, min and max counts
+	min_count = max_count = tags[0].recipe_set.count()
+	for tag in tags:
+		tag.count = tag.recipe_set.count()
+		if tag.count < min_count:
+			min_count = tag.count
+		if max_count < tag.count:
+			max_count = tag.count
+	#calculate count range. Avoid dividing by 0
+	range = float(max_count - min_count)
+	if range == 0.0:
+		range = 1.0
+	#calculate tag weights
+	for tag in tags:
+		tag.weight = int(
+			MAX_WEIGHT * (tag.count - min_count)/range
+		)
+	variables = RequestContext(request,{
+		'tags':tags,
+		'urlParent':urlParent
+	})
+	return render_to_response('tag_cloud_page.html',variables)
+	
+	
+
+#voting
 @login_required
 def recipe_vote(request):
 	'Recipe voting'
@@ -55,7 +97,30 @@ def recipe_vote(request):
 	return HttpResponseRedirect('/')
 			
 
+#search
+def search_page(request):
+	form = searchForm()
+	recipes = []
+	show_results=False
+	if 'query' in request.GET:
+		show_results = True
+		query = request.GET['query'].strip()
+		if query:
+			form = searchForm({'query':query})
+			recipes=Recipe.objects.filter(
+				name__icontains=query
+				)[:10]
+	variables = RequestContext(request,{
+		'form':form,
+		'recipes':recipes,
+		'show_results':show_results,	
+	})
+	if request.GET.has_key('ajax'):
+		return render_to_response('recipes_snippet.html',variables)
+	else:
+		return render_to_response('search.html',variables)
 
+#User Management
 def register_page(request):
 	if request.method == 'POST':
 		form = RegistrationForm(request.POST)
@@ -110,9 +175,11 @@ def profile(request):
                               response_data,
                               context_instance = RequestContext(request))
 
+
+
+#recipe submission handlers
 def _handleImageResize(image):
 	path = settings.MEDIA_ROOT+"/"+str(image)
-	print path
 	im = Image.open(path)
 	im.thumbnail((512,512), Image.ANTIALIAS)
 	im.save(path)
@@ -123,7 +190,7 @@ def _ingredientsProcess(ingString, recipe):
 		ingObject, dummy = Ingredient.objects.get_or_create(
 			name= ing
 		)
-		group = Ingredient_Measurement(ingredient=ingObject,hrecipe=recipe,value=amount)
+		group = Ingredient_Measurement(ingredient=ingObject,recipe=recipe,value=amount)
 		group.save()
 	return recipe
 			
@@ -153,7 +220,7 @@ def submit(request):
 					file = request.FILES['photo']
 					photo = Photo.objects.create()
 					photo.photo.save(file.name,file)
-					photo.hrecipe_set.add(recipe)
+					photo.recipe_set.add(recipe)
 					#now that we have the image lets resize it to a decent size
 					_handleImageResize(photo.photo)
 			except:
@@ -162,19 +229,15 @@ def submit(request):
 			for tagName in form.cleaned_data['tags'].split(","):
 				if tagName != None:
 					tag, dummy = Tag.objects.get_or_create(name=tagName.strip())
-					tag.hrecipe_set.add(recipe)
+					tag.recipe_set.add(recipe)
 					tag.save()
             
 			durObject, dummy = Duration.objects.get_or_create(
 				duration= form.cleaned_data['durations']
 			)
-			durObject.hrecipe_set.add(recipe)
+			durObject.recipe_set.add(recipe)
 			durObject.save()
 			recipe = _ingredientsProcess(form.cleaned_data['ingredients'].rstrip('\n'), recipe)
-            #ingredients = form.cleaned_data['ingredient'].split()
-            #for ingredient in ingredients:
-                #ingredientholder, dummy = recipe.objects.get_or_create(ingredients=ingredient)
-                #Ingredient.tag_set.add(ingredientholder)
 			recipe.save()
 			redirectTo = "/recipes/recipe/%s" % recipe.url 
 			return HttpResponseRedirect(redirectTo)
@@ -188,6 +251,9 @@ def submit(request):
                               context_instance = variables)
 
 
+
+
+#ajax views
 def ajax_tag_autocompletion(request):
 	"tag parameter term and returns 10 tags that start with the query"
 	if 'term' in request.GET:
@@ -196,7 +262,6 @@ def ajax_tag_autocompletion(request):
 			name__istartswith = request.GET['term']
 		)[:10]
 		results = [ x.name for x in tags ]
-		#print(results)
 		resp = simplejson.dumps(results)
 		return HttpResponse(resp, mimetype='application/json')
 	return HttpResponse()
@@ -209,7 +274,6 @@ def ajax_ingredient_autocompletion(request):
 			name__istartswith = request.GET['term']
 		)[:10]
 		results = [ x.name for x in tags ]
-		#print(results)
 		resp = simplejson.dumps(results)
 		return HttpResponse(resp, mimetype='application/json')
 	return HttpResponse()

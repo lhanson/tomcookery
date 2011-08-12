@@ -14,7 +14,8 @@ will vary by platform and won't be elaborated upon here):
     * Python (2.5 or later, for its included SQLite)
     * Django (1.2 or later)
     * Python Imaging Library (1.1.7 is current as of development)
-    * django-rpx-plus (1.1.0)
+    * brabeion (pip install)
+    * Celery (pip install)
 
 To get tomcookery up and running from scratch (assuming you've got the
 dependencies mentioned above installed), here are the steps you need to follow:
@@ -22,6 +23,8 @@ dependencies mentioned above installed), here are the steps you need to follow:
     * Grab the source from http://github.com/lhanson/tomcookery
     * Navigate into the tomcookery directory:
       $ cd tomcookery
+    * Pip install celery
+    * Pip install brabeion
     * Set up the local database:
       $ python manage.py syncdb
     * Create a superuser account (the above step will prompt for one, but
@@ -32,9 +35,6 @@ dependencies mentioned above installed), here are the steps you need to follow:
     * See the site at http://localhost:8000
     * Log into the admin portlet at http://localhost:8000/admin
 
-To populate the database with some test data, use the fixtures located in
-tomcookery/app/fixtures. They can be loaded as follows:
-    * $ python manage.py loaddata FIXTURE_NAME
 
 DEPLOYING ON A SERVER ENVIRONMENT
 =================================

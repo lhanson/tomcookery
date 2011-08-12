@@ -73,3 +73,9 @@ class ProfileForm(forms.Form):
     last_name = forms.CharField(max_length = 30, label = 'Last Name')
     #(Optional) Make email unique.
     email = forms.EmailField(label = 'Email Address')
+
+class searchForm(forms.Form):
+	query = forms.CharField(
+		label=u'Enter a keyword to search for',
+		widget = forms.TextInput(attrs={'size':32})
+		)

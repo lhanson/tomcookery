@@ -22,7 +22,7 @@
             {% for ingredient in ingredients %}
                 <li class="inrgedient">
                     <span class="value">{{ ingredient.value }}</span>
-                    <span class="type">{{ ingredient.ingredient.name }}</span>
+                    <span class="type"><a href="/ingredients/{{ ingredient.ingredient.id }}">{{ ingredient.ingredient.name }}</a></span>
                 </li>
             {% endfor %}
         </ul>
@@ -37,7 +37,7 @@
 	<ul class='tags'>
 		<li>Tags:</li>
 		{% for tag in recipe.tags.all %}
-			<li><a href="" rel="bookmark">{{ tag.name }}</a>,</li>
+			<li><a href="/tag/{{ tag.id }}" rel="bookmark">{{ tag.name }}</a>,</li>
 		{% endfor %}
 	</ul>
     <section id="comments">

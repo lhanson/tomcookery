@@ -7,21 +7,20 @@ class Ingredient(models.Model):
     name = models.CharField(max_length=20)
     def __unicode__(self):
     	return self.name
-
-class HRecipe(models.Model):
-    """ Representation of an hrecipe-based recipe (see http://microformats.org/wiki/hrecipe) """
-    name = models.CharField(max_length=40) # hrecipe field name is "fn"
-    ingredients = models.ManyToManyField('Ingredient',through='Ingredient_Measurement')
-    yields = models.CharField(max_length=40, blank=True)
-    instructions = models.TextField()
-    durations = models.ManyToManyField('Duration', blank=True)
-    photos = models.ManyToManyField('Photo', blank=True)
-    summary = models.CharField(max_length=80, blank=True)
-    published = models.DateField(blank=True)
-    tags = models.ManyToManyField('Tag', blank=True)
     
 
-class Recipe(HRecipe):
+class Recipe(models.Model):
+	""" Representation of an hrecipe-based recipe (see http://microformats.org/wiki/hrecipe) """
+	name = models.CharField(max_length=40) # hrecipe field name is "fn"
+	ingredients = models.ManyToManyField('Ingredient',through='Ingredient_Measurement')
+	yields = models.CharField(max_length=40, blank=True)
+	instructions = models.TextField()
+	durations = models.ManyToManyField('Duration', blank=True)
+	photos = models.ManyToManyField('Photo', blank=True)
+	summary = models.CharField(max_length=80, blank=True)
+	published = models.DateField(blank=True)
+	tags = models.ManyToManyField('Tag', blank=True)
+	#custom fields
 	#south is forcing a default. not sure why.
 	url = models.SlugField(default='error')
 	votes = models.IntegerField(default=1)
@@ -33,10 +32,14 @@ class Recipe(HRecipe):
 	
 	def __unicode__(self):
 		return self.name
-
+	
+	def meta(self):
+		#default ordering
+		ordering = ['-vote']
+		
 class Ingredient_Measurement(models.Model):
 	ingredient = models.ForeignKey(Ingredient)
-	hrecipe = models.ForeignKey(HRecipe)
+	recipe = models.ForeignKey(Recipe)
 	value = models.CharField(max_length=20, blank=True)
 
 class Duration(models.Model):

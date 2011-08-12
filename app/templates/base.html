@@ -18,12 +18,9 @@
             <h1><a href="/" title="home">Recipe Wars</a></h1>
             <h5>Are you up to the challenge?</h5>
             </span>
-	    	<form id="search">
-			  <input name="search" type="search" placeholder="Find Recipes, Tutorials, and Friends">
-			  <div class="split-button">
-			  	<a href="#" class="submit">Search</a>
-			  	<a href="#" class="dropdown">Arrow</a>
-			  </div>
+	    	<form id="search" method="get" action="/search">
+			  <input name="query" type="search" placeholder="Find Recipes">
+			  <input type="submit" value="search" />
 			</form>
     	</header>
 <!--End Header template-->
@@ -49,11 +46,7 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js"></script>
     {% block jsincludes %}{% endblock %}
     <script>
-		{% block javaScript %}{% endblock %}
-        //var rpxJsHost = (("https:" == document.location.protocol) ? "https://" : "http://static.");
-       // document.write(unescape("%3Cscript src='" + rpxJsHost + "rpxnow.com/js/lib/rpx.js' type='text/javascript'%3E%3C/script%3E"));
-        //RPXNOW.overlay = true;
-        //RPXNOW.language_preference = 'en';
+{% block javaScript %}{% endblock %}
     </script>
   </body>
 </html>
