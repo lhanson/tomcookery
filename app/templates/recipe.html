@@ -3,10 +3,10 @@
 {% block title %} {{ recipe.name }}{% endblock %}
 {% block article %}
 {% load thumbnail %}
+{% load brabeion_tags %}
 <article class="hrecipe" class="content">
 	<p class="author">Chef: {{ recipe.submitor.username }}'s</p>
 	<h1 class="fn">{{ recipe.name }} {% include "vote.html" %}</h1>
-	
 	<section id="media">
 		{% for photo in recipe.photos.all %}
 			<img src="{{ photo.photo.url|thumbnail:"300x300" }}" alt="{{ recipe.name }}" class="photo"/>

@@ -12,6 +12,8 @@ import Image
 import datetime
 from django.core.files.base import ContentFile
 import sys
+from brabeion import badges
+import brabeion.signals
 sys.path.append("/Users/corygwin/djangoenv/lib/python2.6/site-packages/PIL-1.1.7-py2.6-macosx-10.3-fat.egg")
 
 response_data = { 'app_name': 'Recipe Wars', 'MEDIA_URL': settings.MEDIA_URL }
@@ -30,6 +32,7 @@ def recipe(request, recipe_url):
 		Recipe,
 		url=recipe_url
 	)
+	
 	ingredients = Ingredient_Measurement.objects.filter(recipe=curRecipe)
 	response_data.update({'recipe':curRecipe,"ingredients":ingredients})
 	return render_to_response('recipe.html',
@@ -193,6 +196,9 @@ def _ingredientsProcess(ingString, recipe):
 		group = Ingredient_Measurement(ingredient=ingObject,recipe=recipe,value=amount)
 		group.save()
 	return recipe
+
+def _get_badge(sender,**kwargs):
+	return kwargs["badge_award"].slug
 			
 @login_required
 def submit(request):
@@ -238,8 +244,10 @@ def submit(request):
 			durObject.recipe_set.add(recipe)
 			durObject.save()
 			recipe = _ingredientsProcess(form.cleaned_data['ingredients'].rstrip('\n'), recipe)
+			badges.possibly_award_badge("recipe_submitted", user=request.user)
+			brabeion.signals.badge_awarded.connect(_get_badge)
 			recipe.save()
-			redirectTo = "/recipes/recipe/%s" % recipe.url 
+			redirectTo = "/recipes/recipe/%s" % recipe.url
 			return HttpResponseRedirect(redirectTo)
     else:
         form = recipeNewSaveForm()

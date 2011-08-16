@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
 import os
+from brabeion import badges
+from brabeion.base import Badge, BadgeAwarded
+from django.shortcuts import get_object_or_404
 
 class Ingredient(models.Model):
     """ A single ingredient """
@@ -62,3 +65,24 @@ class Tag(models.Model):
     name = models.CharField(max_length=15)
     def __unicode__(self):
         return self.name
+
+
+#badges
+class FirstRecipeBadge(Badge):
+	slug = "Recipe Submitted"
+	levels = [
+	"Bronze"
+	]
+	events = [
+	"recipe_submitted",
+	]
+	multiple = False
+	user_message ="Recipe Submited Award"
+	def award(self, **state):
+		user=get_object_or_404(User,username=state["user"].username)
+		print(user)
+		recipes = user.recipes_submitted.all()
+		if len(recipes) == 1:
+			return BadgeAwarded()
+
+badges.register(FirstRecipeBadge)

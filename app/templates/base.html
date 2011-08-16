@@ -40,13 +40,29 @@
 	    	{% include "nav.html" %}
     	</footer>
     </div>
+    <section id="dialog">
+		
+	</section>
 <!--End Footer Template-->
 <!--Bottom Template--->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js"></script>
     {% block jsincludes %}{% endblock %}
     <script>
-{% block javaScript %}{% endblock %}
+{% block javaScript %}
+		{% if messages %}
+			$(function() {
+				var dialog = $( "#dialog" );
+				var html = "<h1>Congratulations, you have won the following awards:</h1><ul>";
+				{% for message in messages %}
+					html += "<li>{{ message }}</li>";
+				{% endfor %}
+					html += "</ul>";
+				$( "#dialog" ).html(html).dialog({"title":"Congratulations!","modal":true});
+			});
+		 {% endif %}
+
+{% endblock %}
     </script>
   </body>
 </html>

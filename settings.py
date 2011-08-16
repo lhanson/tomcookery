@@ -71,12 +71,14 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     #'django.core.context_processors.i18n',
     'django.core.context_processors.media', #for MEDIA_URL template var
     'django.core.context_processors.request', #includes request in RequestContext
+    'django.contrib.messages.context_processors.messages',
 )
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
 	'django.middleware.csrf.CsrfResponseMiddleware',
 )
@@ -106,8 +108,10 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.comments',
+    'django.contrib.messages',
     'tomcookery.app',
     'south',
+    'brabeion',
     #'django_rpx_plus'
 )
 

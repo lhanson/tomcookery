@@ -7,7 +7,7 @@
             {% for recipe in recipes %}
                     <li class="hentry">
                     	
-                    	{% for photo in recipe.photos.all %}
+                    	{% for photo in recipe.photos.all|slice:":1" %}
 			                <a href="/recipes/recipe/{{ recipe.url }}" title="{{ recipe.name }}" class="fn" rel="bookmark"><img src="{{ photo.photo.url|thumbnail:"100x100" }}" alt="{{ recipe.name }}" class="photo"/></a>
 			            {% endfor %}
 			            <span class="content">
