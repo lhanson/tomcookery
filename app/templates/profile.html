@@ -1,9 +1,9 @@
-﻿{# A user's profile #}
+{# A user's profile #}
 {% extends "base.html" %}
 {% block title %}{{ block.super }} - {{ name }}{% endblock %}
-{% block article %}
+{% block content %}
 <h1>User Profile</h1>
-{% endblock article %}
+{% endblock %}
 {% block rightColumn %}
 {% include "standard-right-column.html" %}
 {% endblock rightColumn %}

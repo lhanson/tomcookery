@@ -1,0 +1,6 @@
+<ul class='tags'>
+<li>Tags:</li>
+{% for tag in recipe.tags.all %}
+	<li><a href="/tag/{{ tag.id }}" rel="tag">{{ tag.name }}</a>,</li>
+{% endfor %}
+</ul>

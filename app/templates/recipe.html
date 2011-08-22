@@ -1,28 +1,32 @@
 {# A single recipe page #}
 {% extends "base.html" %}
 {% block title %} {{ recipe.name }}{% endblock %}
-{% block article %}
+{% block content %}
 {% load thumbnail %}
 {% load brabeion_tags %}
 <article class="hrecipe" class="content">
-	<p class="author">Chef: {{ recipe.submitor.username }}'s</p>
 	<h1 class="fn">{{ recipe.name }} {% include "vote.html" %}</h1>
 	<section id="media">
-		{% for photo in recipe.photos.all %}
-			<img src="{{ photo.photo.url|thumbnail:"300x300" }}" alt="{{ recipe.name }}" class="photo"/>
+		{% for photo in recipe.photos.all %}			
+			{% thumbnail photo.photo "300x300" crop="center" as im %}
+			<a href="{{ recipe.get_absolute_url }}" title="{{ recipe.name }}" class="fn" rel="bookmark"><img src="{{ im.url }}" alt="{{ recipe.name }}" width="{{ im.width }}" height="{{ im.height }}" class="photo"/></a>
+			{% endthumbnail %}		
 		{% endfor %}
     </section>
+    <h2 class="author">Chef: <a href="/profiles/{{recipe.submitor.username}}" title="link to profile page" class="userName">{{recipe.submitor.username}}'s</a></h2>
+    <h3 class="yield">Difficulty: {{ recipe.difficulty.name }}</h3>
     <h3 class="yield">Yields: {{ recipe.yields }}</h3>
     {% for duration in recipe.durations.all %}
-	<p class="duration">Time to cook:<span class="value-title" title="PT1H30M"> </span>{{ duration.duration }}</p>
+	<h3 class="duration">Time to cook:<span class="value-title" title="PT1H30M"> </span>{{ duration.duration }}</h3>
 	{% endfor %}
+	{% include "tags_snippet.html" %}
     <section id="ingredients">
         <h1>Ingredients</h1>
         <ul>
             {% for ingredient in ingredients %}
                 <li class="inrgedient">
                     <span class="value">{{ ingredient.value }}</span>
-                    <span class="type"><a href="/ingredients/{{ ingredient.ingredient.id }}">{{ ingredient.ingredient.name }}</a></span>
+                    <span class="type"><a href="/ingredients/{{ ingredient.ingredient.id }}" rel="tag">{{ ingredient.ingredient.name }}</a></span>
                 </li>
             {% endfor %}
         </ul>
@@ -31,24 +35,22 @@
     <section id="directions">
         <h1>Directions</h1>
         <ol class="instructions">
-            {{ recipe.instructions }}
+            {{ recipe.instructions|linebreaks }}
         </ol>
     </section>
-	<ul class='tags'>
-		<li>Tags:</li>
-		{% for tag in recipe.tags.all %}
-			<li><a href="/tag/{{ tag.id }}" rel="bookmark">{{ tag.name }}</a>,</li>
-		{% endfor %}
-	</ul>
+	
+
     <section id="comments">
     {% if user.is_authenticated %}
     {% load comments %}
     
-    	<h1>Comments</h1>
+    	
     	
     	{% get_comment_form for recipe as form %}
     	
-	    <form action="{% comment_form_target %}" method="POST">{% csrf_token %}
+	    <form action="{% comment_form_target %}" id="commentform" method="POST">{% csrf_token %}
+	    	<h1>Recipe Review</h1>
+	    	<fieldset>
 	    	<input type="hidden" name="next" value="/recipes/recipe/{{ recipe.url }}" />
 
 	    	{% for field in form %}
@@ -59,9 +61,14 @@
 	    	
 	    	<input type="hidden" name="name" value="{{ user.username }}" />
 	    	<input type="text" name="honeypot" size="64" style="display:none;" />
+	    	<div>
 	    	<label for="id_comment">Add your comment</label>
 	    	<textarea id="id_comment" rows="10" cols="40" name="comment"></textarea>
+	    	</div>
+	    	<div class="controls">
 	    	<input type="submit" name="submit" class="submit-post" value="Post Comment" />
+	    	</div>
+	    	</fieldset>
 		</form>
     	{% get_comment_list for app.recipe recipe.id as comment_list %}
     	{% for comment in comment_list %}
@@ -76,7 +83,7 @@
     {% endif %}
     </section>
 </article>
-{% endblock article %}
+{% endblock %}
 {% block rightColumn %}
 {% include "standard-right-column.html" %}
 {% endblock rightColumn %}

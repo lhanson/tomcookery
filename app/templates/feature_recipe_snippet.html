@@ -1,24 +1,21 @@
 <section class="featured recipe_list hfeed">
     {% if recipes|length > 0 %}
     	{% load thumbnail %}
-    	<h1 class='section-title'>Today's Top Recipe</h1>
+    	<h1 class='section-title'>{{ sectiontitle }} {{sectiontitlesplit}}  Recipes</h1>
         {% for recipe in recipes %}
-        <article class="hentry">
+        <article class="hentry {% if recipe.photos.all|length > 0 %}w-images{% else %}n-images{% endif %}">
             {% for photo in recipe.photos.all|slice:":1" %}
-                <a href="/recipes/recipe/{{ recipe.url }}" title="{{ recipe.name }}" class="fn" rel="bookmark"><img src="{{ photo.photo.url|thumbnail:"200x300" }}" alt="{{ recipe.name }}" class="photo"/></a>
+                {% thumbnail photo.photo "150x150" crop="center" as im %}
+               <a href="{{ recipe.get_absolute_url }}" title="{{ recipe.name }}" class="fn" rel="bookmark"><img src="{{ im.url }}" alt="{{ recipe.name }}" width="{{ im.width }}" height="{{ im.height }}" class="photo"/></a>
+               {% endthumbnail %}
             {% endfor %}
             <span class="content">
-            <p class="author">Chef: {{recipe.submitor.username}}'s</p>
-            <h2 class="entry-title"><a href="/recipes/recipe/{{ recipe.url }}" title="{{ recipe.name }}" class="bookmark" rel="bookmark">{{ recipe.name }} </a> {% include "vote.html" %}</h2>
             
+            <h2 class="entry-title"><a href="{{ recipe.get_absolute_url }}" title="{{ recipe.name }}" class="bookmark" rel="bookmark">{{ recipe.name }} </a> {% include "vote.html" %}</h2>
+            <p class="author">Chef: <a href="/profiles/{{recipe.submitor.username}}" title="link to profile page" class="userName">{{recipe.submitor.username}}'s</a></p>
             
             <p class="entry-summary">{{ recipe.summary|truncatewords:50 }}</p>
-            <ul class='tags'>
-            	<li>Tags:</li>
-			{% for tag in recipe.tags.all %}
-				<li><a href="/tag/{{ tag.id }}" rel="bookmark">{{ tag.name }}</a>,</li>
-			{% endfor %}
-			</ul>
+            {% include "tags_snippet.html" %}
             </span>
         </article>
         {% endfor %}

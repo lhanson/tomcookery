@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}User Registration {% endblock %}
+{%block pageId%}register-page{%endblock pageId%}
+{% block content %}
+<form method="post" action="." id="register">
+	<div id="form-messages">
+	{% if form.errors %}
+		<h2><strong>Button Up Soldier!</strong> Your recipe is not ship shape!</h2> 
+	    <ul>
+	    {% for error in form.errors %}
+	        <li><strong>{{ error|escape }}</strong></li>
+	    {% endfor %}
+	    </ul>
+	{% endif %}
+	</div>
+	<fieldset>
+	{{ form.as_p }}
+	
+	<div class="controls">
+	<input type="submit" value="register">
+	</div>
+	</fieldset>
+</form>
+{% endblock %}

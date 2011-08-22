@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{%block pageId%}Login{%endblock pageId%}
+{% block content %}
+<ul>
+{% for p in object_list  %}
+<li><a href="{% url profiles_profile_detail p.user %}">{{ p.user }}</a></li>
+{% endfor %}
+</ul>
+{% endblock %}

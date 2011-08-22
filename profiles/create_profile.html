@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{%block pageId%}form-page{%endblock pageId%}
+{% block content %}
+	<form method="POST" action="" id="soloform">
+	<h1>Create profile for {{ user }} </h1>
+	<div id="form-messages">
+	{% if form.errors %}
+		<h2><strong>Button Up Soldier!</strong> Your recipe is not ship shape!</h2> 
+	    <ul>
+	    {% for error in form.errors %}
+	        <li><strong>{{ error|escape }}</strong></li>
+	    {% endfor %}
+	    </ul>
+	{% endif %}
+	</div>
+	{% csrf_token %}
+	<fieldset>
+	{{ form.as_p }}
+	
+	<div class="controls">
+	<input type="submit" name="submit" value="Update" id="submit">
+	</div>
+	</fieldset>  
+	</form>
+
+{% endblock %}

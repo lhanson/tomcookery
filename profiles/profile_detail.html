@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{%block pageId%}profile-detail{%endblock pageId%}
+{% block content %}
+	<section id="profile-top">
+  <h1>Profile for {{ chefRank }} {{ user }} </h1>
+  <a href="{{ profile.website }}" >My Website</a>
+  </section>
+  {% load brabeion_tags %}
+  {% badges_for_user user as badges %}
+  <section id="userbadges">
+  <h1>Acheviements</h1>
+  <ul>
+  {% for badge in badges %}
+  	<li>{{badge.slug}}</li>
+  {% endfor %}
+  </ul>
+  </section>
+  
+  <section>
+  	<h1>Status Points</h1>
+	<table>
+		<tr>
+			<th>Recipes Points</th>
+			<th>Commenting Points</th>
+			<th>Voting Points</th>
+			<th>Recipes Popularity Points</th>
+		</tr>
+		<tr>
+			<td>{{ profile.recipePoints }}</td>
+			<td>{{ profile.commentPoints }}</td>
+			<td>{{ profile.votePoints }}</td>
+			<td>{{ profile.recipeLiked }}</td>
+		</tr>
+	</table>
+	</section>
+{% endblock %}
+{% block rightColumn %}
+{% include "standard-right-column.html" %}
+{% endblock rightColumn %}

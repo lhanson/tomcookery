@@ -1,0 +1,4 @@
+Go to {{ protocol }}://{{ domain }}/accounts/activate/{{activation_key}} to activate your account.
+
+Thanks for playing,
+Recipe Wars

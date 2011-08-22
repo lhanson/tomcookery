@@ -8,41 +8,43 @@
           <![endif]-->
       {% endblock %}
       <script src="{{ site_url }}/js/modernizr.custom.16936.js"></script> 
+      <link href='http://fonts.googleapis.com/css?family=Droid+Sans:700' rel='stylesheet' type='text/css'>
       <link rel="stylesheet" href="{{ site_url }}/css/styles.css" type="text/css" />
       <link rel="stylesheet" href="{{ site_url }}/css/jquery-ui-1.8.15.custom.css" type="text/css" />
   </head>
   <body id="{%block pageId%}{%endblock%}">
-      <div id="wrapper">
+
     	<header>
+    	<div id="headerwrap">
     		<span id="logo">
             <h1><a href="/" title="home">Recipe Wars</a></h1>
             <h5>Are you up to the challenge?</h5>
             </span>
-	    	<form id="search" method="get" action="/search">
-			  <input name="query" type="search" placeholder="Find Recipes">
-			  <input type="submit" value="search" />
-			</form>
+            {% if submissionsOpen %}
+            <h2 id="recipe-submit"><a href="{% if user.is_authenticated %}/submit{% else %}/accounts/login{% endif %}">Submit a Recipe</a></h2>
+            {% endif %}
+	    </div>	
     	</header>
+    	{% include "nav.html" %}
 <!--End Header template-->
-
+	  <div id="wrapper">
 <!--Start Nav template-->
-  		{% include "nav.html" %}
+  		
 <!--End Nav template-->
 		<section id="main-content" class="content">
 	        <!--Start Article-->
-	        {% block article %}{% endblock %}
+	        {% block content %}{% endblock %}
 	        <!--End Article Template-->
         </section>
  <!--Right Column Article Template-->
     	{% block rightColumn %}{% endblock %}<!--End Right Column Article Template-->
 <!--Start Footer Template-->
-    	<footer>
-	    	{% include "nav.html" %}
-    	</footer>
+    	 <div class="clearfix"></div>
     </div>
-    <section id="dialog">
-		
-	</section>
+    <footer id="site-footer">
+	    	<section id="dialog"></section>
+    </footer>
+    
 <!--End Footer Template-->
 <!--Bottom Template--->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>

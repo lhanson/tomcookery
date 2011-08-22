@@ -4,10 +4,11 @@
 {% extends "base.html" %}
 {% block title %}Recipe Submit{% endblock %}
 {%block pageId%}submit{%endblock%}
-{% block article %}
+{% block content %}
 	<section id="upload-form" class="content">
-
+		{% if submissionsOpen %}
 		{% if user.is_authenticated %}
+		
 			<form id="new-recipe" name="new-recipe" action="." method="POST"enctype="multipart/form-data">
 				<h1 id="instructions">Enter your recipe.</h1>
 				<p class="intro">Enter your recipe below for other to enjoy and then scrutinize meticulously showing no mercy! Enjoy!</p>
@@ -28,6 +29,14 @@
 		        	<label for="id_name">Recipe Name:<abbr class="required">*</abbr></label>
 		        	{{ form.name }}
 		       	</div>
+		       	<div>
+					<label for="id_durations">Recipe Difficulty:<abbr class="required">*</abbr></label>
+					{{ form.difficulty }}
+				</div>
+				<div>
+					<label for="id_durations">Recipe Course:<abbr class="required">*</abbr></label>
+					{{ form.course }}
+				</div>
 				<div>
 		        	<label for="id_name">Recipe Description:<abbr class="required">*</abbr></label>
 		        	{{ form.summary }}
@@ -77,8 +86,11 @@
 				window.location("/accounts/login");
 			</script>
 		{% endif%}
+		{% else %}
+			<h1>Sorry, recipe submission is currently closed. But you can prepare for the next battle.
+		{% endif %}
 	</section>
-{% endblock article %}
+{% endblock %}
 {% block rightColumn %}
 {% endblock rightColumn %}
  <!--Right Column Article Template-->
@@ -97,20 +109,17 @@ $("#add-another").click(function(){
 });
 
 $("#new-recipe").submit(function(){
-	var ings="";
-	var count=0;
 	var sl = $("#ingredientWrap .ingredientEntry")
+	var ingJson = []
 	sl.each(function(){
 		var el = $(this);
-		count+=1;
-	    var mes = el.find(".measurement").val();
-	    var ing = el.find(".ingredient").val();
-	    ings += mes+";"+ing;
-	    if(count != sl.length){
-			ings+=","
-		}
+		var ing = {
+			'measurement': el.find(".measurement").val(),
+			'ingredient':el.find(".ingredient").val()
+			}
+		ingJson.push(ing);
 	});
-	$("#id_ingredients").val(ings);
+	$("#id_ingredients").val(JSON.stringify(ingJson));
 });
 
 $(function() {
@@ -181,4 +190,77 @@ $(function() {
 			})
 	});
 
+//Validation
+	jQuery.validator.setDefaults({ 
+		errorElement: "em",
+		success: function(label) {
+			label.addClass("valid");
+		},
+		showErrors: function(errorMap, errorList) {
+			var numErrors = this.numberOfInvalids(),
+				errorContainerVisible = errorContainer.is(':visible');
+				
+			this.defaultShowErrors();
+			
+			if (numErrors && errorContainerVisible) {
+				errorContainer
+					.html("Your form contains " + numErrors + " error" + ((numErrors == 1) ? '' : "s") + " that must be corrected before continuing")
+					.show();
+				$(this.currentForm).removeClass('valid');
+			}
+			else if (errorContainerVisible) {
+				errorContainer
+					.text('All errors have been corrected, please continue')
+					.show();
+				$(this.currentForm).addClass('valid');
+			}
+			else {
+				errorContainer.hide();
+			}
+		},
+	 	errorPlacement: function(error, element) {
+	 		// Listed elements
+			if ( (element.attr("type") == "radio") || (element.attr("type") == "checkbox") ) {
+				error.insertAfter($(element).parents("ul").eq(0)).wrap("<span class=\"type-list\"></span>");
+			}
+			
+			// Select elments
+			else if (element.is("select") && $(element).parent("div.group-date").size()) {
+				// Insert after last select element
+				error.insertAfter($("select:last", element.parent("div.group-date")));
+			}
+			// All other
+			else {
+				error.insertAfter(element);
+			}
+		},
+		focusInvalid: false
+	});
+	
+	// select a placeholder for form messages
+	errorContainer = $('#form-messages');
+		
+	// Bind event to invalid form submission
+	$("div.semantic-form").parent("form").bind("invalid-form.validate", function(e, validator) {
+		errorContainer.show();
+		$('html,body').animate( 
+			{scrollTop: $("div#form-messages").offset().top}, 1000
+		);
+	});
+	
+	// Validate on hide conditional section event
+	$("div.semantic-form").parent("form").bind("clearConditionalSection", function (event, conditionalSection) {
+		if ($("#form-messages:visible").size()) {
+			$(this).valid();
+		}
+	});
+	
+	// Override default messages
+	$.extend($.validator.messages, {  
+		required : '<img src="#" alt="Error" />This information is required',
+		requiredDate : "This information is required ",
+		digits : "Please enter a numeric value",
+	});
+	
+$("#new-recipe").validate();
 {% endblock javaScript %}

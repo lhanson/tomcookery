@@ -50,25 +50,55 @@ blockquote, q {
 
 /* Global
 ----------------------------------------------- */
-html { height: 101%; overflow: scroll; }
+html { height: 100%; overflow: scroll; }
 body { 
 font-family: sans-serif;
 font-size: 14px;
 line-height: 1.5em;
 margin: 0; 
 padding: 0; 
-color: #444;
-//background: #111;   
+color: #241e12;
+height: 100%;
 }
 hr { display: none; }
 
+/* CLEAR FIX*/
+.clearfix:after {content: ".";
+        display: block;
+        height: 0;
+        clear: both;
+        visibility: hidden;}
+.clearfix {display: inline-block;}
+/* Hides from IE-mac \*/
+* html .clearfix { height: 1%;}
+.clearfix {display: block;}
+/* End hide from IE-mac */
+
 /* Structure
 ------------------------------------------------*/
+nav ul{
+overflow: hidden;
+width: 960px;
+margin: 0px auto;
+}
+
+#headerwrap{
+overflow: hidden;
+width: 960px;
+height: 100%;
+margin: 0px auto;
+background: transparent url(images/tomatoesmash.png) 205px top no-repeat;
+}
+
 #wrapper {
 overflow: hidden;
 width: 960px;
-margin: 8px auto;
 background: #fff;
+padding: 20px 8px;
+margin: -20px auto;
+padding-bottom: 150px;
+height: auto; 
+min-height: 100%;
 }
 
 .content {
@@ -118,7 +148,6 @@ margin-bottom: 4px;
 h2 { 
 font-size: 20px; 
 line-height: 24px;
-color: #585858;
 }
 
 h3 { 
@@ -129,33 +158,74 @@ line-height: 22px;
 h4 { font-size: 16px; line-height: 20px;}
 h5 { font-size: 14px; line-height: 18px;}
 h6 { font-size: 12px; line-height: 16px;}
-a { color: #2398C9;text-decoration: none; }
+a { color: #85250d;text-decoration: none; }
 a:hover { text-decoration: underline; }
-p { margin: .7em 0; line-height: 1;}
+p { margin: .7em 0;
+line-height: 22px; 
+font-size: 16px;
+}
+
 
 /*Header
 -----------------------------------------*/
 header {
-height: 100px;
-display: block
+height: 110px;
+display: block;
+padding-top: 8px;
+background: #241e12; 
 }
 
 header #logo {
 float: left;
-color: #999;
+color: #fff;
 margin-top: 12px;
 font-weight: bold;
 letter-spacing: .02em;
+font-family: 'Droid Sans', sans-serif;
 }
 
-header h1 {
+header h1 a{
 font-size: 38px;
 line-height: 36px;	
-text-shadow: 0px -1px 0px #777;
+text-shadow: 0px 1px 1px #75684f;
 font-weight: bold;
-color: #990700;
+color: #e99702;
 letter-spacing:.03em;
 margin: 0;
+}
+
+#recipe-submit {
+width: 307px;
+height: 40px;
+float: right;
+line-height: 40px;
+text-align: center;
+display: block;
+padding: 0 0 0 0;
+margin: 20px 0 16px 0;
+color: #fff;
+font-weight: bold;
+letter-spacing:.03em;
+font-sze: 26px;
+text-shadow:#aaa 0px 1px 0, #000 0 -1px 0;
+background: rgb(255,175,75); /* Old browsers */
+background: -moz-linear-gradient(top, rgba(255,175,75,1) 0%, rgba(255,146,10,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,175,75,1)), color-stop(100%,rgba(255,146,10,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, rgba(255,175,75,1) 0%,rgba(255,146,10,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, rgba(255,175,75,1) 0%,rgba(255,146,10,1) 100%); /* Opera11.10+ */
+background: -ms-linear-gradient(top, rgba(255,175,75,1) 0%,rgba(255,146,10,1) 100%); /* IE10+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffaf4b', endColorstr='#ff920a',GradientType=0 ); /* IE6-9 */
+background: linear-gradient(top, rgba(255,175,75,1) 0%,rgba(255,146,10,1) 100%); /* W3C */
+-moz-border-radius: 5px; 
+-webkit-border-radius: 5px;
+border-radius: 5px;
+-moz-box-shadow: 2px 2px 5px #eee;
+-webkit-box-shadow: 2px 2px 5px #eee;
+box-shadow: 2px 2px 5px #eee;
+}
+
+#recipe-submit a {
+color: #fff;
 }
 
 header:after {
@@ -166,92 +236,26 @@ height: 0;
 clear: both;
 }
 
-
-/*Search
---------------------------------------*/
-header form {
-float: right;
-padding: 8px 0;
-width: 540px;
+/*Footer
+------------------------------------*/
+#site-footer{
+background: #241e12;
+position: relative;
+margin-top: -150px; /* negative value of footer height */
+height: 150px;
+clear:both;
 }
-
-header #search input {
-width: 305px;
-height: 25px;
-line-height: 1;
-border-width: 1px; 
-border-style: solid; 
-border-color: #636d77 #a3b4c4 #c7d2de;
-float: left;
-padding: 0 4px;
-background: rgb(238,238,238); /* Old browsers */
-background: -moz-linear-gradient(top, rgba(238,238,238,1) 0%, rgba(255,255,255,1) 100%); /* FF3.6+ */
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(238,238,238,1)), color-stop(100%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
-background: -webkit-linear-gradient(top, rgba(238,238,238,1) 0%,rgba(255,255,255,1) 100%); /* Chrome10+,Safari5.1+ */
-background: -o-linear-gradient(top, rgba(238,238,238,1) 0%,rgba(255,255,255,1) 100%); /* Opera11.10+ */
-background: -ms-linear-gradient(top, rgba(238,238,238,1) 0%,rgba(255,255,255,1) 100%); /* IE10+ */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
-background: linear-gradient(top, rgba(238,238,238,1) 0%,rgba(255,255,255,1) 100%); /* W3C */
-}
-
-header #search input:focus {
-border-color: #636d77;
-background: #fff;
-}
-
-header #search {
-float: right;
-width: 430px;
-margin-top: 10px;
-}
-
-header .split-button {
-float: left;
-margin: -1px 0 0 10px;
-text-shadow:#fff 0px 1px 0, #000 0 -1px 0;
-border: 1px solid#e4e4e4;
-color: #585858;
-background: rgb(238,238,238); /* Old browsers */
-background: -moz-linear-gradient(top, rgba(238,238,238,1) 0%, rgba(255,255,255,1) 100%); /* FF3.6+ */
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(238,238,238,1)), color-stop(100%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
-background: -webkit-linear-gradient(top, rgba(238,238,238,1) 0%,rgba(255,255,255,1) 100%); /* Chrome10+,Safari5.1+ */
-background: -o-linear-gradient(top, rgba(238,238,238,1) 0%,rgba(255,255,255,1) 100%); /* Opera11.10+ */
-background: -ms-linear-gradient(top, rgba(238,238,238,1) 0%,rgba(255,255,255,1) 100%); /* IE10+ */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
-background: linear-gradient(top, rgba(238,238,238,1) 0%,rgba(255,255,255,1) 100%); /* W3C */
--moz-border-radius: 5px; 
--webkit-border-radius: 5px;
-border-radius: 5px;
--moz-box-shadow: 2px 2px 5px #eee;
--webkit-box-shadow: 2px 2px 5px #eee;
-box-shadow: 2px 2px 5px #eee;
-line-height: 30px;
-height: 27px;
-width:100px;
-}
-
-
-header .split-button .submit {
-letter-spacing:.06em;
-color: #585858;
-text-shadow:#fff 0px 1px 0, #000 0 -1px 0;
-margin: 0 8px;
-border-right: 1px solid #ddd;
-padding-right: 8px;
-}
-
-header .split-button .dropdown {
-font-size: 0;
-text-indent: -9999px;
-}
-
 
 /* Nav 
 -----------------------------------------------*/
+nav {
+margin: 0;
+background: #241e12;
+}
+
 nav ul {
-float: left;
 background: #fff;
-width: 950px;
+width: 970px;
 border-top: 1px solid #efefef;
 border-left: 1px solid #efefef;
 border-right: 1px solid #efefef;
@@ -263,6 +267,14 @@ margin-bottom: 20px;
 border-radius-topleft: 5px;
 border-radius-topright: 5px;
 padding: 2px;
+}
+
+nav ul li[:last]:after {
+content:".";
+visibility: hidden;
+display: block;
+height: 0;
+clear: both;
 }
 
 nav ul li:first-child {
@@ -300,44 +312,12 @@ background: #fff;
 }
 
 nav ul li a {
-font-size: 15px;
 letter-spacing:.06em;
 color: #585858;
-text-shadow: 0px 1px 0px #e5e5ee;
+text-shadow: 0px -1px 1px #e5e5ee;
 }
 
-#recipe-submit {
-width: 307px;
-height: 40px;
-line-height: 40px;
-text-align: center;
-display: block;
-padding: 0 0 0 0;
-margin: 0 0 16px 0;
-color: #fff;
-font-weight: bold;
-letter-spacing:.03em;
-font-sze: 26px;
-text-shadow:#aaa 0px 1px 0, #000 0 -1px 0;
-background: rgb(255,175,75); /* Old browsers */
-background: -moz-linear-gradient(top, rgba(255,175,75,1) 0%, rgba(255,146,10,1) 100%); /* FF3.6+ */
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,175,75,1)), color-stop(100%,rgba(255,146,10,1))); /* Chrome,Safari4+ */
-background: -webkit-linear-gradient(top, rgba(255,175,75,1) 0%,rgba(255,146,10,1) 100%); /* Chrome10+,Safari5.1+ */
-background: -o-linear-gradient(top, rgba(255,175,75,1) 0%,rgba(255,146,10,1) 100%); /* Opera11.10+ */
-background: -ms-linear-gradient(top, rgba(255,175,75,1) 0%,rgba(255,146,10,1) 100%); /* IE10+ */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffaf4b', endColorstr='#ff920a',GradientType=0 ); /* IE6-9 */
-background: linear-gradient(top, rgba(255,175,75,1) 0%,rgba(255,146,10,1) 100%); /* W3C */
--moz-border-radius: 5px; 
--webkit-border-radius: 5px;
-border-radius: 5px;
--moz-box-shadow: 2px 2px 5px #eee;
--webkit-box-shadow: 2px 2px 5px #eee;
-box-shadow: 2px 2px 5px #eee;
-}
 
-#recipe-submit a {
-color: #fff;
-}
 
 /*Login / Register
 ----------------------------------------*/
@@ -351,7 +331,15 @@ margin: 8px 0;
 /*Profile
 -----------------------------------------*/
 #profile {
-border: 1px solid #efefef;
+border: 1px solid#e4e4e4;
+background: rgb(238,238,238); /* Old browsers */
+background: -moz-linear-gradient(top, rgba(238,238,238,1) 0%, rgba(255,255,255,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(238,238,238,1)), color-stop(100%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, rgba(238,238,238,1) 0%,rgba(255,255,255,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, rgba(238,238,238,1) 0%,rgba(255,255,255,1) 100%); /* Opera11.10+ */
+background: -ms-linear-gradient(top, rgba(238,238,238,1) 0%,rgba(255,255,255,1) 100%); /* IE10+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+background: linear-gradient(top, rgba(238,238,238,1) 0%,rgba(255,255,255,1) 100%); /* W3C */
 padding: 8px;
 }
 
@@ -368,38 +356,144 @@ padding-right: 4px;
 border-right: 1px solid #e3e3e3;
 }
 
-/*Friends
-----------------------------------------*/
-#profile h4 {
-margin-top: 8px;
-border-bottom: 1px solid #efefef;
-color: #888;
-line-height: 14px;
+/*Profile page
+-----------------------------------------*/
+#profile-detail #main-content h1 {
+font-size: 22px;
+font-weight: normal;
+line-height; 24px;
+padding: 0;
+color: #777;
+text-shadow: 0px -1px 0px #ccc;
+border-bottom: 1px solid #777;
 }
 
-#friends li {
-display: block;
-float: left;
+#profile-detail table {
+border: 1px solid #eee;
 padding: 2px;
-border: 1px solid #e3e3e3;
-margin: 4px 4px 4px 0;
+text-align: center;
+-moz-border-radius: 5px; 
+-webkit-border-radius: 5px;
+border-radius: 5px;
 }
 
-#friends a {
-display: block;
-border: none;
+
+#profile-detail table th {
+border: 1px solid #eee;
+padding: 8px;
+text-align: center;
+-moz-border-radius: 5px; 
+-webkit-border-radius: 5px;
+border-radius: 5px;
+background: rgb(238,238,238); /* Old browsers */
+background: -moz-linear-gradient(top, rgba(238,238,238,1) 0%, rgba(255,255,255,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(238,238,238,1)), color-stop(100%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, rgba(238,238,238,1) 0%,rgba(255,255,255,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, rgba(238,238,238,1) 0%,rgba(255,255,255,1) 100%); /* Opera11.10+ */
+background: -ms-linear-gradient(top, rgba(238,238,238,1) 0%,rgba(255,255,255,1) 100%); /* IE10+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+background: linear-gradient(top, rgba(238,238,238,1) 0%,rgba(255,255,255,1) 100%); /* W3C */
 }
 
-#friends li img{
-border: 1px solid #e3e3e3;
+#profile-detail table td {
+padding: 8px;
+text-align: center;
+-moz-border-radius: 5px; 
+-webkit-border-radius: 5px;
+border-radius: 5px;
 }
 
-#friends ul:after {
-content:".";
-visibility: hidden;
-display: block;
-height: 0;
-clear: both;
+
+
+/*Right Column
+----------------------------------------*/
+#search {
+padding: 8px;
+border: 1px solid#e4e4e4;
+background: rgb(238,238,238); /* Old browsers */
+background: -moz-linear-gradient(top, rgba(238,238,238,1) 0%, rgba(255,255,255,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(238,238,238,1)), color-stop(100%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, rgba(238,238,238,1) 0%,rgba(255,255,255,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, rgba(238,238,238,1) 0%,rgba(255,255,255,1) 100%); /* Opera11.10+ */
+background: -ms-linear-gradient(top, rgba(238,238,238,1) 0%,rgba(255,255,255,1) 100%); /* IE10+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+background: linear-gradient(top, rgba(238,238,238,1) 0%,rgba(255,255,255,1) 100%); /* W3C */
+margin-bottom: 12px;
+}
+
+#search fieldset div input {
+width: 200px;
+margin: 0;
+}
+
+#search fieldset div {
+padding: 5px 0;
+float: left;
+}
+#search input[type=submit] {
+float: right;
+width: auto;
+margin-top: 3px;
+background: #241e12;
+height: 34px;
+color: #fff;
+font-weight: bold;
+font-size: 1.2em;
+letter-spacing:.01em;
+text-shadow: 0px 1px 1px #75684f;
+-moz-border-radius: 5px; 
+-webkit-border-radius: 5px;
+border-radius: 5px;
+-moz-box-shadow: 2px 2px 5px #eee;
+-webkit-box-shadow: 2px 2px 5px #eee;
+box-shadow: 2px 2px 5px #eee;
+}
+
+
+#standard-sidebar .recipe_list h1 {
+font-size: 22px;
+font-weight: normal;
+line-height; 24px;
+padding: 0;
+color: #777;
+text-shadow: 0px -1px 0px #ccc;
+border-bottom: 1px solid #777;
+margin-bottom: 0;
+}
+
+#standard-sidebar .recipe_list li.hentry {
+padding: 4px 0;
+width: 100%;
+}
+
+#standard-sidebar .recipe_list li.hentry .entry-title {
+font-size: 20px;
+line-height: 22px;
+}
+
+#standard-sidebar .recipe_list li.hentry .content {
+padding: 0;
+margin: 0;
+width:300px;
+}
+
+#standard-sidebar .recipe_list li.hentry .vote {
+position: relative;
+top: -3px;
+margin-left: 20px;
+width: 45px;
+}
+
+
+#standard-sidebar .recipe_list li.hentry .entry-summary {
+font-size: 14px;
+}
+
+#standard-sidebar .recipe_list li ul {
+margin: 0;
+padding: 0;
+float: left;
+height: 23px;
 }
 
 /*Containers
@@ -449,19 +543,21 @@ width: 100%;
 
 .hfeed .author {
 margin: 2px 0;
-font-size: .75em;
-color: #999;
+font-size: 12px;
+color: #3f3625;
+margin: 0px;
 }
 
 .hfeed .entry-summary {
-font-size: 1.2em;
 margin: 6px 0;
-line-height: 1em;
+font-size: 16px;
+line-height: 20px;
 }
 
 .hfeed .entry-title {
-font-size: 1.5em;
-line-height: 1em;
+font-size: 24px;
+line-height: 28px;
+margin-top: 4px;
 }
 
 .featured {
@@ -469,8 +565,12 @@ position: relative;
 }
 
 .featured .entry-title {
-font-size: 2.8em;
-line-height: 1.1em;
+font-size: 32px;
+line-height: 34px;
+}
+
+.featured.hfeed .n-images .content {
+margin-left: 90px;
 }
 
 .vote {
@@ -530,6 +630,11 @@ width: 470px;
 clear: none;
 }
 
+
+.hfeed .n-images .content {
+margin-left: 30px;
+}
+
 .featured .content {
 width: 340px;
 }
@@ -558,6 +663,17 @@ margin-right: 4px;
 border-top:none;
 }
 
+/*tag clouds
+---------------------------------------*/
+
+#tag-cloud a {margin: 0 0.2em}
+.tag-cloud-0 {font-size: 100%;}
+.tag-cloud-1 {font-size: 120%;}
+.tag-cloud-2 {font-size: 140%;}
+.tag-cloud-3 {font-size: 160%;}
+.tag-cloud-4 {font-size: 180%;}
+.tag-cloud-5 {font-size: 200%;}
+
 /*Recipe page
 ---------------------------------------*/
 .hrecipe {
@@ -565,10 +681,12 @@ position: relative;
 }
 
 .hrecipe .fn {
-font-size: 3.6em;
-line-height: 1em;
+font-size: 38px;
+line-height: 44px;
 margin: 0 0 10px 0;
 border-bottom: 1px solid;
+text-shadow: 0px -1px 1px #eee;
+color: #85250d;
 }
 
 .hrecipe .vote{
@@ -594,18 +712,36 @@ border: 1px solid #777;
 float: left;
 margin: 0 8px 12px 0;
 }
+.hrecipe #ingredients {
+clear: both;
+margin: 12px 0;
+float:left;
+}
+
+.hrecipe #commentform h1,
+.hrecipe #directions h1,
+.hrecipe #ingredients h1 {
+font-size: 22px;
+font-weight: normal;
+line-height; 24px;
+padding: 0;
+color: #777;
+text-shadow: 0px -1px 0px #ccc;
+border-bottom: 1px solid #777;
+}
+
+.hrecipe #ingredients ul li {
+display: block;
+float: left;
+margin: 0 12px 8px 0px;
+width: 286px;
+font-size: 15px;
+line-height: 19px;
+}
 
 .hrecipe #directions{
 clear: both;
 }
-
-/*Most Popular
----------------------------------------*/
-
-
-/*Home page
-----------------------------------------*/
-
 
 /* -- !Fieldsets & Legends -- */
 form h1 {
@@ -649,7 +785,7 @@ vertical-align: middle;
 fieldset label abbr {
 display: block;
 font-size: 23px;
-right: 60px;
+right: 155px;
 padding: 0;
 position: absolute;
 text-shadow:#fff 0px 1px 0, #000 0 -1px 0;
@@ -658,9 +794,10 @@ width: 16px;
 }
 
 /* -- !Fields -- */
+fieldset p,
 fieldset div {
 margin: 0 0 10px;
-padding: 5px 0 5px 0px;
+padding: 5px 0 5px 160px;
 }
 
 fieldset div.controls {
@@ -669,6 +806,7 @@ padding: 0;
 }
 
 /* Labels */
+fieldset p label,
 fieldset div label {
 color: #666;
 text-shadow:#fff 0px 1px 0, #000 0 -1px 0;
@@ -677,11 +815,15 @@ display: block;
 font-size: 1.16em;
 font-weight: bold;
 line-height: 1.1;
-margin: 7px 0 0 0px;
-width: 250px;
+margin: 7px 0 0 -160px;
+width: 140px;
 }
 
+
 /* Input defaults */
+fieldset p input,
+fieldset p textarea,
+fieldset p select,
 fieldset div input,
 fieldset div textarea,
 fieldset div select {
@@ -696,6 +838,9 @@ margin: 0;
 }
 
 /* Focus */
+fieldset p input:focus,
+fieldset p textarea:focus,
+fieldset p select:focus,
 fieldset div input:focus,
 fieldset div textarea:focus,
 fieldset div select:focus {
@@ -703,18 +848,21 @@ border-color: #636d77;
 }
 
 /* Text inputs */
+fieldset p input,
 fieldset div input {
 padding: 6px 5px;
 width: 288px;
 }
 
 /* Select menus */
+fieldset p select,
 fieldset div select {
 padding: 0 0 0 3px;
 width: 291px;
 }        
 
 /* Textareas */
+fieldset p textarea,
 fieldset div textarea {
 height: 89px;
 padding: 6px 5px;
@@ -722,6 +870,7 @@ width: 288px;
 }
 
 /* File Upload */
+fieldset p input[type=file]
 fieldset div input[type=file] {
 background: none;
 border: inherit;
@@ -729,15 +878,18 @@ padding: 0;
 }
 
 /* Radio buttons + checkboxes */
+fieldset p ul,
 fieldset div ul {
 margin: 5px 0 0 0;
 }
 
+fieldset p ul li,
 fieldset div ul li {
 margin: 0 0 5px;
 padding: 0;
 }
                     
+fieldset p ul li label
 fieldset div ul li label {
 text-shadow:#fff 0px 1px 0, #000 0 -1px 0;
 display: inline;
@@ -748,6 +900,7 @@ margin: 0;
 padding: 0;
 }
            
+fieldset p ul li input,
 fieldset div ul li input {
 background: none;
 border: none;
@@ -788,6 +941,7 @@ box-shadow: 2px 2px 5px #eee;
 }
 
 /* -- !Validation -- */
+fieldset p,
 fieldset div,
 fieldset fieldset.group {
 position: relative;
@@ -846,6 +1000,9 @@ margin: 0.5em 0 0.2em 5px;
 }
 
 /* Field */
+fieldset p input.error,
+fieldset p textarea.error,
+fieldset p select.error,
 fieldset div input.error,
 fieldset div textarea.error,
 fieldset div select.error {
@@ -861,10 +1018,17 @@ top: 10px;
 
 
 /*--submit form--*/
-#submit #upload-form,#submit #main-content{
+#form-page #main-content,
+#register-page #main-content,
+#login-page #main-content,
+#submit #upload-form,
+#submit #main-content{
 width: 100%;
 }
 
+#form-page form#soloform,
+form#register,
+form#login,
 #new-recipe {
 display: block;
 margin: 8px auto;

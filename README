@@ -16,6 +16,11 @@ will vary by platform and won't be elaborated upon here):
     * Python Imaging Library (1.1.7 is current as of development)
     * brabeion (pip install)
     * Celery (pip install)
+    * sorl-thumbnail (pip install)
+    * Django-profile (pip install)
+    * Django-Registration (pip install)
+    * ghettoq (pip install)
+    * django-celery
 
 To get tomcookery up and running from scratch (assuming you've got the
 dependencies mentioned above installed), here are the steps you need to follow:
@@ -24,12 +29,25 @@ dependencies mentioned above installed), here are the steps you need to follow:
     * Navigate into the tomcookery directory:
       $ cd tomcookery
     * Pip install celery
+    * pip install django-celery
     * Pip install brabeion
+    * Pip install ghettoq
+    * Pip install sorl-thumbnail
+    * Pip install Django-Registration
+    * Pip install Django-profile
     * Set up the local database:
       $ python manage.py syncdb
     * Create a superuser account (the above step will prompt for one, but
       here's how to create another:
       $ python manage.py createsuperuser --username=joe --email=joe@example.com
+    * Create initial migrations for apps
+    	python manage.py schemamigration app --initial
+    	python manage.py schemamigration registration --initial
+    	python manage.py schemamigration thumbnail --initial
+    * Run database migrations
+    	python manage.py migrate app
+    	python manage.py migrate thumbnail
+    	python manage.py migrate registration
     * Start the development server:
       $ python manage.py runserver
     * See the site at http://localhost:8000
@@ -55,6 +73,7 @@ To get a server environment up and running here is the general outline:
       ADMIN email addresses, and set DEBUG = TEMPLATE_DEBUG = False
     * From the tomcookery directory, initialize the tomcookery database:
       $ python manage.py syncdb
+    * At some point the chron jobs need to be started to determine pereodic winners. http://bitkickers.blogspot.com/2010/07/djangocelery-quickstart-or-how-i.html
 
 DATA MIGRATIONS
 ===============

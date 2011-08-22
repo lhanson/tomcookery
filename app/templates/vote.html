@@ -1,1 +1,3 @@
+{% if votingOpen %}
 <a rev="vote-for" href="/vote?id={{ recipe.id }}" title="like this recipe" class="vote">Vote! {{ recipe.votes }}</a>
+{% endif %}

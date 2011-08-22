@@ -1,13 +1,12 @@
 <section id="profile" >
     {% if user.is_authenticated %}
-        <img src="{{user.avatar}}" alt="your avatar" />
-        <a href="/profile/{{user.username}}" title="link to profile page" class="userName">{{user.username}}</a>
-        <a href="/logout" id="log-off" title="log off user">Log Off</a>
-        <a href="/profile/{{user.username}}" title="link to profile page" class="profile-tools">Profile</a>
+        <a href="/profiles/{{user.username}}" title="link to profile page" class="userName">{{user.username}}</a>
+        <a href="/accounts/logout" id="log-off" title="log off user">Log Off</a>
+        <a href="/profiles/edit/" title="link to profile page" class="profile-tools">Edit Profile</a>
     {% else %}
         <section id="login">
 			<a href="/accounts/login" title="login">Login</a>
-			<a href="/register" title="register">Register</a>
+			<a href="/accounts/register" title="register">Register</a>
         </section>
     {% endif %}
 </section>

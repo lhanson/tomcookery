@@ -1,23 +1,30 @@
 from django import forms
 import re
+from django.db import models
+from django.forms import ModelForm
 from django.contrib.auth.models import User
+from tomcookery.app.models import *
+
+difficultyChoice = (('-','Please Select'),('Easy', 'Easy'), ('Moderate', 'Moderate'), ('Difficult', 'Difficult'))
+courseChoice = (('-','Please Select'),('Appetizer', 'Appetizer'), ('Breakfast', 'Breakfast'), ('Dessert','Dessert'),('Entree','Entree'),('Lunch', 'Lunch'), ('Salad', 'Salad'), ('Soup', 'Soup'), ('Snack', 'Snack'))
+
 
 class recipeNewSaveForm(forms.Form):
 	name = forms.CharField(
 	label=u'Name',
-	widget=forms.TextInput(attrs={'size': 64})
+	widget=forms.TextInput(attrs={'size': 64, 'class':'required'})
 	)
 	ingredients = forms.CharField(
 	required=True,
-	widget=forms.HiddenInput()
+	widget=forms.HiddenInput(attrs={ 'class':'required'})
 	)
 	summary = forms.CharField(
-	widget=forms.Textarea()
+	widget=forms.Textarea(attrs={ 'class':'required'})
 	)
 	
 	instructions = forms.CharField(
 	label=u'Instructions',
-	widget=forms.Textarea()
+	widget=forms.Textarea(attrs={ 'class':'required'})
 	)
 	
 	photo=forms.ImageField(required=False)
@@ -33,46 +40,27 @@ class recipeNewSaveForm(forms.Form):
 	widget=forms.TextInput(attrs={'size':4})
 	)
 	
+	difficulty = forms.ChoiceField(
+	required=True,
+	widget=forms.Select(attrs={ 'class':'required'}),
+	choices=difficultyChoice,
+	)
+	
+	course = forms.ChoiceField(
+	required=True,
+	widget=forms.Select(attrs={ 'class':'required'}),
+	choices=courseChoice,
+	)
+	
 	tags = forms.CharField(
 	label=u'Tags',
-	widget=forms.TextInput(attrs={'size': 64, "placeholder":"e.g. thai, curry, easy"})
+	widget=forms.TextInput(attrs={'size': 64, "placeholder":"e.g. thai, curry, easy",'class':'required'})
 	)
 
-class RegistrationForm(forms.Form):
-	username = forms.CharField(label=u"Username", max_length=30)
-	email= forms.EmailField(label=u"Email")
-	password1 = forms.CharField(
-		label=u"Password",
-		widget=forms.PasswordInput()
-		)
-	password2 = forms.CharField(
-		label=u"Password (Again)",
-		widget=forms.PasswordInput()
-		)
-	def clean_password2(self):
-		if 'password1' in self.cleaned_data:
-			password1 = self.cleaned_data['password1']
-			password2 = self.cleaned_data['password2']
-			if password1 == password2:
-				return password2
-			else:
-				raise forms.ValidationError('Passwords do not match. %s' % [password1])
-		
-	def clean_username(self):
-		username = self.cleaned_data['username']
-		if not re.search(r'^\w+$', username):
-			raise forms.ValidationError('Username can only contain alphanumeric characters and the underscore.')
-		try:
-			User.objects.get(username = username)
-		except User.DoesNotExist:
-			return username
-		raise forms.ValidationError('Username already in use')
-
-class ProfileForm(forms.Form):
-    first_name = forms.CharField(max_length = 30, label = 'First Name')
-    last_name = forms.CharField(max_length = 30, label = 'Last Name')
-    #(Optional) Make email unique.
-    email = forms.EmailField(label = 'Email Address')
+class editProfile(ModelForm):
+	class Meta:
+		model=MyProfile
+		exclude = ('recipePoints','commentPoints','votePoints','recipeLiked','chefRank','user')
 
 class searchForm(forms.Form):
 	query = forms.CharField(

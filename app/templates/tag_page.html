@@ -1,5 +1,5 @@
 {% extends "base.html" %}
 {% block title %}Tag: {{ tag_name }}{% endblock %}
-{% block article %}
-	{% include "recipes_snippet.html" %}
+{% block content %}
+	{% include "recipes_snippet.html" with sectiontitle=title %}
 {% endblock %}

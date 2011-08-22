@@ -1,12 +1,15 @@
 {% extends "base.html" %}
 {%block pageId%}home{%endblock pageId%}
-{% block article %}
-{% include "feature_recipe_snippet.html" with recipes=toprecipe %}
-{% include "recipes_snippet.html" with recipes=moretoprecipes %}
-{% endblock article %}
-{% block rightColumn %}
-<section class="sidebar">
-{% include "user_info_snippet.html" %}
-<h2 id="recipe-submit"><a href={% if user.is_authenticated %}"/submit"{% else %} "/accounts/login/"{% endif%}>Submit a Recipe</a></h2>
+{% block content %}
+<section id="currTheme">
+<h1>{{currentTheme.name}}</h1>
+<p>{{currentTheme.summary}}</p>
+<p>Recipe submission open from {{currentTheme.start_submit}} till {{currentTheme.end_submit}}</p>
+<p>Voting will be open {{currentTheme.start_vote}} till {{currentTheme.end_vote}}</p>
 </section>
+{% include "feature_recipe_snippet.html" with recipes=toprecipe sectiontitle="Newest" %}
+{% include "recipes_snippet.html" with recipes=moretoprecipes sectiontitle="More Recipes" showImages="True" %}
 {% endblock %}
+{% block rightColumn %}
+{% include "standard-right-column.html" %}
+{% endblock rightColumn %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}User Login{% endblock %}
+{%block pageId%}login-page{%endblock pageId%}
+{% block content %}
+  {% if form.errors %}
+  	<p>Your username and password did not match. Please try again.
+  {% endif %}
+  <form method="post" action="." id="login">
+  	{% csrf_token %}
+  	<fieldset>
+  	<H1>Login or <a href='/accounts/register' title="register">Register</a></h1>
+  	<div><label for="id_username">Username:</label>
+  	{{ form.username }}</div>
+  	<div><label for="id_password">Password:</label>
+  	{{ form.password }}</div>
+  	<input type="hidden" name="next" value="/" />
+  	<div class="controls">
+  	<input type="submit" value="login" />
+  	</div>
+  	<a href='/accounts/register' title="register">Register</a>
+  	<a href='/accounts/password/reset' title='Reset Password'>Reset password</a>
+  	</fieldset>
+  </form>
+{% endblock %}

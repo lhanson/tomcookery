@@ -6,7 +6,6 @@ from django.contrib.auth import logout
 from django.http import HttpResponseRedirect, HttpResponse
 from tomcookery.app.models import *
 from tomcookery.app.forms import *
-from .forms import ProfileForm
 from django.conf import settings
 import Image
 import datetime
@@ -14,15 +13,23 @@ from django.core.files.base import ContentFile
 import sys
 from brabeion import badges
 import brabeion.signals
+from datetime import date, timedelta
+import json
 sys.path.append("/Users/corygwin/djangoenv/lib/python2.6/site-packages/PIL-1.1.7-py2.6-macosx-10.3-fat.egg")
 
-response_data = { 'app_name': 'Recipe Wars', 'MEDIA_URL': settings.MEDIA_URL }
+response_data = { 
+	'app_name': 'Recipe Wars', 
+	'MEDIA_URL': settings.MEDIA_URL,
+}
 
 #views
 ##Landing pages
 def index(request):
-	response_data.update({'moretoprecipes': Recipe.objects.all().order_by('-votes')[1:12] })
-	response_data.update({'toprecipe': Recipe.objects.all().order_by('-votes')[0:1] })
+	if CookoffTheme.objects.all():
+		response_data.update({'moretoprecipes': CookoffTheme.objects.currentThemeRecipesDate()[1:12]})
+		response_data.update({'toprecipe':CookoffTheme.objects.currentThemeRecipesDate()[:1]})
+	
+	response_data.update(_rightColumnStandard())
 	return render_to_response('index.html',
                               response_data,
                               context_instance = RequestContext(request))
@@ -39,12 +46,21 @@ def recipe(request, recipe_url):
                               response_data,
                               context_instance = RequestContext(request))
 
+#right column
+def _rightColumnStandard():
+	week = date.today() - timedelta(weeks=1)
+	if CookoffTheme.objects.all():
+		return {'leadingRecipes': CookoffTheme.objects.currentThemeRecipesVotes()[:5]}
+	else:
+		return{}
+
 ##Tag based views
 def tag_page(request, tag_name, model="Tag",urlParent=""):
 	tag = get_object_or_404(model,id=tag_name)
 	recipes=tag.recipe_set.all()
 	variables = RequestContext(request,{
 		'recipes': recipes,
+		'title':"Recipes for %s" % tag.name,
 		'tag_name':tag_name,
 		'urlParent':urlParent
 	})
@@ -93,6 +109,11 @@ def recipe_vote(request):
 				recipe.votes += 1
 				recipe.users_voted.add(request.user)
 				recipe.save()
+				submitor = recipe.submitor.get_profile()
+				submitor.awardRecipeLiked(1)
+				badges.possibly_award_badge("vote_submitted", user=request.user)
+				profile = request.user.get_profile()
+				profile.awardVote(1)
 		except Recipe.DoesNotExist:
 			raise Http404('Recipe Not Found')
 	if 'HTTP_REFERER' in request.META:
@@ -123,62 +144,6 @@ def search_page(request):
 	else:
 		return render_to_response('search.html',variables)
 
-#User Management
-def register_page(request):
-	if request.method == 'POST':
-		form = RegistrationForm(request.POST)
-		if form.is_valid():
-			user = User.objects.create_user(
-				username = form.cleaned_data['username'],
-				password = form.cleaned_data['password1'],
-				email = form.cleaned_data['email']
-			)
-			return HttpResponseRedirect('/register/success/')
-	else:
-		form = RegistrationForm()
-	variables = RequestContext(request,{'form':form})
-	return render_to_response('registration/register.html',response_data,
-                              context_instance = variables)
-
-def logout_page(request):
-	logout(request)
-	return HttpResponseRedirect('/')
-
-@login_required
-def profile(request):
-    '''
-    Displays page where user can update their profile.
-    
-    @param request: Django request object.
-    @return: Rendered profile.html.
-    '''
-    if request.method == 'POST':
-        form = ProfileForm(request.POST)
-        if form.is_valid():
-            data = form.cleaned_data
-            print data
-
-            #Update user with form data
-            request.user.first_name = data['first_name']
-            request.user.last_name = data['last_name']
-            request.user.email = data['email']
-            request.user.save()
-
-            messages.success(request, 'Successfully updated profile!')
-    else: 
-        #Try to pre-populate the form with user data.
-        form = ProfileForm(initial = {
-            'first_name': request.user.first_name,
-            'last_name': request.user.last_name,
-            'email': request.user.email,
-        })
-
-    response_data.update({'form': form, 'user': request.user})
-    return render_to_response('profile.html',
-                              response_data,
-                              context_instance = RequestContext(request))
-
-
 
 #recipe submission handlers
 def _handleImageResize(image):
@@ -188,12 +153,13 @@ def _handleImageResize(image):
 	im.save(path)
                              
 def _ingredientsProcess(ingString, recipe):
-	for set in ingString.split(","):
-		amount, ing = set.split(";")
+	jsonData = json.loads(ingString)
+	print(jsonData)
+	for set in jsonData:
 		ingObject, dummy = Ingredient.objects.get_or_create(
-			name= ing
+			name= set['ingredient']
 		)
-		group = Ingredient_Measurement(ingredient=ingObject,recipe=recipe,value=amount)
+		group = Ingredient_Measurement(ingredient=ingObject,recipe=recipe,value=set['measurement'])
 		group.save()
 	return recipe
 
@@ -228,10 +194,15 @@ def submit(request):
 					photo.photo.save(file.name,file)
 					photo.recipe_set.add(recipe)
 					#now that we have the image lets resize it to a decent size
-					_handleImageResize(photo.photo)
+					#_handleImageResize(photo.photo)
 			except:
 				pass
-			
+			difficulty, dummy = Difficulty.objects.get_or_create(name=form.cleaned_data['difficulty'])
+			difficulty.recipe_set.add(recipe)
+			difficulty.save()
+			course, dummy = Course.objects.get_or_create(name=form.cleaned_data['course'])
+			course.recipe_set.add(recipe)
+			course.save()
 			for tagName in form.cleaned_data['tags'].split(","):
 				if tagName != None:
 					tag, dummy = Tag.objects.get_or_create(name=tagName.strip())
@@ -243,10 +214,16 @@ def submit(request):
 			)
 			durObject.recipe_set.add(recipe)
 			durObject.save()
+			theme = CookoffTheme.objects.currentTheme()
+			theme.recipes.add(recipe)
+			theme.save()
 			recipe = _ingredientsProcess(form.cleaned_data['ingredients'].rstrip('\n'), recipe)
 			badges.possibly_award_badge("recipe_submitted", user=request.user)
 			brabeion.signals.badge_awarded.connect(_get_badge)
 			recipe.save()
+			createUserProfile(request.user)
+			profile = request.user.get_profile()
+			profile.awardRecipe(1)
 			redirectTo = "/recipes/recipe/%s" % recipe.url
 			return HttpResponseRedirect(redirectTo)
     else:

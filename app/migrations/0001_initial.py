@@ -15,6 +15,27 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('app', ['Ingredient'])
 
+        # Adding model 'Duration'
+        db.create_table('app_duration', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('duration', self.gf('django.db.models.fields.CharField')(max_length=40)),
+        ))
+        db.send_create_signal('app', ['Duration'])
+
+        # Adding model 'Difficulty'
+        db.create_table('app_difficulty', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=15)),
+        ))
+        db.send_create_signal('app', ['Difficulty'])
+
+        # Adding model 'Course'
+        db.create_table('app_course', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=15)),
+        ))
+        db.send_create_signal('app', ['Course'])
+
         # Adding model 'Recipe'
         db.create_table('app_recipe', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -26,6 +47,8 @@ class Migration(SchemaMigration):
             ('url', self.gf('django.db.models.fields.SlugField')(default='error', max_length=50, db_index=True)),
             ('votes', self.gf('django.db.models.fields.IntegerField')(default=1)),
             ('submitor', self.gf('django.db.models.fields.related.ForeignKey')(related_name='recipes_submitted', to=orm['auth.User'])),
+            ('difficulty', self.gf('django.db.models.fields.related.ForeignKey')(default='', to=orm['app.Difficulty'], null=True, blank=True)),
+            ('course', self.gf('django.db.models.fields.related.ForeignKey')(default='', to=orm['app.Course'], null=True, blank=True)),
         ))
         db.send_create_signal('app', ['Recipe'])
 
@@ -61,6 +84,29 @@ class Migration(SchemaMigration):
         ))
         db.create_unique('app_recipe_users_voted', ['recipe_id', 'user_id'])
 
+        # Adding model 'CookoffTheme'
+        db.create_table('app_cookofftheme', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=40)),
+            ('summary', self.gf('django.db.models.fields.TextField')()),
+            ('winning_recipe', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='winning_recipe', null=True, to=orm['app.Recipe'])),
+            ('runner_up_recipe', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='second_recipe', null=True, to=orm['app.Recipe'])),
+            ('third_place_recipe', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='third_recipe', null=True, to=orm['app.Recipe'])),
+            ('start_submit', self.gf('django.db.models.fields.DateTimeField')()),
+            ('end_submit', self.gf('django.db.models.fields.DateTimeField')()),
+            ('start_vote', self.gf('django.db.models.fields.DateTimeField')()),
+            ('end_vote', self.gf('django.db.models.fields.DateTimeField')()),
+        ))
+        db.send_create_signal('app', ['CookoffTheme'])
+
+        # Adding M2M table for field recipes on 'CookoffTheme'
+        db.create_table('app_cookofftheme_recipes', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('cookofftheme', models.ForeignKey(orm['app.cookofftheme'], null=False)),
+            ('recipe', models.ForeignKey(orm['app.recipe'], null=False))
+        ))
+        db.create_unique('app_cookofftheme_recipes', ['cookofftheme_id', 'recipe_id'])
+
         # Adding model 'Ingredient_Measurement'
         db.create_table('app_ingredient_measurement', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -69,13 +115,6 @@ class Migration(SchemaMigration):
             ('value', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
         ))
         db.send_create_signal('app', ['Ingredient_Measurement'])
-
-        # Adding model 'Duration'
-        db.create_table('app_duration', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('duration', self.gf('django.db.models.fields.CharField')(max_length=40)),
-        ))
-        db.send_create_signal('app', ['Duration'])
 
         # Adding model 'Photo'
         db.create_table('app_photo', (
@@ -92,11 +131,41 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('app', ['Tag'])
 
+        # Adding model 'ChefRank'
+        db.create_table('app_chefrank', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(default='Fry Cook', max_length=15)),
+        ))
+        db.send_create_signal('app', ['ChefRank'])
+
+        # Adding model 'MyProfile'
+        db.create_table('app_myprofile', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('user', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['auth.User'], unique=True)),
+            ('recipePoints', self.gf('django.db.models.fields.IntegerField')(default=0, blank=True)),
+            ('commentPoints', self.gf('django.db.models.fields.IntegerField')(default=0, blank=True)),
+            ('votePoints', self.gf('django.db.models.fields.IntegerField')(default=0, blank=True)),
+            ('recipeLiked', self.gf('django.db.models.fields.IntegerField')(default=0, blank=True)),
+            ('website', self.gf('django.db.models.fields.URLField')(default='', max_length=200, null=True, blank=True)),
+            ('websiteName', self.gf('django.db.models.fields.CharField')(max_length=40, null=True, blank=True)),
+            ('chefRank', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['app.ChefRank'], null=True, blank=True)),
+        ))
+        db.send_create_signal('app', ['MyProfile'])
+
 
     def backwards(self, orm):
         
         # Deleting model 'Ingredient'
         db.delete_table('app_ingredient')
+
+        # Deleting model 'Duration'
+        db.delete_table('app_duration')
+
+        # Deleting model 'Difficulty'
+        db.delete_table('app_difficulty')
+
+        # Deleting model 'Course'
+        db.delete_table('app_course')
 
         # Deleting model 'Recipe'
         db.delete_table('app_recipe')
@@ -113,11 +182,14 @@ class Migration(SchemaMigration):
         # Removing M2M table for field users_voted on 'Recipe'
         db.delete_table('app_recipe_users_voted')
 
+        # Deleting model 'CookoffTheme'
+        db.delete_table('app_cookofftheme')
+
+        # Removing M2M table for field recipes on 'CookoffTheme'
+        db.delete_table('app_cookofftheme_recipes')
+
         # Deleting model 'Ingredient_Measurement'
         db.delete_table('app_ingredient_measurement')
-
-        # Deleting model 'Duration'
-        db.delete_table('app_duration')
 
         # Deleting model 'Photo'
         db.delete_table('app_photo')
@@ -125,8 +197,43 @@ class Migration(SchemaMigration):
         # Deleting model 'Tag'
         db.delete_table('app_tag')
 
+        # Deleting model 'ChefRank'
+        db.delete_table('app_chefrank')
+
+        # Deleting model 'MyProfile'
+        db.delete_table('app_myprofile')
+
 
     models = {
+        'app.chefrank': {
+            'Meta': {'object_name': 'ChefRank'},
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'default': "'Fry Cook'", 'max_length': '15'})
+        },
+        'app.cookofftheme': {
+            'Meta': {'object_name': 'CookoffTheme'},
+            'end_submit': ('django.db.models.fields.DateTimeField', [], {}),
+            'end_vote': ('django.db.models.fields.DateTimeField', [], {}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '40'}),
+            'recipes': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'all_recipes'", 'null': 'True', 'symmetrical': 'False', 'to': "orm['app.Recipe']"}),
+            'runner_up_recipe': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'second_recipe'", 'null': 'True', 'to': "orm['app.Recipe']"}),
+            'start_submit': ('django.db.models.fields.DateTimeField', [], {}),
+            'start_vote': ('django.db.models.fields.DateTimeField', [], {}),
+            'summary': ('django.db.models.fields.TextField', [], {}),
+            'third_place_recipe': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'third_recipe'", 'null': 'True', 'to': "orm['app.Recipe']"}),
+            'winning_recipe': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'winning_recipe'", 'null': 'True', 'to': "orm['app.Recipe']"})
+        },
+        'app.course': {
+            'Meta': {'object_name': 'Course'},
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '15'})
+        },
+        'app.difficulty': {
+            'Meta': {'object_name': 'Difficulty'},
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '15'})
+        },
         'app.duration': {
             'Meta': {'object_name': 'Duration'},
             'duration': ('django.db.models.fields.CharField', [], {'max_length': '40'}),
@@ -144,6 +251,18 @@ class Migration(SchemaMigration):
             'recipe': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['app.Recipe']"}),
             'value': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'})
         },
+        'app.myprofile': {
+            'Meta': {'object_name': 'MyProfile'},
+            'chefRank': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['app.ChefRank']", 'null': 'True', 'blank': 'True'}),
+            'commentPoints': ('django.db.models.fields.IntegerField', [], {'default': '0', 'blank': 'True'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'recipeLiked': ('django.db.models.fields.IntegerField', [], {'default': '0', 'blank': 'True'}),
+            'recipePoints': ('django.db.models.fields.IntegerField', [], {'default': '0', 'blank': 'True'}),
+            'user': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['auth.User']", 'unique': 'True'}),
+            'votePoints': ('django.db.models.fields.IntegerField', [], {'default': '0', 'blank': 'True'}),
+            'website': ('django.db.models.fields.URLField', [], {'default': "''", 'max_length': '200', 'null': 'True', 'blank': 'True'}),
+            'websiteName': ('django.db.models.fields.CharField', [], {'max_length': '40', 'null': 'True', 'blank': 'True'})
+        },
         'app.photo': {
             'Meta': {'object_name': 'Photo'},
             'alt_text': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '40'}),
@@ -152,6 +271,8 @@ class Migration(SchemaMigration):
         },
         'app.recipe': {
             'Meta': {'object_name': 'Recipe'},
+            'course': ('django.db.models.fields.related.ForeignKey', [], {'default': "''", 'to': "orm['app.Course']", 'null': 'True', 'blank': 'True'}),
+            'difficulty': ('django.db.models.fields.related.ForeignKey', [], {'default': "''", 'to': "orm['app.Difficulty']", 'null': 'True', 'blank': 'True'}),
             'durations': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['app.Duration']", 'symmetrical': 'False', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'ingredients': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['app.Ingredient']", 'through': "orm['app.Ingredient_Measurement']", 'symmetrical': 'False'}),
