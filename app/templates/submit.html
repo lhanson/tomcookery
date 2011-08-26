@@ -10,9 +10,7 @@
 		{% if user.is_authenticated %}
 		
 			<form id="new-recipe" name="new-recipe" action="." method="POST"enctype="multipart/form-data">
-				<h1 id="instructions">Enter your recipe.</h1>
-				<p class="intro">Enter your recipe below for other to enjoy and then scrutinize meticulously showing no mercy! Enjoy!</p>
-		
+				<h1 id="instructions">Enlist your recipe in the {{currentTheme.name}} war!</h1>
 				<div id="form-messages">
 				{% if form.errors %}
 					<h2><strong>Button Up Soldier!</strong> Your recipe is not ship shape!</h2> 

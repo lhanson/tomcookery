@@ -1,12 +1,7 @@
 {% extends "base.html" %}
 {%block pageId%}home{%endblock pageId%}
 {% block content %}
-<section id="currTheme">
-<h1>{{currentTheme.name}}</h1>
-<p>{{currentTheme.summary}}</p>
-<p>Recipe submission open from {{currentTheme.start_submit}} till {{currentTheme.end_submit}}</p>
-<p>Voting will be open {{currentTheme.start_vote}} till {{currentTheme.end_vote}}</p>
-</section>
+{% include "themetease.html" %}
 {% include "feature_recipe_snippet.html" with recipes=toprecipe sectiontitle="Newest" %}
 {% include "recipes_snippet.html" with recipes=moretoprecipes sectiontitle="More Recipes" showImages="True" %}
 {% endblock %}
