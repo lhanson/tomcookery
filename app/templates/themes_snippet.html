@@ -1,0 +1,23 @@
+{% if themes|length > 0 %}
+<section class="theme_list hfeed">
+	<h1 class='section-title'>{{ sectiontitle }}</h1>
+	<ul class="{% if not showImages%}no-images{% endif %}">
+		{% for theme in themes %}
+			<li class="hentry {% if showImages and theme.photos.all %}w-images{% else %}n-images{% endif %}">
+				<h2 class="entry-title"><a href="{{ theme.get_absolute_url }}" title="{{ theme.name }}" class="bookmark" rel="bookmark">{{theme.name}}</a></h2>
+				<dl>
+				{% if theme.ingredient %}
+					<dt>Ingredient:</dt>
+					<dd>{{theme.ingredient}}</dd>
+				{% endif %}
+				{% if theme.theme %}
+					<dt>Theme:</dt>
+					<dd>{{theme.theme}}</dd>
+				{% endif %}
+				</dl>
+				<p>{{theme.summary}}</p>
+			</li>
+		{% endfor %}
+	</ul>
+</section>
+{% endif %}

@@ -1,0 +1,42 @@
+{# A single recipe page #}
+{% extends "base.html" %}
+{% block title %} {{ recipe.name }}{% endblock %}
+{% block content %}
+{% load thumbnail %}
+{% load brabeion_tags %}
+<article class="content">
+	<h1 class="fn">{{ theme.name }}</h1>
+	<section id="media">
+		{% for photo in theme.photos.all %}			
+			{% thumbnail photo.photo "300x300" crop="center" as im %}
+			<a href="{{ theme.get_absolute_url }}" title="{{ theme.name }}" class="fn" rel="bookmark"><img src="{{ im.url }}" alt="{{ theme.name }}" width="{{ im.width }}" height="{{ im.height }}" class="photo"/></a>
+			{% endthumbnail %}		
+		{% endfor %}
+    </section>
+    <h3 class="yield">Ingredient: {{ theme.ingredient }}</h3>
+    <h3 class="yield">Theme: {{ theme.theme }}</h3>
+	<section id="themesummary">
+		{{ theme.summary|linebreaks }}
+	</section>
+	{% if theme.winning_recipe %}
+	<section id="winningRecipes">
+		<h1>Winning Recipes</h1>
+		
+		{% include "feature_recipe_snippet.html" with recipes=theme.winning_recipe sectiontitle="First Place" %}
+		
+		{% if theme.runner_up %}
+		{% include "feature_recipe_snippet.html" with recipes=theme.runner_up sectiontitle="Second Place" %}
+		{% endif %}
+		{% if theme.theme.third_place %}
+		{% include "feature_recipe_snippet.html" with recipes=theme.third_place sectiontitle="Third Place" %}
+		{% endif %}
+	</section>
+	{% endif %}
+
+	{% include "recipes_snippet.html" with recipes=theme.recipes.all sectiontitle="All Recipes" showImages="True" %}
+
+</article>
+{% endblock %}
+{% block rightColumn %}
+{% include "standard-right-column.html" %}
+{% endblock rightColumn %}

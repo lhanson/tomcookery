@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{%block pageId%}themes{%endblock pageId%}
+{% block content %}
+
+{% include "themes_snippet.html" with sectiontitle="Past Themes" showImages="True" %}
+{% endblock %}
+{% block rightColumn %}
+{% include "standard-right-column.html" %}
+{% endblock rightColumn %}

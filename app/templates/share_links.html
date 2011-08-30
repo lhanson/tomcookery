@@ -1,0 +1,15 @@
+{% load share %}
+
+<div class="share-links">
+	Share:
+	
+	<a class="twitter" target="_blank" title="Share on Twitter" href="http://twitter.com/?status={{ content|urlencode|plus_spaces }}+{{ url|urlencode }}">Twitter</a>
+	
+	<a class="facebook" target="_blank" title="Share on Facebook" href="http://facebook.com/share.php?u={{ url|urlencode }}">Facebook</a>
+	
+	<a class="digg" target="_blank" title="Digg This" href="http://digg.com/submit?url={{ url|urlencode }}&title={{ title|urlencode }}&topic=programming">Digg</a>
+	
+	<a class="reddit" target="_blank" title="Submit to Reddit" href="http://reddit.com/submit?url={{ url|urlencode }}"<Reddit</a>
+	
+	<a class="buzz" target="_blank" title="Submit to Google Buzz" href="http://www.google.com/buzz/post?message={{ content|urlencode }}&url={{ url|urlencode }}">Buzz</a>
+</div>

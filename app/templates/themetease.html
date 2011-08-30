@@ -1,0 +1,20 @@
+<section id="currTheme">
+{% if currentTheme %}
+<h1>{{currentTheme.name}}</h1>
+<dl>
+{% if currentTheme.ingredient %}
+<dt>Ingredient:</dt>
+<dd>{{currentTheme.ingredient}}</dd>
+{% endif %}
+{% if currentTheme.theme %}
+<dt>Theme:</dt>
+<dd>{{currentTheme.theme}}</dd>
+{% endif %}
+</dl>
+<p>{{currentTheme.summary}}</p>
+<p class="themeinfo">Recipe submission open from {{currentTheme.start_submit}} till {{currentTheme.end_submit}}</p>
+<p class="themeinfo">Voting will be open {{currentTheme.start_vote}} till {{currentTheme.end_vote}}</p>
+{% else %}
+<h1>There is currently peace in the kingdom.</h1>
+{% endif %}
+</section>
