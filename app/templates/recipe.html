@@ -4,7 +4,7 @@
 {% block content %}
 {% load thumbnail %}
 {% load brabeion_tags %}
-<article class="hrecipe" class="content">
+<article class="hrecipe content">
 	<h1 class="fn">{{ recipe.name }} {% include "vote.html" %}</h1>
 	<section id="media">
 		{% for photo in recipe.photos.all %}			
@@ -14,12 +14,19 @@
 		{% endfor %}
     </section>
     <h2 class="author">Chef: <a href="/profiles/{{recipe.submitor.username}}" title="link to profile page" class="userName">{{recipe.submitor.username}}'s</a></h2>
+    {% load share %}
+	{% get_share_links recipe %}
     <h3 class="yield">Difficulty: {{ recipe.difficulty.name }}</h3>
     <h3 class="yield">Yields: {{ recipe.yields }}</h3>
     {% for duration in recipe.durations.all %}
 	<h3 class="duration">Time to cook:<span class="value-title" title="PT1H30M"> </span>{{ duration.duration }}</h3>
 	{% endfor %}
 	{% include "tags_snippet.html" %}
+	<section id="useoftheme">
+		<h1>Use of Theme and Ingredients</h1>
+		{{ recipe.summary|linebreaks }}
+	</section>
+	
     <section id="ingredients">
         <h1>Ingredients</h1>
         <ul>
@@ -39,7 +46,7 @@
         </ol>
     </section>
 	
-
+	
     <section id="comments">
     {% if user.is_authenticated %}
     {% load comments %}
@@ -74,7 +81,7 @@
     	{% for comment in comment_list %}
         <article>
             <p><h3 class="username">{{ comment.user.username }}</h3> said:</p>
-            <p>{{ comment.comment|escape|urlizetrunc:40|linebreaks }}</p>
+            {{ comment.comment|escape|urlizetrunc:40|linebreaks }}
         </article>
         {% endfor %}
     

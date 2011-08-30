@@ -9,6 +9,9 @@ import os
 urlpatterns = patterns('tomcookery.app.views',
 	#landing pages
     (r'^$', 'index'),
+    (r'^leaders/$',current_leaders),
+    (r'^themes/$',past_themes),
+    (r'^themes/theme/(?P<theme_url>[a-zA-Z0-9_.-]+)/$',theme_history),
     (r'^tag/([^\s]+)/$',tag_page,{"model":Tag}),
     (r'^tag/$',tag_cloud_page,{"model":Tag,"urlParent":"tag"}),
     (r'^ingredients/([^\s]+)/$',tag_page,{"model":Ingredient}),

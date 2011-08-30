@@ -17,7 +17,8 @@ class recipeNewSaveForm(forms.Form):
 	ingredients = forms.CharField(
 	required=True,
 	widget=forms.HiddenInput(attrs={ 'class':'required'})
-	)
+	) 
+	
 	summary = forms.CharField(
 	widget=forms.Textarea(attrs={ 'class':'required'})
 	)

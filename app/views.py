@@ -25,15 +25,25 @@ response_data = {
 #views
 ##Landing pages
 def index(request):
-	if CookoffTheme.objects.all():
-		response_data.update({'moretoprecipes': CookoffTheme.objects.currentThemeRecipesDate()[1:12]})
-		response_data.update({'toprecipe':CookoffTheme.objects.currentThemeRecipesDate()[:1]})
-	
+	try:
+		response_data.update({'recipes': CookoffTheme.objects.currentThemeRecipesDate()})
+	except:
+		pass
 	response_data.update(_rightColumnStandard())
 	return render_to_response('index.html',
                               response_data,
                               context_instance = RequestContext(request))
 
+def current_leaders(request):
+	try:
+		response_data.update({'recipes': CookoffTheme.objects.currentThemeRecipesVotes()})
+	except:
+		pass
+	response_data.update(_rightColumnStandard())
+	return render_to_response('leaders.html',
+                              response_data,
+                              context_instance = RequestContext(request))
+                              
 def recipe(request, recipe_url):
 	curRecipe = get_object_or_404(
 		Recipe,
@@ -42,16 +52,37 @@ def recipe(request, recipe_url):
 	
 	ingredients = Ingredient_Measurement.objects.filter(recipe=curRecipe)
 	response_data.update({'recipe':curRecipe,"ingredients":ingredients})
+	curRecipe.recipe_view()
 	return render_to_response('recipe.html',
+                              response_data,
+                              context_instance = RequestContext(request))
+
+def past_themes(request):
+	try:
+		response_data.update({'themes':CookoffTheme.objects.all()})
+	except:
+		pass
+	response_data.update(_rightColumnStandard())
+	return render_to_response('pastthemes.html',
+                              response_data,
+                              context_instance = RequestContext(request))
+def theme_history(request,theme_url):
+	theme = get_object_or_404(
+		CookoffTheme,
+		id=theme_url
+	)
+	
+	response_data.update({'theme':theme})
+	return render_to_response('theme.html',
                               response_data,
                               context_instance = RequestContext(request))
 
 #right column
 def _rightColumnStandard():
 	week = date.today() - timedelta(weeks=1)
-	if CookoffTheme.objects.all():
+	try:
 		return {'leadingRecipes': CookoffTheme.objects.currentThemeRecipesVotes()[:5]}
-	else:
+	except:
 		return{}
 
 ##Tag based views
@@ -64,6 +95,7 @@ def tag_page(request, tag_name, model="Tag",urlParent=""):
 		'tag_name':tag_name,
 		'urlParent':urlParent
 	})
+	variables.update(_rightColumnStandard())
 	return render_to_response('tag_page.html',variables)
 
 def tag_cloud_page(request, model="Tag",urlParent=""):
@@ -90,6 +122,7 @@ def tag_cloud_page(request, model="Tag",urlParent=""):
 		'tags':tags,
 		'urlParent':urlParent
 	})
+	variables.update(_rightColumnStandard())
 	return render_to_response('tag_cloud_page.html',variables)
 	
 	

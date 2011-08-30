@@ -6,6 +6,7 @@ from brabeion.base import Badge, BadgeAwarded
 from django.shortcuts import get_object_or_404
 import datetime
 from sorl.thumbnail import ImageField
+from django.db.models import F
 
 class Ingredient(models.Model):
     """ A single ingredient """
@@ -48,6 +49,7 @@ class Recipe(models.Model):
 	submitor = models.ForeignKey(User, related_name='recipes_submitted')
 	difficulty = models.ForeignKey(Difficulty,blank=True,default="",null=True)
 	course = models.ForeignKey(Course,blank=True,default="",null=True)
+	views = models.IntegerField(blank=True,default=0)
 	
 	def get_fields(self):
 		return [(field.name, field.value_to_string(self)) for field in Recipe._meta.fields]
@@ -61,6 +63,20 @@ class Recipe(models.Model):
 	
 	def get_absolute_url(self):
 		return "/recipes/recipe/%s/" % self.url
+	
+	def recipe_view(self):
+		self.views = F('views') + 1
+		self.save()
+		
+	def get_share_url(self):
+		from django.contrib.sites.models import Site
+		return 'http://www.recipe-wars.com/%s' %  self.get_absolute_url()
+							
+	def get_share_title(self):
+		return self.name
+	
+	def get_share_description(self):
+		return '%s...' % self.summary[:512]
 
 class CookoffThemeManager(models.Manager):
 	def currentTheme(self):
@@ -73,18 +89,25 @@ class CookoffThemeManager(models.Manager):
 
 	def currentThemeRecipesDate(self):
 		theme = self.currentTheme()
-		if self.all():
+		try:
 			return theme.recipes.all().order_by('-published')
-	
+		except:
+			return {}
 	def currentThemeRecipesVotes(self):
 		theme = self.currentTheme()
-		if self.all():
+		try:
 			return theme.recipes.all().order_by('-votes')
+		except:
+			return {}
 
 class CookoffTheme(models.Model):
 	"Defines the model for the current theme of the recipe war"
+	slug = models.SlugField(max_length=40,blank=True,null=True)
 	name = models.CharField(max_length=40)
-	summary = models.TextField() 
+	summary = models.TextField()
+	theme = models.CharField(max_length=100,blank=True,null=True)
+	ingredient = models.ForeignKey('Ingredient',blank=True,null=True)
+	photos = models.ManyToManyField('Photo', blank=True)
 	winning_recipe = models.ForeignKey('Recipe',blank=True,null=True,related_name="winning_recipe")
 	runner_up_recipe = models.ForeignKey('Recipe',blank=True,null=True,related_name="second_recipe")
 	third_place_recipe = models.ForeignKey('Recipe',blank=True,null=True,related_name="third_recipe")
@@ -117,6 +140,9 @@ class CookoffTheme(models.Model):
 		self.third_place_recipe = recipesbyrank[2]
 		self.save()
 		return self
+	
+	def get_absolute_url(self):
+		return "/themes/theme/%s/" % self.id
 		
 class Ingredient_Measurement(models.Model):
 	ingredient = models.ForeignKey(Ingredient)
@@ -218,3 +244,13 @@ class FirstRecipeVote(Badge):
 			return BadgeAwarded()
 
 badges.register(FirstRecipeVote)
+
+
+#signal listeners
+from django.contrib.comments.signals import comment_will_be_posted
+
+def commentCallback(sender, comment, request, **kwargs):
+	request.user.get_profile().awardComment(1)
+
+comment_will_be_posted.connect(commentCallback)
+

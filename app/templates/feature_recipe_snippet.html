@@ -1,7 +1,7 @@
 <section class="featured recipe_list hfeed">
     {% if recipes|length > 0 %}
     	{% load thumbnail %}
-    	<h1 class='section-title'>{{ sectiontitle }} {{sectiontitlesplit}}  Recipes</h1>
+    	<h1 class='section-title'>{{ sectiontitle }} {{sectiontitlesplit}}  Recipe</h1>
         {% for recipe in recipes %}
         <article class="hentry {% if recipe.photos.all|length > 0 %}w-images{% else %}n-images{% endif %}">
             {% for photo in recipe.photos.all|slice:":1" %}

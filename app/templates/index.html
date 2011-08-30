@@ -2,8 +2,7 @@
 {%block pageId%}home{%endblock pageId%}
 {% block content %}
 {% include "themetease.html" %}
-{% include "feature_recipe_snippet.html" with recipes=toprecipe sectiontitle="Newest" %}
-{% include "recipes_snippet.html" with recipes=moretoprecipes sectiontitle="More Recipes" showImages="True" %}
+{% include "recipes_snippet.html" with sectiontitle="Most Recent Recipes" showImages="True" %}
 {% endblock %}
 {% block rightColumn %}
 {% include "standard-right-column.html" %}

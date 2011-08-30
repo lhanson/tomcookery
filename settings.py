@@ -90,6 +90,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
 	'django.middleware.csrf.CsrfResponseMiddleware',
+	'pagination.middleware.PaginationMiddleware',
 )
 
 ROOT_URLCONF = 'tomcookery.urls'
@@ -135,6 +136,7 @@ INSTALLED_APPS = (
     'sorl.thumbnail',
     'djcelery',  
     'ghettoq',
+    'pagination',
 )
 
 
