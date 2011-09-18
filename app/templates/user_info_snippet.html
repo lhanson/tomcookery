@@ -1,5 +1,9 @@
 <section id="profile" >
     {% if user.is_authenticated %}
+    	{% load avatar_tags %}
+    	<a href="/profiles/{{user.username}}" title="link to profile page" class="avatar">
+    	{% avatar user 32 %}
+    	</a>
         <a href="/profiles/{{user.username}}" title="link to profile page" class="userName">{{user.username}}</a>
         <a href="/accounts/logout" id="log-off" title="log off user">Log Off</a>
         <a href="/profiles/edit/" title="link to profile page" class="profile-tools">Edit Profile</a>

@@ -3,3 +3,5 @@
 tomcookery-db
 local_settings.py
 media
+settings_production.py
+settings_local.py

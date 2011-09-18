@@ -1,8 +1,8 @@
 {% extends "base.html" %}
-{%block pageId%}leaders{%endblock pageId%}
+{%block pageId%}mtitle{%endblock pageId%}
 {% block content %}
 {% include "themetease.html" %}
-{% include "recipes_snippet.html" with sectiontitle="Top Rated Recipes" showImages="True" %}
+{% include "recipes_snippet.html" with sectiontitle=mtitle showImages="True" show_score="True" %}
 {% endblock %}
 {% block rightColumn %}
 {% include "standard-right-column.html" %}

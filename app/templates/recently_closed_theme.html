@@ -1,0 +1,5 @@
+{% load thumbnail %}
+<article class="content">
+	<h1 class="fn"><a href="{{ theme.get_absolute_url }}" title="{{ theme.name }}" class="bookmark" rel="bookmark">{{ theme.name }} results:</a></h1>
+	{% include "winning_theme_display.html" %}
+</article>

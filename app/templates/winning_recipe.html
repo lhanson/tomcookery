@@ -1,0 +1,16 @@
+{% load thumbnail %}
+<article class="hentry {% if recipe.photos.all|length > 0 %}w-images{% else %}n-images{% endif %}">
+{% for photo in recipe.photos.all|slice:":1" %}
+{% thumbnail photo.photo "150x150" crop="center" as im %}
+<a href="{{ recipe.get_absolute_url }}" title="{{ recipe.name }}" class="fn" rel="bookmark"><img src="{{ im.url }}" alt="{{ recipe.name }}" width="{{ im.width }}" height="{{ im.height }}" class="photo"/></a>
+{% endthumbnail %}
+{% endfor %}
+<span class="content">
+<p class="author">{{recipe.submitor.get_profile.chefRank.name }}: <a href="/profiles/{{recipe.submitor.username}}" title="link to profile page" class="userName">{{recipe.submitor.username}}'s</a></p>
+<h2 class="entry-title"><a href="{{ recipe.get_absolute_url }}" title="{{ recipe.name }}" class="bookmark" rel="bookmark">{{ recipe.name }} </a></h2>
+
+
+<p class="entry-summary">{{ recipe.summary|truncatewords:50 }}</p>
+{% include "tags_snippet.html" %}
+</span>
+</article>

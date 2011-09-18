@@ -73,7 +73,7 @@ To get a server environment up and running here is the general outline:
       ADMIN email addresses, and set DEBUG = TEMPLATE_DEBUG = False
     * From the tomcookery directory, initialize the tomcookery database:
       $ python manage.py syncdb
-    * At some point the chron jobs need to be started to determine pereodic winners. http://bitkickers.blogspot.com/2010/07/djangocelery-quickstart-or-how-i.html
+    * At some point the chron jobs need to be started to determine pereodic winners and allow for asynchronous badges. http://bitkickers.blogspot.com/2010/07/djangocelery-quickstart-or-how-i.html  ./manage.py celeryd -v 2 -B -s celery -E -l INFO
 
 DATA MIGRATIONS
 ===============

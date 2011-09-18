@@ -1,14 +1,15 @@
 {% extends "base.html" %}
 {% block title %}Tag Cloud{% endblock %}
 {% block content %}
-	<div id="tag-cloud">
+	<section id="tag-cloud">
+		<h1 class="section-title">{{ title }}</h1>
 		{% for tag in tags %}
 			<a href="/{{ urlParent }}/{{ tag.id }}/"
 				class="tag-cloud-{{ tag.weight }}" rel="tag">
 				{{ tag.name }}
 				</a>
 		{% endfor %}
-	</div>
+	</section>
 {% endblock %}
 {% block rightColumn %}
 {% include "standard-right-column.html" %}

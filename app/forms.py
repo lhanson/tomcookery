@@ -61,7 +61,7 @@ class recipeNewSaveForm(forms.Form):
 class editProfile(ModelForm):
 	class Meta:
 		model=MyProfile
-		exclude = ('recipePoints','commentPoints','votePoints','recipeLiked','chefRank','user')
+		exclude = ('recipePoints','commentPoints','votePoints','recipeLiked','chefRank','user','users_voted_ing','users_voted_overall','users_voted_theme')
 
 class searchForm(forms.Form):
 	query = forms.CharField(

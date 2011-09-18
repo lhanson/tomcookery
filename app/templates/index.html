@@ -2,7 +2,13 @@
 {%block pageId%}home{%endblock pageId%}
 {% block content %}
 {% include "themetease.html" %}
-{% include "recipes_snippet.html" with sectiontitle="Most Recent Recipes" showImages="True" %}
+{% if currentTheme %}
+{% include "recipes_snippet.html" with sectiontitle="Most Recent Recipes" showImages="True" show_score="True" %}
+{% else %}
+{% if recentlyClosedTheme %}
+{% include "recently_closed_theme.html" with theme=recentlyClosedTheme %}
+{% endif %}
+{% endif %}
 {% endblock %}
 {% block rightColumn %}
 {% include "standard-right-column.html" %}

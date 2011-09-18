@@ -11,8 +11,8 @@
             {% endfor %}
             <span class="content">
             
-            <h2 class="entry-title"><a href="{{ recipe.get_absolute_url }}" title="{{ recipe.name }}" class="bookmark" rel="bookmark">{{ recipe.name }} </a> {% include "vote.html" %}</h2>
-            <p class="author">Chef: <a href="/profiles/{{recipe.submitor.username}}" title="link to profile page" class="userName">{{recipe.submitor.username}}'s</a></p>
+            <h2 class="entry-title"><a href="{{ recipe.get_absolute_url }}" title="{{ recipe.name }}" class="bookmark" rel="bookmark">{{ recipe.name }} </a> {% include "vote.html" with votingOpen=recipe.votingOpen %}</h2>
+            <p class="author">{{recipe.submitor.get_profile.chefRank.name }}: <a href="/profiles/{{recipe.submitor.username}}" title="link to profile page" class="userName">{{recipe.submitor.username}}'s</a></p>
             
             <p class="entry-summary">{{ recipe.summary|truncatewords:50 }}</p>
             {% include "tags_snippet.html" %}

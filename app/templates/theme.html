@@ -18,25 +18,69 @@
 	<section id="themesummary">
 		{{ theme.summary|linebreaks }}
 	</section>
-	{% if theme.winning_recipe %}
-	<section id="winningRecipes">
-		<h1>Winning Recipes</h1>
-		
-		{% include "feature_recipe_snippet.html" with recipes=theme.winning_recipe sectiontitle="First Place" %}
-		
-		{% if theme.runner_up %}
-		{% include "feature_recipe_snippet.html" with recipes=theme.runner_up sectiontitle="Second Place" %}
+	<div id="tabs">
+	<ul>
+		{% if theme.winning_recipe %}
+		<li><a href="#winningRecipes">Winning Recipes</a></li>
 		{% endif %}
-		{% if theme.theme.third_place %}
-		{% include "feature_recipe_snippet.html" with recipes=theme.third_place sectiontitle="Third Place" %}
-		{% endif %}
-	</section>
-	{% endif %}
-
+		<li><a href="#all-recipes">All Recipes</a></li>
+		<li><a href="#comments">Comments</a></li>
+	</ul>
+	{% include "winning_theme_display.html" %}
+	<section id="all-recipes">
 	{% include "recipes_snippet.html" with recipes=theme.recipes.all sectiontitle="All Recipes" showImages="True" %}
+	</section>
+	<section id="comments">
+	{% if user.is_authenticated %}
+    {% load comments %}
+    {% load avatar_tags %}
+    	
+    	
+    	{% get_comment_form for theme as form %}
+    	
+	    <form action="{% comment_form_target %}" id="commentform" method="POST">{% csrf_token %}
+	    	<h1>Recipe Reviews</h1>
+	    	<fieldset>
+	    	<input type="hidden" name="next" value="{{ theme.get_absolute_url }}#comments" />
+
+	    	{% for field in form %}
+	    		{% if field.is_hidden %}
+	    			{{ field }}
+	    		{% endif %}
+	    	{% endfor %}
+	    	
+	    	<input type="hidden" name="name" value="{{ user.username }}" />
+	    	<input type="text" name="honeypot" size="64" style="display:none;" />
+	    	<div>
+	    	<label for="id_comment">Add your comment</label>
+	    	<textarea id="id_comment" rows="10" cols="40" name="comment"></textarea>
+	    	</div>
+	    	<div class="controls">
+	    	<input type="submit" name="submit" class="submit-post" value="Post Comment" />
+	    	</div>
+	    	</fieldset>
+		</form>
+    	{% get_comment_list for theme as comment_list %}
+    	{% for comment in comment_list %}
+        <article>
+            <span><a href="/profiles/{{comment.user.username}}" title="link to profile page" class="avatar">{% avatar comment.user 32 %}</a><h3 class="username"><a href="/profiles/{{comment.user.username}}" title="link to profile page" rel="bookmark">{{comment.user.get_profile.chefRank.name }} {{ comment.user.username }}</a> said:</h3> </span>
+            {{ comment.comment|escape|urlizetrunc:40|linebreaks }}
+        </article>
+        {% endfor %}
+    
+    {% else %}
+		<p><a href="/login/">Please login to comment.</a></p>
+    {% endif %}
+	</section>
 
 </article>
+
 {% endblock %}
 {% block rightColumn %}
 {% include "standard-right-column.html" %}
 {% endblock rightColumn %}
+{% block javaScript %}
+$(function() {
+	$( "#tabs" ).tabs();
+});
+{% endblock %}

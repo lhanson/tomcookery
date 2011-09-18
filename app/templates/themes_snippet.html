@@ -1,6 +1,8 @@
 {% if themes|length > 0 %}
 <section class="theme_list hfeed">
 	<h1 class='section-title'>{{ sectiontitle }}</h1>
+	{% load pagination_tags %}
+	{% autopaginate themes %}
 	<ul class="{% if not showImages%}no-images{% endif %}">
 		{% for theme in themes %}
 			<li class="hentry {% if showImages and theme.photos.all %}w-images{% else %}n-images{% endif %}">
@@ -19,5 +21,6 @@
 			</li>
 		{% endfor %}
 	</ul>
+	{% paginate %}
 </section>
 {% endif %}

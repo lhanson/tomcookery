@@ -1,9 +1,21 @@
 {% extends "base.html" %}
 {%block pageId%}profile-detail{%endblock pageId%}
 {% block content %}
-	<section id="profile-top">
-  <h1>Profile for {{ chefRank }} {{ user }} </h1>
-  <a href="{{ profile.website }}" >My Website</a>
+  <section id="profile-top">
+  <h1>Profile for {{user.get_profile.chefRank.name }} {{ user }} </h1>
+  {% load avatar_tags %}
+  <span class="avatar">
+  {% avatar user %}
+  <a href="/avatar/change">Change Avatar</a>
+  </span>
+  <ul>
+  {% if profile.website %}
+  <li><a href="{{ profile.website }}" >{% if profile.websiteName %} {{profile.websiteName}} {% else %} My Website {% endif %}</a></li>
+  {% endif %}
+  {% if profile.twitterHandle %}
+  <li><a href="http://twitter.com/{{ profile.twitterHandle }}" >Twitter @{{profile.twitterHandle}}</a></li>
+  {% endif %}
+  </ul>
   </section>
   {% load brabeion_tags %}
   {% badges_for_user user as badges %}

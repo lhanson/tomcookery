@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %} Edit Avatar{% endblock %}
+{% block content %}
+    <p>Please select the avatars that you would like to delete.</p>
+    {% if not avatars %}
+        <p>You have no avatars to delete.  Please <a href="{% url avatar_change %}">upload one</a> now.</p>
+    {% else %}
+        <form method="POST" action="">
+            <ul>
+                {{ delete_avatar_form.as_ul }}
+            </ul>
+            <input type="submit" value="Delete These" />
+        </form>
+    {% endif %}
+{% endblock %}
+{% block rightColumn %}
+{% include "standard-right-column.html" %}
+{% endblock rightColumn %}

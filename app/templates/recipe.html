@@ -4,8 +4,9 @@
 {% block content %}
 {% load thumbnail %}
 {% load brabeion_tags %}
+{% load avatar_tags %}
 <article class="hrecipe content">
-	<h1 class="fn">{{ recipe.name }} {% include "vote.html" %}</h1>
+	<h1 class="fn">{{ recipe.name }} {% include "vote.html" with votingOpen=recipe.votingOpen %}</h1>
 	<section id="media">
 		{% for photo in recipe.photos.all %}			
 			{% thumbnail photo.photo "300x300" crop="center" as im %}
@@ -13,18 +14,30 @@
 			{% endthumbnail %}		
 		{% endfor %}
     </section>
-    <h2 class="author">Chef: <a href="/profiles/{{recipe.submitor.username}}" title="link to profile page" class="userName">{{recipe.submitor.username}}'s</a></h2>
-    {% load share %}
+    <h2 class="author">
+   	<a href="/profiles/{{recipe.submitor.username}}" title="link to profile page" class="avatar" rel="bookmark">
+   	{% avatar recipe.submitor 32 %}
+   	</a>{{recipe.submitor.get_profile.chefRank.name }}: <a href="/profiles/{{recipe.submitor.username}}" title="link to profile page" class="userName">{{recipe.submitor.username}}'s</a></h2>
+   	{% include "recipe_score.html" %}
+    <section id="recipeInfo">
+	    <h1 class="section-title">Cooking Info</h1>
+	    <h3 class="yield">Difficulty: {{ recipe.difficulty.name }}</h3>
+	    {% if recipe.yields %}<h3 class="yield">Yields: {{ recipe.yields }}</h3>{% endif %}
+	    {% if recipe.durations %}
+	    {% for duration in recipe.durations.all %}
+		<h3 class="duration">Time to cook:<span class="value-title" title="PT1H30M"> </span>{{ duration.duration }}</h3>
+		{% endfor %}
+		{% endif %}
+		{% include "tags_snippet.html" %}
+	</section>
+	{% load share %}
 	{% get_share_links recipe %}
-    <h3 class="yield">Difficulty: {{ recipe.difficulty.name }}</h3>
-    <h3 class="yield">Yields: {{ recipe.yields }}</h3>
-    {% for duration in recipe.durations.all %}
-	<h3 class="duration">Time to cook:<span class="value-title" title="PT1H30M"> </span>{{ duration.duration }}</h3>
-	{% endfor %}
-	{% include "tags_snippet.html" %}
 	<section id="useoftheme">
-		<h1>Use of Theme and Ingredients</h1>
-		{{ recipe.summary|linebreaks }}
+		<h1 class="section-title">Use of Theme and Ingredients</h1>
+		<p><h3>Theme:</h3>{{ theme.name }}</p>
+		<p><h3>Theme Description:</h3>{{ theme.theme }}</p>
+		<p><h3>Theme Ingredeint:</h3>{{ theme.ingredient }}</p>
+		<p><h3>Theme Use:</h3>{{ recipe.summary|linebreaks }}</p>
 	</section>
 	
     <section id="ingredients">
@@ -56,7 +69,7 @@
     	{% get_comment_form for recipe as form %}
     	
 	    <form action="{% comment_form_target %}" id="commentform" method="POST">{% csrf_token %}
-	    	<h1>Recipe Review</h1>
+	    	<h1>Recipe Reviews</h1>
 	    	<fieldset>
 	    	<input type="hidden" name="next" value="/recipes/recipe/{{ recipe.url }}" />
 
@@ -80,8 +93,8 @@
     	{% get_comment_list for app.recipe recipe.id as comment_list %}
     	{% for comment in comment_list %}
         <article>
-            <p><h3 class="username">{{ comment.user.username }}</h3> said:</p>
-            {{ comment.comment|escape|urlizetrunc:40|linebreaks }}
+            <span><a href="/profiles/{{comment.user.username}}" title="link to profile page" class="avatar">{% avatar comment.user 32 %}</a><h3 class="username"><a href="/profiles/{{comment.user.username}}" title="link to profile page" rel="bookmark">{{comment.user.get_profile.chefRank.name }} {{ comment.user.username }}</a> said:</h3></span>
+            {{ comment.comment|escape|urlizetrunc:40|linebreaks }} 
         </article>
         {% endfor %}
     
@@ -94,3 +107,27 @@
 {% block rightColumn %}
 {% include "standard-right-column.html" %}
 {% endblock rightColumn %}
+{% block javaScript %}
+$(function() {
+	$(".vote").click(function(){
+		var html = "<ul>";
+		{% if userThemeVoteOpen %}
+			html += "<li><a href='/vote?id={{ recipe.id }}&theme' class='vote'>Best use of theme</a></li>";
+		{% endif %}
+		{% if userIngVoteOpen %}
+			html += "<li><a href='/vote?id={{ recipe.id }}&ing' class='vote'>Best use of ingredient</a></li>";
+		{% endif %}
+		{% if useroverallVoteOpen %}
+			html += "<li><a href='/vote?id={{ recipe.id }}&overall' class='vote'>Best overall recipe</a></li>";
+		{% endif %}
+		{% if not useroverallVoteOpen and not userIngVoteOpen and not userThemeVoteOpen %}
+			html += "<li>You have already cast your votes</li>"
+		{% endif %}
+		html += "</ul>";
+		$( "#dialog" ).html(html).dialog({"title":"What category would you like to vote for?"});
+		$( "#dialog" ).dialog("open");
+		return false;
+	});
+	$( "#dialog" ).dialog({"modal":true,autoOpen: false});
+});
+{% endblock %}

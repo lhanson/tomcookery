@@ -221,7 +221,7 @@ background: linear-gradient(top, rgba(255,175,75,1) 0%,rgba(255,146,10,1) 100%);
 border-radius: 5px;
 -moz-box-shadow: 2px 2px 5px #eee;
 -webkit-box-shadow: 2px 2px 5px #eee;
-box-shadow: 2px 2px 5px #eee;
+box-shadow: 2px 2px 5px #000;
 }
 
 #recipe-submit a {
@@ -240,9 +240,6 @@ clear: both;
 ------------------------------------*/
 #site-footer{
 background: #241e12;
-position: relative;
-margin-top: -150px; /* negative value of footer height */
-height: 150px;
 clear:both;
 }
 
@@ -289,7 +286,7 @@ margin-right: 2px;
 margin-top: 0;
 line-height: 35px;
 text-align: center;
-width: 187px;
+width: 189px;
 background: rgb(238,238,238); /* Old browsers */
 background: -moz-linear-gradient(top, rgba(238,238,238,1) 0%, rgba(255,255,255,1) 100%); /* FF3.6+ */
 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(238,238,238,1)), color-stop(100%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
@@ -298,7 +295,8 @@ background: -o-linear-gradient(top, rgba(238,238,238,1) 0%,rgba(255,255,255,1) 1
 background: -ms-linear-gradient(top, rgba(238,238,238,1) 0%,rgba(255,255,255,1) 100%); /* IE10+ */
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
 background: linear-gradient(top, rgba(238,238,238,1) 0%,rgba(255,255,255,1) 100%); /* W3C */
-border: 1px solid #efefef;;
+border: 1px solid #efefef;
+border-bottom: 1px solid #fff;
 -moz-border-radius-topleft: 2px;
 -moz-border-radius-topright: 2px;
 -webkit-border-top-left-radius: 2px;
@@ -538,8 +536,34 @@ margin-bottom: 8px;
 position: relative;
 border-bottom: 1px solid #ccc;
 float: left;
-padding: 18px 0 8px 36px;
+padding: 8px 0 8px 0px;
 width: 100%;
+}
+
+table.score{
+width: 220px;
+border: 1px solid #eee;
+text-align: center;
+border: 1px solid#e4e4e4;
+background: rgb(238,238,238); /* Old browsers */
+background: -moz-linear-gradient(top, rgba(238,238,238,1) 0%, rgba(255,255,255,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(238,238,238,1)), color-stop(100%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, rgba(238,238,238,1) 0%,rgba(255,255,255,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, rgba(238,238,238,1) 0%,rgba(255,255,255,1) 100%); /* Opera11.10+ */
+background: -ms-linear-gradient(top, rgba(238,238,238,1) 0%,rgba(255,255,255,1) 100%); /* IE10+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+background: linear-gradient(top, rgba(238,238,238,1) 0%,rgba(255,255,255,1) 100%); /* W3C */
+-moz-border-radius: 5px; 
+-webkit-border-radius: 5px;
+border-radius: 5px;
+-moz-box-shadow: 2px 2px 5px #eee;
+-webkit-box-shadow: 2px 2px 5px #eee;
+box-shadow: 2px 2px 5px #eee;
+}
+
+table.score th, table.score td {
+padding: 0 4px;
+text-align: center;
 }
 
 .hfeed .author {
@@ -581,9 +605,6 @@ line-height: 1em;
 color: #fff;
 padding: 4px 8px;
 letter-spacing:.01em;
-position: absolute;
-left: -6px;
-top: 3px;
 margin-left: 8px;
 text-shadow:#777 0px 1px 0, #000 0 -1px 0;
 background: rgb(255,175,75); /* Old browsers */
@@ -602,10 +623,13 @@ border-radius: 5px;
 box-shadow: 2px 2px 5px #eee;
 }
 
-.featured .vote{
-top: 30px;
-left: -7px;
-font-size: .5em;
+#dialog li{
+margin: 20px 0;
+}
+
+#dialog .vote{
+font-size: 16px;
+box-shadow: 2px 2px 5px #333;
 }
 
 .hfeed .fn{
@@ -643,12 +667,11 @@ width: 340px;
 
 .hfeed:after,
 ul.tags:after{
-content:".";
-clear: left;;
-display: block;
-font-size: 1px;
-margin-left: -9999px;
-position: relative;
+content: ".";
+        display: block;
+        height: 0;
+        clear: both;
+        visibility: hidden;
 }
 
 .hfeed ul.tags {
@@ -696,6 +719,7 @@ margin-right: 8px;
 margin: 4px 0 6px;
 }
 
+h1.title,
 #currTheme h1 {
 color: #85250d;
 text-shadow: 0px -1px -1px #eee;
@@ -720,19 +744,50 @@ color: #999;
 .tag-cloud-4 {font-size: 180%;}
 .tag-cloud-5 {font-size: 200%;}
 
+/*past themes
+______________________________________*/
+#themes #main-content .hfeed li.hentry {
+padding: 8px 0;
+}
+
+.hfeed li.hentry dl dt {
+color: #555;
+float: left;
+margin-right: 8px;
+}
+
+#themes .hfeed li.hentry p {
+margin: 4px 0 6px;
+}
+
 /*Recipe page
 ---------------------------------------*/
 .hrecipe {
 position: relative;
 }
 
+article.content h1.fn,
 .hrecipe .fn {
-font-size: 38px;
-line-height: 44px;
+font-size: 36px;
+line-height: 40px;
 margin: 0 0 10px 0;
 border-bottom: 1px solid;
 text-shadow: 0px -1px 1px #eee;
 color: #85250d;
+}
+
+.hrecipe #recipeInfo {
+float: left;
+width: 270px;
+clear: right;
+}
+
+.hrecipe #recipeInfo:after{
+content: ".";
+display: block;
+height: 0;
+clear: both;
+visibility: hidden;
 }
 
 .hrecipe .vote{
@@ -751,6 +806,7 @@ line-height: 1em;
 top: -24px;
 }
 
+article.content .photo,
 .hrecipe .photo {
 padding: 4px;
 background: #111;
@@ -758,10 +814,29 @@ border: 1px solid #777;
 float: left;
 margin: 0 8px 12px 0;
 }
+
+.hrecipe table.score {
+float: left;
+width: 250px;
+margin: 8px 0;
+}
+
 .hrecipe #ingredients {
 clear: both;
 margin: 12px 0;
 float:left;
+}
+
+.share-links {
+clear: both;
+height: 30px;
+font-size: 16px;
+}
+
+.hrecipe #useoftheme h3 {
+display: inline;
+margin: 0 4px 0 0;
+font-weight: bold;
 }
 
 .hrecipe #commentform h1,
@@ -849,10 +924,28 @@ margin: 8px 0;
 }
 
 
+#comments article span{
+height: 32px;
+display: inline-block;
+line-height: 32px;
+vertical-align: top;
+padding-top: 4px;
+}
+
+#comments article span .avatar{
+height: 32px;
+display: inline-block;
+}
+
 #comments article .username {
 font-size: 14px;
-font-weight: bold;
+font-weight: normal;
 display: inline;
+line-height: 32px;
+height: 32px;
+display: inline-block;
+margin-left: 5px;
+vertical-align: top;
 }
 
 /* -- !Fields -- */
@@ -1142,4 +1235,67 @@ margin: 12px 0;
 #ingredients-list label {
 float: left;
 margin: 0;
+}
+
+/* Themes
+------------------------------------*/
+#winningRecipes .section-title {
+margin-top: 12px;
+font-size: 20px;
+font-weight: bold;
+
+}
+
+#tabs label,
+#tabs form h1,
+#tabs .section-title {
+text-shadow:0 -1px 0 #333;
+color: #fff;
+font-weight: bold;
+}
+#tabs fieldset div.controls input {
+box-shadow: 2px 2px 5px #000;
+}
+
+#tabs .author {color: #fff;}
+
+#winningRecipes ol li {
+display: block;
+float: left;
+margin: 2px 0 4px;
+border-bottom: 1px solid #eee;
+}
+
+#winningRecipes ol li .content{
+width: 430px;
+}
+
+#tabs .hfeed .content,
+#tabs #winningRecipes ol li .content{
+width: 370px;
+}
+
+#winningRecipes ol li ul li{
+border: none;
+}
+
+#winningRecipes ol li .content p{
+margin: 4px 0;
+font-size: 14px;
+line-height: 17px;
+}
+
+#winningRecipes ol li .content p.author{
+margin: 0;
+line-height: 19px;
+}
+#winningRecipes ol li .content h2{
+margin: 0;
+}
+#winningRecipes ol:after {
+content: ".";
+display: block;
+height: 0;
+clear: both;
+visibility: hidden;
 }

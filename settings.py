@@ -1,36 +1,18 @@
 # Django settings for tomcookery project.
 import os
-import django
+import django,socket
 
-# calculated paths for django and the site
-SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
+if socket.gethostname() != 'Macintosh.local':
+	#external settings file for production server
+	from settings_production import *
 
-DEBUG = True
-TEMPLATE_DEBUG = DEBUG
+else:
+	#external settings for local test server
+	from settings_local import *
 
-ADMINS = (
-    # ('Your Name', 'your_email@domain.com'),
-)
 
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
 
 ACCOUNT_ACTIVATION_DAYS = 7
-
-MANAGERS = ADMINS
-
-# Rather than exposing database details directly (and storing in version control),
-# we set defaults for local development and then override with a sensitive/environment-specific
-# file at the end.
-DATABASE_ENGINE = 'sqlite3'    # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-DATABASE_NAME = 'tomcookery-db' # Or path to database file if using sqlite3.
-DATABASE_USER = ''             # Not used with sqlite3.
-DATABASE_PASSWORD = ''         # Not used with sqlite3.
-DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
-DATABASE_PORT = ''             # Set to empty string for default. Not used with sqlite3.
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -48,20 +30,6 @@ SITE_ID = 1
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
 USE_I18N = True
-
-# Absolute path to the directory that holds media.
-# Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = os.path.join(SITE_ROOT, 'media')
-
-# URL that handles the media served from MEDIA_ROOT. Make sure to use a
-# trailing slash if there is a path component (optional in other cases).
-# Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = 'http://localhost:8000/media/'
-
-# URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
-# trailing slash.
-# Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = '/admin-media/'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '8p!+55am02)px6wm_l@f!+4#)nwy@5y1aa%jq4we5jt9i&4a9r'
@@ -111,7 +79,7 @@ AUTHENTICATION_BACKENDS = (
 )
 
 #Settings for celery chron using ghettoq
-CARROT_BACKEND = "ghettoq.taproot.Database" 
+CARROT_BACKEND = "django" 
 CELERY_RESULT_BACKEND = "database" 
 import djcelery
 djcelery.setup_loader()
@@ -128,15 +96,17 @@ INSTALLED_APPS = (
     'django.contrib.comments',
     'django.contrib.messages',
     'django.contrib.humanize',
-    'registration',
+    'tomcookery.registration',
     'tomcookery.app',
     'south',
-    'brabeion',
-    'profiles',
-    'sorl.thumbnail',
-    'djcelery',  
-    'ghettoq',
-    'pagination',
+    'tomcookery.brabeion',
+    'tomcookery.profiles',
+    'tomcookery.sorl.thumbnail',
+    'tomcookery.djcelery',  
+    'tomcookery.ghettoq',
+    'tomcookery.djkombu',
+    'tomcookery.pagination',
+    'tomcookery.avatar',
 )
 
 
@@ -147,3 +117,4 @@ try:
     from local_settings import *
 except Exception:
     pass
+

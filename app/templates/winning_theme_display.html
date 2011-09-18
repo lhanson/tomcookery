@@ -1,0 +1,83 @@
+	{% if theme.winning_recipe %}
+	<section id="winningRecipes">
+		{% if theme.winning_recipe or theme.winning_ing_recipe or theme.winning_theme_recipe %}
+		<section>
+			<h1 class="section-title">Overall Best Recipe</h1>
+			<ol>
+			{% if theme.winning_recipe %}
+			<li class="first">
+			<h2>First Place</h2>
+			 {% include "winning_recipe.html" with recipe=theme.winning_recipe %}
+			</li>
+			{% endif %}
+			
+			{% if theme.runner_up_recipe %}
+			<li  class="second">
+			<h2>Second Place</h2>
+			{% include "winning_recipe.html" with recipe=theme.runner_up_recipe %}
+			</li>
+			{% endif %}
+			
+			{% if theme.third_place_recipe %}
+			<li class="third">
+			<h2>Third Place</h2>
+			{% include "winning_recipe.html" with recipe=theme.third_place_recipe %}
+			</li>
+			{% endif %}
+			</ol>
+		</section>
+		{% endif %}
+		{% if theme.winning_ing_recipe %}
+		<section>
+			<h1 class="section-title">Best Use of Ingredient</h1>
+			<ol>
+			{% if theme.winning_ing_recipe %}
+			<li class="first"><h2>First Place</h2>
+			{% include "winning_recipe.html" with recipe=theme.winning_ing_recipe %}
+			</li>
+			{% endif %}
+			
+			{% if theme.runner_up_ing_recipe %}
+			<li  class="second">
+			<h2>Second Place</h2>
+			{% include "winning_recipe.html" with recipe=theme.runner_up_ing_recipe %}
+			</li>
+			{% endif %}
+			
+			{% if theme.third_place_ing_recipe %}
+			<li class="third">
+			<h2>Third Place</h2>
+			{% include "winning_recipe.html" with recipe=theme.third_place_ing_recipe %}
+			</li>
+			{% endif %}
+			<?ol>
+		</section>
+		{% endif %}
+		{% if theme.winning_theme_recipe %}
+		<section>
+			<h1 class="section-title">Best use of Theme</h1>
+			<ol>
+			{% if theme.winning_theme_recipe %}
+			<li class="first"><h2>First Place</h2>
+			{% include "winning_recipe.html" with recipe=theme.winning_theme_recipe %}
+			</li>
+			{% endif %}
+			
+			{% if theme.runner_up_theme_recipe %}
+			<li  class="second">
+			<h2>Second Place</h2>
+			{% include "winning_recipe.html" with recipe=theme.runner_up_theme_recipe %}
+			</li>
+			{% endif %}
+			
+			{% if theme.third_place_theme_recipe %}
+			<li class="third">
+			<h2>Third Place</h2>
+			{% include "winning_recipe.html" with recipe=theme.third_place_theme_recipe %}
+			</li>
+			{% endif %}
+			</ol>
+		</section>
+		{% endif %}
+	</section>
+	{% endif %}

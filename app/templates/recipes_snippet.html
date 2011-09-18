@@ -1,13 +1,15 @@
 {# Renders a list of recipes available #}
-{% load pagination_tags %}
-{% autopaginate recipes %}
+
 <section class="recipe_list hfeed">
 	{% load thumbnail %}
     {% if recipes|length > 0 %}
+    	{% load pagination_tags %}
+		{% autopaginate recipes %}
         <h1 class='section-title'>{{ sectiontitle }}</h1>
         <ul class="{% if not showImages%}no-images{% endif %}">
             {% for recipe in recipes %}
                     <li class="hentry {% if showImages and recipe.photos.all %}w-images{% else %}n-images{% endif %}">
+                    	
                     	{% if showImages %}
                     	{% for photo in recipe.photos.all|slice:":1" %}
                     		{% thumbnail photo.photo "100x100" crop="center" as im %}
@@ -17,20 +19,22 @@
 			            {% endfor %}
 			            {% endif %}
 			            <span class="content">
+			            <h2 class="entry-title"><a href="{{ recipe.get_absolute_url }}" title="{{ recipe.name }}" class="bookmark" rel="bookmark">{{ recipe.name }}</a></h2>
+			            <p class="author">{{recipe.submitor.get_profile.chefRank.name }}: <a href="/profiles/{{recipe.submitor.username}}" title="link to profile page" class="userName">{{recipe.submitor.username}}'s</a></p>
+			            <p class="entry-summary">{{recipe.summary|truncatewords:30}}</p>
+			            {% include "tags_snippet.html" %}
 			            
-            			<h2 class="entry-title"><a href="{{ recipe.get_absolute_url }}" title="{{ recipe.name }}" class="bookmark" rel="bookmark">{{ recipe.name }}</a>{% include "vote.html" %}</h2>
-            			<p class="author">Chef: <a href="/profiles/{{recipe.submitor.username}}" title="link to profile page" class="userName">{{recipe.submitor.username}}'s</a></p>
-            			
-            			<p class="entry-summary">{{recipe.summary|truncatewords:30}}</p>
-
-						{% include "tags_snippet.html" %}
-
+						{% if show_score %}
+							{% include "recipe_score.html" %}
+						{% endif %}
 			            </span>
+			            
             		</li>
             {% endfor %}
         </ul>
+        {% paginate %}
     {% else %}
 
     {% endif %}
-    {% paginate %}
+    
 </section>

@@ -8,7 +8,7 @@
   <form method="post" action="." id="login">
   	{% csrf_token %}
   	<fieldset>
-  	<H1>Login or <a href='/accounts/register' title="register">Register</a></h1>
+  	<H1>Login or <a href='/accounts/register' title="register">Click here to Register</a></h1>
   	<div><label for="id_username">Username:</label>
   	{{ form.username }}</div>
   	<div><label for="id_password">Password:</label>
@@ -17,7 +17,6 @@
   	<div class="controls">
   	<input type="submit" value="login" />
   	</div>
-  	<a href='/accounts/register' title="register">Register</a>
   	<a href='/accounts/password/reset' title='Reset Password'>Reset password</a>
   	</fieldset>
   </form>

@@ -15,6 +15,7 @@ from brabeion import badges
 import brabeion.signals
 from datetime import date, timedelta
 import json
+from django.contrib import messages
 sys.path.append("/Users/corygwin/djangoenv/lib/python2.6/site-packages/PIL-1.1.7-py2.6-macosx-10.3-fat.egg")
 
 response_data = { 
@@ -34,9 +35,9 @@ def index(request):
                               response_data,
                               context_instance = RequestContext(request))
 
-def current_leaders(request):
+def current_leaders(request,order="-votes",mtitle=""):
 	try:
-		response_data.update({'recipes': CookoffTheme.objects.currentThemeRecipesVotes()})
+		response_data.update({'recipes': CookoffTheme.objects.currentThemeRecipesVotes(order=order),"mtitle":mtitle})
 	except:
 		pass
 	response_data.update(_rightColumnStandard())
@@ -49,17 +50,18 @@ def recipe(request, recipe_url):
 		Recipe,
 		url=recipe_url
 	)
-	
+	theme = CookoffTheme.objects.filter(recipes=curRecipe)[0]
 	ingredients = Ingredient_Measurement.objects.filter(recipe=curRecipe)
-	response_data.update({'recipe':curRecipe,"ingredients":ingredients})
+	response_data.update({'recipe':curRecipe,"ingredients":ingredients,'theme':theme})
 	curRecipe.recipe_view()
+	
 	return render_to_response('recipe.html',
                               response_data,
                               context_instance = RequestContext(request))
 
 def past_themes(request):
 	try:
-		response_data.update({'themes':CookoffTheme.objects.all()})
+		response_data.update({'themes':CookoffTheme.objects.all().order_by("-end_vote")})
 	except:
 		pass
 	response_data.update(_rightColumnStandard())
@@ -98,7 +100,7 @@ def tag_page(request, tag_name, model="Tag",urlParent=""):
 	variables.update(_rightColumnStandard())
 	return render_to_response('tag_page.html',variables)
 
-def tag_cloud_page(request, model="Tag",urlParent=""):
+def tag_cloud_page(request, model="Tag",urlParent="",stitle=""):
 	MAX_WEIGHT = 5
 	tags=model.objects.order_by("name")
 	#calculate tag, min and max counts
@@ -120,7 +122,8 @@ def tag_cloud_page(request, model="Tag",urlParent=""):
 		)
 	variables = RequestContext(request,{
 		'tags':tags,
-		'urlParent':urlParent
+		'urlParent':urlParent,
+		'title': "Recipes %s" % stitle
 	})
 	variables.update(_rightColumnStandard())
 	return render_to_response('tag_cloud_page.html',variables)
@@ -135,18 +138,16 @@ def recipe_vote(request):
 		try:
 			recipe_id = request.GET['id']
 			recipe = Recipe.objects.get(id=recipe_id)
-			user_voted = recipe.users_voted.filter(
-				username = request.user.username
-			)
-			if not user_voted:
-				recipe.votes += 1
-				recipe.users_voted.add(request.user)
-				recipe.save()
-				submitor = recipe.submitor.get_profile()
-				submitor.awardRecipeLiked(1)
-				badges.possibly_award_badge("vote_submitted", user=request.user)
-				profile = request.user.get_profile()
-				profile.awardVote(1)
+			#if request.user != recipe.submitor:
+			if 'ing' in request.GET:
+				recipe.ingVote(request.user)
+			elif 'theme' in request.GET:
+				recipe.themeVote(request.user)
+			elif 'overall' in request.GET:
+				recipe.overallVote(request.user)
+			
+			submitor = recipe.submitor.get_profile().awardRecipeLiked(1,request)
+			badges.possibly_award_badge("vote_submitted", user=request.user)
 		except Recipe.DoesNotExist:
 			raise Http404('Recipe Not Found')
 	if 'HTTP_REFERER' in request.META:
@@ -187,7 +188,7 @@ def _handleImageResize(image):
                              
 def _ingredientsProcess(ingString, recipe):
 	jsonData = json.loads(ingString)
-	print(jsonData)
+	#print(jsonData)
 	for set in jsonData:
 		ingObject, dummy = Ingredient.objects.get_or_create(
 			name= set['ingredient']
@@ -218,8 +219,6 @@ def submit(request):
 			# create a url, we will make sure it is unique by adding the id number to the end.
 			url = form.cleaned_data['name'] + "-" + str(recipe.id)
 			recipe.url = slugify(url)
-			recipe.users_voted.add(request.user)
-			#file_content = ContentFile(request.FILES['photo'].read())
 			try:
 				if request.FILES['photo']:
 					file = request.FILES['photo']
@@ -256,7 +255,7 @@ def submit(request):
 			recipe.save()
 			createUserProfile(request.user)
 			profile = request.user.get_profile()
-			profile.awardRecipe(1)
+			profile.awardRecipe(1,request)
 			redirectTo = "/recipes/recipe/%s" % recipe.url
 			return HttpResponseRedirect(redirectTo)
     else:

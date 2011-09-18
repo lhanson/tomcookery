@@ -1,9 +1,11 @@
 {% extends "base.html" %}
+
 {%block pageId%}form-page{%endblock pageId%}
 {% block content %}
 	<form method="POST" action="" id="soloform">
 	<fieldset>
 	<h1>Edit profile info for {{ user }} </h1>
+	
 	<div id="form-messages">
 	{% if form.errors %}
 		<h2><strong>Button Up Soldier!</strong> Your recipe is not ship shape!</h2> 

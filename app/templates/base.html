@@ -51,20 +51,20 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js"></script>
     {% block jsincludes %}{% endblock %}
     <script>
-{% block javaScript %}
+{% block javaScript %}{% endblock %}
 		{% if messages %}
 			$(function() {
 				var dialog = $( "#dialog" );
-				var html = "<h1>Congratulations, you have won the following awards:</h1><ul>";
+				var html = "<ul>";
 				{% for message in messages %}
-					html += "<li>{{ message }}</li>";
+					html += "<li>{{ message|safe }}</li>";
 				{% endfor %}
 					html += "</ul>";
-				$( "#dialog" ).html(html).dialog({"title":"Congratulations!","modal":true});
+				$( "#dialog" ).html(html).dialog({"title":"Recipe Wars!","modal":true});
 			});
 		 {% endif %}
 
-{% endblock %}
+
     </script>
   </body>
 </html>
