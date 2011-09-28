@@ -11,7 +11,7 @@
 <dd>{{currentTheme.theme}}</dd>
 {% endif %}
 </dl>
-<p>{{currentTheme.summary}}</p>
+<p>{{currentTheme.summary|linebreaks}}</p>
 <p class="themeinfo">Recipe submission open from {{currentTheme.start_submit}} till {{currentTheme.end_submit}}</p>
 <p class="themeinfo">Voting will be open {{currentTheme.start_vote}} till {{currentTheme.end_vote}}</p>
 </section>

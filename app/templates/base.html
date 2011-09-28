@@ -7,7 +7,8 @@
               <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
           <![endif]-->
       {% endblock %}
-      <script src="{{ site_url }}/js/modernizr.custom.16936.js"></script> 
+      <script src="{{ site_url }}/js/modernizr.custom.16936.js"></script>
+      <meta name="google-site-verification" content="vuHkhOSL_c4-mplr3yDplgOPuV2gxbdSYJjCx5oJVqc" /> 
       <link href='http://fonts.googleapis.com/css?family=Droid+Sans:700' rel='stylesheet' type='text/css'>
       <link rel="stylesheet" href="{{ site_url }}/css/styles.css" type="text/css" />
       <link rel="stylesheet" href="{{ site_url }}/css/jquery-ui-1.8.15.custom.css" type="text/css" />
@@ -21,7 +22,7 @@
             <h5>We want you!</h5>
             </span>
             {% if submissionsOpen %}
-            <h2 id="recipe-submit"><a href="{% if user.is_authenticated %}/submit{% else %}/accounts/login{% endif %}">Join The Battle Submit a Recipe</a></h2>
+            <h2 id="recipe-submit"><a href="{% if user.is_authenticated %}/submit{% else %}/accounts/login{% endif %}">Join the Battle Submit a Recipe</a></h2>
             {% endif %}
 	    </div>	
     	</header>
@@ -64,6 +65,15 @@
 			});
 		 {% endif %}
 
+		  var _gaq = _gaq || [];
+		  _gaq.push(['_setAccount', 'UA-25782788-1']);
+		  _gaq.push(['_trackPageview']);
+		
+		  (function() {
+		    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		  })();
 
     </script>
   </body>

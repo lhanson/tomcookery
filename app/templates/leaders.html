@@ -1,5 +1,6 @@
 {% extends "base.html" %}
-{%block pageId%}mtitle{%endblock pageId%}
+{% block title %} {{ mtitle }}{% endblock %}
+{%block pageId%}leaders{%endblock pageId%}
 {% block content %}
 {% include "themetease.html" %}
 {% include "recipes_snippet.html" with sectiontitle=mtitle showImages="True" show_score="True" %}

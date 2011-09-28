@@ -1,6 +1,6 @@
 {# A single recipe page #}
 {% extends "base.html" %}
-{% block title %} {{ recipe.name }}{% endblock %}
+{% block title %} {{ theme.name }}{% endblock %}
 {% block content %}
 {% load thumbnail %}
 {% load brabeion_tags %}
@@ -71,6 +71,7 @@
     {% else %}
 		<p><a href="/login/">Please login to comment.</a></p>
     {% endif %}
+    </div>
 	</section>
 
 </article>

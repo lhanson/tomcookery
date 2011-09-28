@@ -11,35 +11,35 @@ from django.contrib import messages
 
 class Ingredient(models.Model):
     """ A single ingredient """
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=255)
     def __unicode__(self):
     	return self.name
 
 class Duration(models.Model):
     """ The time it takes to prepare a recipe or a subset of a recipe """
-    duration = models.CharField(max_length=40)
+    duration = models.CharField(max_length=255)
     def __unicode__(self):
         return self.duration
 
 class Difficulty(models.Model):
 	"Different difficulty of recipe"
-	name = models.CharField(max_length=15)
+	name = models.CharField(max_length=150)
 	
 class Course(models.Model):
 	"Different course of recipe"
-	name = models.CharField(max_length=15)    
+	name = models.CharField(max_length=150)    
 
 
 
 class Recipe(models.Model):
 	""" Representation of an hrecipe-based recipe (see http://microformats.org/wiki/hrecipe) """
-	name = models.CharField(max_length=40) # hrecipe field name is "fn"
+	name = models.TextField() # hrecipe field name is "fn"
 	ingredients = models.ManyToManyField('Ingredient',through='Ingredient_Measurement')
-	yields = models.CharField(max_length=40, blank=True)
+	yields = models.CharField(max_length=255, blank=True)
 	instructions = models.TextField()
 	durations = models.ManyToManyField('Duration', blank=True)
 	photos = models.ManyToManyField('Photo', blank=True)
-	summary = models.CharField(max_length=80, blank=True)
+	summary = models.TextField()
 	published = models.DateField(blank=True)
 	tags = models.ManyToManyField('Tag', blank=True)
 	#custom fields
@@ -169,11 +169,11 @@ class CookoffThemeManager(models.Manager):
 			
 class CookoffTheme(models.Model):
 	"Defines the model for the current theme of the recipe war"
-	slug = models.SlugField(max_length=40,blank=True,null=True)
+	slug = models.SlugField(max_length=255,blank=True,null=True)
 	#theme descritptions
-	name = models.CharField(max_length=40)
+	name = models.CharField(max_length=255)
 	summary = models.TextField()
-	theme = models.CharField(max_length=100,blank=True,null=True)
+	theme = models.CharField(max_length=255,blank=True,null=True)
 	ingredient = models.ForeignKey('Ingredient',blank=True,null=True)
 	photos = models.ManyToManyField('Photo', blank=True)
 	#overall winners
@@ -251,13 +251,13 @@ class CookoffTheme(models.Model):
 class Ingredient_Measurement(models.Model):
 	ingredient = models.ForeignKey(Ingredient)
 	recipe = models.ForeignKey(Recipe)
-	value = models.CharField(max_length=20, blank=True)
+	value = models.CharField(max_length=255, blank=True)
 
 
 
 class Photo(models.Model):
     """ A photograph of delicious food """
-    alt_text = models.CharField(max_length=40, default='')
+    alt_text = models.CharField(max_length=255, default='')
     photo = models.ImageField(
             upload_to='recipe_images/',
             blank=True)
@@ -266,13 +266,13 @@ class Photo(models.Model):
 
 class Tag(models.Model):
     """ A tag applied to a recipe for categorization and search """
-    name = models.CharField(max_length=15)
+    name = models.CharField(max_length=255)
     def __unicode__(self):
         return self.name
 
 class ChefRank(models.Model):
 	"Different ranks for users"
-	name = models.CharField(max_length=300,default="Fry Cook")
+	name = models.CharField(max_length=255,default="Fry Cook")
 
 def createUserProfile(user):
     """Create a UserProfile object each time a User is created ; and link it.
@@ -287,9 +287,9 @@ class MyProfile(models.Model):
 	votePoints = models.IntegerField(blank=True,default=0)
 	recipeLiked = models.IntegerField(blank=True,default=0) 
 	website = models.URLField(blank=True,null=True)
-	websiteName = models.CharField(max_length=40,blank=True,null=True)
+	websiteName = models.CharField(max_length=255,blank=True,null=True)
 	chefRank = models.ForeignKey(ChefRank,blank=True,null=True)
-	twitterHandle=models.CharField(max_length=40,blank=True,null=True)
+	twitterHandle=models.CharField(max_length=255,blank=True,null=True)
 	
 	#keep track of users voting actions on themes
 	users_voted_ing = models.ManyToManyField(CookoffTheme, related_name='recipe_votes_ing',blank=True,null=True)

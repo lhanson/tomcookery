@@ -2,10 +2,10 @@
 {%block pageId%}profile-detail{%endblock pageId%}
 {% block content %}
   <section id="profile-top">
-  <h1>Profile for {{user.get_profile.chefRank.name }} {{ user }} </h1>
+  <h1>Profile for {{profile.chefRank.name }} {{ profile.user }} </h1>
   {% load avatar_tags %}
   <span class="avatar">
-  {% avatar user %}
+  {% avatar profile.user %}
   <a href="/avatar/change">Change Avatar</a>
   </span>
   <ul>
@@ -18,7 +18,7 @@
   </ul>
   </section>
   {% load brabeion_tags %}
-  {% badges_for_user user as badges %}
+  {% badges_for_user profile as badges %}
   <section id="userbadges">
   <h1>Acheviements</h1>
   <ul>
